@@ -14,11 +14,9 @@ import com.ctre.CANTalon;
 
 import edu.wpi.first.wpilibj.Joystick;
 
-public class MecanumDriveTrain extends SprocketRobot {
+public class MecanumDriveTrain {
 
-    //Joystick
-    Joystick driveStick    = new Joystick(0);
-    ArcadeDriveInput input = new ArcadeDriveInput(driveStick);
+    JoystickControls joystick;
 
     //drive train motors
     CANTalon frontLeft     = new CANTalon(0);
@@ -32,8 +30,7 @@ public class MecanumDriveTrain extends SprocketRobot {
     DriveModule backLeftModule   = new DriveModule(new XY(-1, -1), new XY(-1, 1), new Motor(backLeft));
     DriveModule backRightModule  = new DriveModule(new XY(1, -1),  new XY(1, 1),  new Motor(backRight));
 
-    @Override
-    public void robotInit() {
+    public void driveTrainBuild() {
 
         //Drive train builder
         DriveTrainBuilder builder = new DriveTrainBuilder();
@@ -42,17 +39,12 @@ public class MecanumDriveTrain extends SprocketRobot {
         builder.addDriveModule(backLeftModule);
         builder.addDriveModule(backRightModule);
         builder.setDriveTrainType(DriveTrainType.MECANUM);
-        builder.setInput(input);
+        builder.setInput(joystick.driveStickInput);
         try {
             builder.build();
         } catch (InvalidDriveTrainException e) {
             Debug.msg("Status","Drive Train Builder FAILED");
         }
-
-    }
-
-    @Override
-    public void update() {
 
     }
 
