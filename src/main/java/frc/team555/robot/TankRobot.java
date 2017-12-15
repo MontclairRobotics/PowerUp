@@ -6,6 +6,7 @@ import org.montclairrobotics.sprocket.SprocketRobot;
 public class TankRobot extends SprocketRobot {
 
     TankDriveTrain driveTrain;
+    JoystickControls joystick;
 
     @Override
     public void robotInit() {
@@ -16,6 +17,5 @@ public class TankRobot extends SprocketRobot {
     public void update() {
 
     }
-
 
 }

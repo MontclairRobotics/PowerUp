@@ -10,7 +10,6 @@ public class JoystickControls {
     public static final int DRIVE_STICK_PORT = 0;
     public static final int AUX_STICK_PORT = 1;
 
-
     // Drive Controls
     Joystick driveStick = new Joystick(DRIVE_STICK_PORT);
     ArcadeDriveInput driveStickInput = new ArcadeDriveInput(driveStick);

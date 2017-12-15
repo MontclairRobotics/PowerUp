@@ -10,4 +10,8 @@ public class MecanumRobot extends SprocketRobot {
     public void robotInit() {
         driveTrain.driveTrainBuild();
     }
+
+    @Override
+    public void update() {
+    }
 }
