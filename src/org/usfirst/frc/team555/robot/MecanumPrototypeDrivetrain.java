@@ -27,7 +27,6 @@ public class MecanumPrototypeDrivetrain extends SprocketRobot {
     public void robotInit() {
         
 		driveStick = new Joystick(0);
-		input = new ArcadeDriveInput(driveStick);
 
 		//Drive train builder
 		//TODO: Fix Force Vectors
@@ -48,7 +47,7 @@ public class MecanumPrototypeDrivetrain extends SprocketRobot {
 	        .addDriveModule(new DriveModule(new XY(1, -1), new XY(0, -1), 
 	        		new Motor(new CANTalon(3)))) // back right
 	        .setDriveTrainType(DriveTrainType.MECANUM)
-	        .setInput(input);
+	        .setInput(new ArcadeDriveInput(driveStick));
         try {
             driveTrain = builder.build();
         } catch (InvalidDriveTrainException e) {
