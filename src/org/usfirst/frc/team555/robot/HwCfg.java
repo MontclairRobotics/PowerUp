@@ -4,6 +4,9 @@ import com.ctre.CANTalon;
 
 public final class HwCfg {
 
+	// In order to really use this effectively it probably needs to be moved to 
+	// Sprocket. That way sprocket functions can be built to accept the enums instead
+	// of simply ints.
 	private HwCfg() {
 	}
 	
