@@ -3,6 +3,7 @@ package org.usfirst.frc.team555.robot;
 import org.montclairrobotics.sprocket.SprocketRobot;
 import org.montclairrobotics.sprocket.control.ArcadeDriveInput;
 import org.montclairrobotics.sprocket.drive.DriveModule;
+import org.montclairrobotics.sprocket.drive.DriveTrain;
 import org.montclairrobotics.sprocket.drive.DriveTrainBuilder;
 import org.montclairrobotics.sprocket.drive.DriveTrainType;
 import org.montclairrobotics.sprocket.drive.InvalidDriveTrainException;
@@ -17,34 +18,38 @@ import edu.wpi.first.wpilibj.Joystick;
 public class MecanumPrototypeDrivetrain extends SprocketRobot {
 
 	//Joystick
-	Joystick driveStick    = new Joystick(0);
-	ArcadeDriveInput input = new ArcadeDriveInput(driveStick);
+	Joystick driveStick;
+	ArcadeDriveInput input;
 	
-	//drive train motors
-	CANTalon frontLeft     = new CANTalon(0);
-	CANTalon frontRight    = new CANTalon(1);
-	CANTalon backLeft      = new CANTalon(2);
-	CANTalon backRight     = new CANTalon(3);
-	
-	//Drive modules //TODO: Fix Force Vectors
-    DriveModule frontLeftModule  = new DriveModule(new XY(-1, 1),  new XY(1, 1),  new Motor(frontLeft));
-    DriveModule frontRightModule = new DriveModule(new XY(1, 1),   new XY(0, -1), new Motor(frontRight));
-    DriveModule backLeftModule   = new DriveModule(new XY(-1, -1), new XY(0, -1), new Motor(backLeft));
-    DriveModule backRightModule  = new DriveModule(new XY(1, -10), new XY(0, -1), new Motor(backRight));
+	DriveTrain driveTrain;
 	
 	@Override
     public void robotInit() {
         
-        //Drive train builder
-        DriveTrainBuilder builder = new DriveTrainBuilder();
-        builder.addDriveModule(frontLeftModule);
-        builder.addDriveModule(frontRightModule);
-        builder.addDriveModule(backLeftModule);
-        builder.addDriveModule(backRightModule);
-        builder.setDriveTrainType(DriveTrainType.MECANUM);
-        builder.setInput(input);
+		driveStick = new Joystick(0);
+
+		//Drive train builder
+		//TODO: Fix Force Vectors
+		//TODO: Allow linking in DriveModule, Module so that 
+		//      DriveModule construction would look like...
+		//      new DriveModule()
+		//			.setOffsetVector(new XY(-1,1))
+		//			.setForceVector(new XY(1,1))
+		//			.addMotor(new Motor(new CANTalon(0)))
+		//
+        DriveTrainBuilder builder = new DriveTrainBuilder()
+	        .addDriveModule(new DriveModule(new XY(-1, 1),  new XY(1, 1),  
+	        		new Motor(new CANTalon(0)))) // front left
+	        .addDriveModule(new DriveModule(new XY(1, 1),   new XY(0, -1), 
+	        		new Motor(new CANTalon(1)))) // front right
+	        .addDriveModule(new DriveModule(new XY(-1, -1), new XY(0, -1), 
+	        		new Motor(new CANTalon(2)))) // back left
+	        .addDriveModule(new DriveModule(new XY(1, -1), new XY(0, -1), 
+	        		new Motor(new CANTalon(3)))) // back right
+	        .setDriveTrainType(DriveTrainType.MECANUM)
+	        .setInput(new ArcadeDriveInput(driveStick));
         try {
-            builder.build();
+            driveTrain = builder.build();
         } catch (InvalidDriveTrainException e) {
             Debug.msg("Status","Drive Train Builder FAILED");
         }

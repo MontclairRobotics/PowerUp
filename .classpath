@@ -9,5 +9,6 @@
 	<classpathentry kind="var" path="USERLIBS_DIR/CTRLib.jar"/>
 	<classpathentry kind="var" path="USERLIBS_DIR/navx_frc.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/Sprocket"/>
+	<classpathentry kind="var" path="USERLIBS_DIR/org.montclairrobotics.sprocket.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
