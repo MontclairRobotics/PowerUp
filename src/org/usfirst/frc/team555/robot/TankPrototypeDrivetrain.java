@@ -18,6 +18,7 @@ import org.montclairrobotics.sprocket.motors.Motor;
 import org.montclairrobotics.sprocket.states.State;
 import org.montclairrobotics.sprocket.utils.Debug;
 import org.montclairrobotics.sprocket.utils.PID;
+import org.usfirst.frc.team555.robot.HwCfg.CANChannel;
 
 import com.ctre.CANTalon;
 import com.kauailabs.navx.frc.AHRS;
@@ -33,10 +34,10 @@ public class TankPrototypeDrivetrain extends SprocketRobot {
 	ArcadeDriveInput input = new ArcadeDriveInput(driveStick);
 	
 	//drive train motors
-	CANTalon frontLeft     = new CANTalon(0);
-	CANTalon frontRight    = new CANTalon(1);
-	CANTalon backLeft      = new CANTalon(2);
-	CANTalon backRight     = new CANTalon(3);
+	CANTalon frontLeft     = HwCfg.BuildCANTalon(CANChannel.FRONTLEFT);
+	CANTalon frontRight    = HwCfg.BuildCANTalon(CANChannel.FRONTRIGHT);
+	CANTalon backLeft      = HwCfg.BuildCANTalon(CANChannel.BACKLEFT);
+	CANTalon backRight     = HwCfg.BuildCANTalon(CANChannel.BACKRIGHT);
 	
 	@Override
     public void robotInit() {
