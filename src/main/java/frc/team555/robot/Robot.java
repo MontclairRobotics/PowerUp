@@ -4,30 +4,24 @@ import com.ctre.CANTalon;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.RobotDrive;
+import edu.wpi.first.wpilibj.interfaces.Gyro;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.montclairrobotics.sprocket.utils.PID;
 
 public class Robot extends IterativeRobot {
 
-    CANTalon drivetrainFrontLeft;
-    CANTalon drivetrainFrontRight;
-    CANTalon drivetrainBackLeft;
-    CANTalon drivetrainBackRight;
+    CANTalon drivetrainFL;
+    CANTalon drivetrainFR;
+    CANTalon drivetrainBL;
+    CANTalon drivetrainBR;
 
+    Tank drivetrain;
     JoystickControls joystick;
-    RobotDrive drive;
 
     @Override
     public void robotInit() {
-        drivetrainFrontLeft = new CANTalon(0);
-        drivetrainFrontRight = new CANTalon(1);
-        drivetrainBackLeft = new CANTalon(2);
-        drivetrainBackRight = new CANTalon(3);
-
-        drivetrainFrontLeft.setSafetyEnabled(true);
-        drivetrainFrontRight.setSafetyEnabled(true);
-        drivetrainBackLeft.setSafetyEnabled(true);
-        drivetrainBackRight.setSafetyEnabled(true);
-
-        drive = new RobotDrive(drivetrainFrontLeft, drivetrainFrontRight, drivetrainBackLeft, drivetrainBackRight);
+        drivetrain = new Tank(drivetrainFL, drivetrainFR, drivetrainBL, drivetrainBR);
+        drivetrain.init(0,1,2,3);
     }
 
     @Override
@@ -35,12 +29,8 @@ public class Robot extends IterativeRobot {
     }
 
     @Override
-    public void robotPeriodic() {
-    }
-
-    @Override
     public void teleopPeriodic() {
-        drive.arcadeDrive(joystick.driveStick);
+        drivetrain.arcadeDrive(joystick.driveStick);
     }
 
 }
