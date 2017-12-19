@@ -12,7 +12,6 @@ public class JoystickControls {
 
     // Drive Controls
     Joystick driveStick = new Joystick(DRIVE_STICK_PORT);
-    ArcadeDriveInput driveStickInput = new ArcadeDriveInput(driveStick);
 
     // AUX Controls
     Joystick auxStick = new Joystick(AUX_STICK_PORT);
