@@ -1,6 +1,7 @@
 package frc.team555.robot;
 
 import com.ctre.CANTalon;
+import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SpeedController;
 
@@ -23,17 +24,17 @@ public class Tank {
         drivetrainFR = new CANTalon(frontRightDeviceNumber);
         drivetrainBL = new CANTalon(backLeftDeviceNumber);
         drivetrainBR = new CANTalon(backRightDeviceNumber);
-
-        drivetrainFL.setSafetyEnabled(true);
-        drivetrainFR.setSafetyEnabled(true);
-        drivetrainBL.setSafetyEnabled(true);
-        drivetrainBR.setSafetyEnabled(true);
     }
 
-    public void arcadeDrive(Joystick joystick){
-        double power = -joystick.getY();
-        double turn = joystick.getX();
+    public void arcadeDrive(Joystick joystick, boolean yInvert){
+        double power;
+        if(!yInvert){
+            power = -joystick.getY();
+        }else{
+            power = joystick.getY();
+        }
 
+        double turn = joystick.getX();
         double leftPower  = power + turn;
         double rightPower = power - turn;
 
@@ -41,5 +42,14 @@ public class Tank {
         drivetrainFR.set(rightPower);
         drivetrainBL.set(leftPower);
         drivetrainBR.set(rightPower);
+    }
+
+    private final double TICKS_PER_INCH = 0000/0000; //TODO: GET VALUE
+    public void autonomousDrive(double inch, double speed) {
+        //TODO: FINISH
+    }
+
+    public void autonomousTurn(double turn, double speed){
+        //TODO: Turning math
     }
 }

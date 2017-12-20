@@ -6,18 +6,26 @@ import org.montclairrobotics.sprocket.control.Button;
 
 public class JoystickControls {
 
-    // Control Variables
-    public static final int DRIVE_STICK_PORT = 0;
-    public static final int AUX_STICK_PORT = 1;
+    private int drivePort;
+    private int auxPort;
 
+    public JoystickControls(int driveStickPort, int auxStickPort){
+        this.drivePort = driveStickPort;
+        this.auxPort = auxStickPort;
+    }
     // Drive Controls
-    Joystick driveStick = new Joystick(DRIVE_STICK_PORT);
+    Joystick driveStick = new Joystick(drivePort);
 
     // AUX Controls
-    Joystick auxStick = new Joystick(AUX_STICK_PORT);
+    Joystick auxStick = new Joystick(auxPort);
 
-    public JoystickControls(){
+    public void buttonControls(){
         //Buttons
+
+        while(driveStick.getTrigger()){
+            // something
+        }
+
     }
 
 }

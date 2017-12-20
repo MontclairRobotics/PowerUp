@@ -2,10 +2,7 @@ package frc.team555.robot;
 
 import com.ctre.CANTalon;
 import edu.wpi.first.wpilibj.IterativeRobot;
-import edu.wpi.first.wpilibj.PowerDistributionPanel;
-import edu.wpi.first.wpilibj.RobotDrive;
-import edu.wpi.first.wpilibj.interfaces.Gyro;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.SPI;
 import org.montclairrobotics.sprocket.utils.PID;
 
 public class Robot extends IterativeRobot {
@@ -22,6 +19,8 @@ public class Robot extends IterativeRobot {
     public void robotInit() {
         drivetrain = new Tank(drivetrainFL, drivetrainFR, drivetrainBL, drivetrainBR);
         drivetrain.init(0,1,2,3);
+        joystick = new JoystickControls(0,1);
+
     }
 
     @Override
@@ -30,7 +29,8 @@ public class Robot extends IterativeRobot {
 
     @Override
     public void teleopPeriodic() {
-        drivetrain.arcadeDrive(joystick.driveStick);
+        drivetrain.arcadeDrive(joystick.driveStick,true);
+        joystick.buttonControls();
     }
 
 }
