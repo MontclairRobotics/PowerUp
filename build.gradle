@@ -6,7 +6,7 @@ plugins {
 }
 
 def TEAM = 555
-def ROBOT_CLASS = "frc.team555.robot.Robot" //TODO: Change to Steamworks for testing
+def ROBOT_CLASS = "frc.team555.robot.Steamworks" //TODO: Change to Steamworks for testing
 
 // Define my targets (RoboRIO) and artifacts (deployable files)
 // This is added by GradleRIO's backing project EmbeddedTools.

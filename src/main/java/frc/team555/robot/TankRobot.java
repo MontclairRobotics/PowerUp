@@ -1,43 +1,28 @@
 package frc.team555.robot;
 
 import com.ctre.CANTalon;
-import edu.wpi.first.wpilibj.*;
+import com.kauailabs.navx.frc.AHRS;
+import edu.wpi.first.wpilibj.IterativeRobot;
+import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.PowerDistributionPanel;
+import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.montclairrobotics.sprocket.SprocketRobot;
 import org.montclairrobotics.sprocket.control.Button;
 import org.montclairrobotics.sprocket.control.ButtonAction;
 import org.montclairrobotics.sprocket.control.JoystickButton;
-import org.montclairrobotics.sprocket.drive.DriveModule;
-import org.montclairrobotics.sprocket.drive.DriveTrainBuilder;
-import org.montclairrobotics.sprocket.drive.DriveTrainType;
-import org.montclairrobotics.sprocket.drive.InvalidDriveTrainException;
+import org.montclairrobotics.sprocket.control.SquaredDriveInput;
+import org.montclairrobotics.sprocket.drive.*;
 import org.montclairrobotics.sprocket.drive.steps.GyroCorrection;
 import org.montclairrobotics.sprocket.drive.utils.GyroLock;
+import org.montclairrobotics.sprocket.geometry.Degrees;
 import org.montclairrobotics.sprocket.geometry.XY;
 import org.montclairrobotics.sprocket.motors.Motor;
 import org.montclairrobotics.sprocket.utils.Debug;
 import org.montclairrobotics.sprocket.utils.PID;
-import org.opencv.core.Mat;
 import org.usfirst.frc.team555.robot.NavXRollInput;
 
-public class Steamworks  extends SprocketRobot{
-
-    public final int frontLeftDeviceNumber = 3;
-    public final int frontRightDeviceNumber = 1;
-    public final int backLeftDeviceNumber = 4;
-    public final int backRightDeviceNumber = 2;
-
-    public final int driveStickDeviceNumber = 0;
-    public final int auxStickDeviceNumber = 1;
-
-    public final int intakeButtonID = 1;
-
-    Motor intakeRight;
-    Motor intakeLeft;
-    DigitalInput openLeftSwitch;
-    DigitalInput closeLeftSwitch;
-    DigitalInput openRightSwitch;
-    DigitalInput closeRightSwitch;
+public class TankRobot extends SprocketRobot {
 
     CANTalon drivetrainFL;
     CANTalon drivetrainFR;
@@ -45,45 +30,52 @@ public class Steamworks  extends SprocketRobot{
     CANTalon drivetrainBR;
 
     PowerDistributionPanel pdp;
+
+    PID pid;
     NavXRollInput navX;
+
+    public final int frontLeftDeviceNumber  = 0; // Steamworks: 3
+    public final int frontRightDeviceNumber = 1; // Steamworks: 1
+    public final int backLeftDeviceNumber   = 2; // Steamworks: 4
+    public final int backRightDeviceNumber  = 3; // Steamworks: 2
+
+    public final int driveStickDeviceNumber = 0;
+    public final int auxStickDeviceNumber   = 1;
+
+    public final int buttonModule1 = 1;
+    public final int buttonModule2 = 2;
 
     @Override
     public void robotInit() {
+
         Joystick driveStick = new Joystick(driveStickDeviceNumber);
         Joystick auxStick = new Joystick(auxStickDeviceNumber);
         pdp = new PowerDistributionPanel();
+        pid = new PID();
 
-        //INTAKE
-        intakeRight = new Motor(new CANTalon(5));
-        intakeRight.setInverted(true);
-        intakeLeft = new Motor(new VictorSP(0));
-        intakeLeft.setInverted(true);
-        openLeftSwitch = new DigitalInput(1);
-        closeLeftSwitch = new DigitalInput(0);
-        openRightSwitch = new DigitalInput(6);
-        closeRightSwitch = new DigitalInput(7);
-
-        //DRIVETRAIN
-        drivetrainFL = new CANTalon(frontLeftDeviceNumber);
-        drivetrainFR = new CANTalon(frontRightDeviceNumber);
-        drivetrainBL = new CANTalon(backLeftDeviceNumber);
-        drivetrainBR = new CANTalon(backRightDeviceNumber);
-
+        // DRIVETRAIN
         navX = new NavXRollInput(SPI.Port.kMXP);
         PID gyroPID = new PID(0.18*13.75,0,.0003*13.75);
         gyroPID.setInput(navX);
         GyroCorrection gCorrect=new GyroCorrection(navX,gyroPID,20,0.3*20);
         GyroLock gLock = new GyroLock(gCorrect);
 
-        DriveModule dtLeft  = new DriveModule(new XY(-1,0), new XY(0,-1), new Motor(drivetrainFL), new Motor(drivetrainBL));
-        DriveModule dtRight = new DriveModule(new XY( 1,0), new XY(0, 1), new Motor(drivetrainFR), new Motor(drivetrainBR));
+
+        drivetrainFL = new CANTalon(frontLeftDeviceNumber);
+        drivetrainFR = new CANTalon(frontRightDeviceNumber);
+        drivetrainBL = new CANTalon(backLeftDeviceNumber);
+        drivetrainBR = new CANTalon(backRightDeviceNumber);
+
+        DriveModule dtLeft  = new DriveModule(new XY(-1,0), new XY(0,1), new Motor(drivetrainFL), new Motor(drivetrainBL));
+        DriveModule dtRight = new DriveModule(new XY( 1,0), new XY(0,1), new Motor(drivetrainFR), new Motor(drivetrainBR));
 
         DriveTrainBuilder dtBuilder = new DriveTrainBuilder();
         dtBuilder.addDriveModule(dtLeft);
         dtBuilder.addDriveModule(dtRight);
         dtBuilder.setDriveTrainType(DriveTrainType.TANK);
-        dtBuilder.setArcadeDriveInput(driveStick);
-        dtBuilder.addStep(gCorrect);
+        dtBuilder.setInput(new SquaredDriveInput(driveStick));
+
+
 
         try {
             dtBuilder.build();
@@ -91,26 +83,34 @@ public class Steamworks  extends SprocketRobot{
             e.printStackTrace();
         }
 
-
-
-        // INTAKE CONTROL
-        double intakePow=0.3;
-        Button intake = new JoystickButton(driveStick, intakeButtonID);
-        intake.setHeldAction(new ButtonAction() {
+        // Module 1
+        Button module1 = new JoystickButton(driveStick, buttonModule1);
+        module1.setHeldAction(new ButtonAction() {
             @Override
             public void onAction() {
-                if(openLeftSwitch.get()){intakeLeft.set(0);}else {intakeLeft.set(intakePow);}
-                if(!openRightSwitch.get()){intakeRight.set(0);}else {intakeRight.set(intakePow);}
             }
         });
 
-        intake.setOffAction(new ButtonAction() {
+        module1.setOffAction(new ButtonAction() {
             @Override
             public void onAction() {
-                if(closeLeftSwitch.get()){intakeLeft.set(0);}else {intakeLeft.set(-intakePow);}
-                if(!closeRightSwitch.get()){intakeRight.set(0);}else {intakeRight.set(-intakePow);}
             }
         });
+
+        //Module 2
+        Button module2 = new JoystickButton(driveStick, buttonModule2);
+        module2.setHeldAction(new ButtonAction() {
+            @Override
+            public void onAction() {
+
+            }
+        });
+        module1.setOffAction(new ButtonAction() {
+            @Override
+            public void onAction() {
+            }
+        });
+
     }
 
     @Override
