@@ -15,10 +15,7 @@ import org.montclairrobotics.sprocket.drive.steps.GyroCorrection;
 import org.montclairrobotics.sprocket.drive.utils.GyroLock;
 import org.montclairrobotics.sprocket.geometry.XY;
 import org.montclairrobotics.sprocket.motors.Motor;
-import org.montclairrobotics.sprocket.utils.Debug;
 import org.montclairrobotics.sprocket.utils.PID;
-import org.opencv.core.Mat;
-import org.usfirst.frc.team555.robot.NavXRollInput;
 
 public class Steamworks  extends SprocketRobot{
 
