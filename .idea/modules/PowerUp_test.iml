@@ -10,6 +10,15 @@
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="PowerUp_main" />
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../libs/Sprocket.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES />
+      </library>
+    </orderEntry>
     <orderEntry type="library" name="Gradle: edu.wpi.first.wpilibj:athena:2017.2.1" level="project" />
     <orderEntry type="library" name="Gradle: edu.wpi.first.wpilib.networktables.java:NetworkTables:arm:3.1.7" level="project" />
     <orderEntry type="library" name="Gradle: edu.wpi.first.wpilib.networktables.java:NetworkTables:desktop:3.1.7" level="project" />

@@ -1,11 +1,11 @@
 <component name="libraryTable">
   <library name="Sprocket">
     <CLASSES>
-      <root url="file://$USER_HOME$/Documents/Sprocket" />
+      <root url="file://$PROJECT_DIR$/../Sprocket" />
     </CLASSES>
     <JAVADOC />
     <SOURCES>
-      <root url="file://$USER_HOME$/Documents/Sprocket/src" />
+      <root url="file://$PROJECT_DIR$/../Sprocket/src" />
     </SOURCES>
   </library>
 </component>
