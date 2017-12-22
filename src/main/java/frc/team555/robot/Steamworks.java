@@ -7,6 +7,7 @@ import org.montclairrobotics.sprocket.SprocketRobot;
 import org.montclairrobotics.sprocket.control.Button;
 import org.montclairrobotics.sprocket.control.ButtonAction;
 import org.montclairrobotics.sprocket.control.JoystickButton;
+import org.montclairrobotics.sprocket.control.ToggleButton;
 import org.montclairrobotics.sprocket.drive.DriveModule;
 import org.montclairrobotics.sprocket.drive.DriveTrainBuilder;
 import org.montclairrobotics.sprocket.drive.DriveTrainType;
@@ -15,7 +16,11 @@ import org.montclairrobotics.sprocket.drive.steps.GyroCorrection;
 import org.montclairrobotics.sprocket.drive.utils.GyroLock;
 import org.montclairrobotics.sprocket.geometry.XY;
 import org.montclairrobotics.sprocket.motors.Motor;
+import org.montclairrobotics.sprocket.utils.Debug;
 import org.montclairrobotics.sprocket.utils.PID;
+import org.montclairrobotics.sprocket.utils.Togglable;
+import org.opencv.core.Mat;
+import frc.team555.robot.NavXRollInput;
 
 public class Steamworks  extends SprocketRobot{
 
@@ -28,6 +33,7 @@ public class Steamworks  extends SprocketRobot{
     public final int auxStickDeviceNumber = 1;
 
     public final int intakeButtonID = 1;
+    public final int gLockID = 3;
 
     Motor intakeRight;
     Motor intakeLeft;
@@ -43,6 +49,7 @@ public class Steamworks  extends SprocketRobot{
 
     PowerDistributionPanel pdp;
     NavXRollInput navX;
+    GyroLock gLock;
 
     @Override
     public void robotInit() {
@@ -70,7 +77,9 @@ public class Steamworks  extends SprocketRobot{
         PID gyroPID = new PID(0.18*13.75,0,.0003*13.75);
         gyroPID.setInput(navX);
         GyroCorrection gCorrect=new GyroCorrection(navX,gyroPID,20,0.3*20);
-        GyroLock gLock = new GyroLock(gCorrect);
+        gLock = new GyroLock(gCorrect);
+        new ToggleButton(driveStick, gLockID, gLock);
+
 
         DriveModule dtLeft  = new DriveModule(new XY(-1,0), new XY(0,-1), new Motor(drivetrainFL), new Motor(drivetrainBL));
         DriveModule dtRight = new DriveModule(new XY( 1,0), new XY(0, 1), new Motor(drivetrainFR), new Motor(drivetrainBR));
@@ -112,52 +121,9 @@ public class Steamworks  extends SprocketRobot{
 
     @Override
     public void update() {
-        checkCurrentDT();
+        gLock.update();
+
     }
 
-    private void checkCurrentDT(){
-        double tempLeftCurrentAvg = (pdp.getCurrent(drivetrainFL.getDeviceID()) + pdp.getCurrent(drivetrainBL.getDeviceID()))/2;
-
-        double tempRightCurrentAvg = (pdp.getCurrent(drivetrainFR.getDeviceID())+ pdp.getCurrent(drivetrainBR.getDeviceID()))/2;
-
-        double dtLeftCurrentStdDev  =  Math.sqrt((Math.pow(Math.abs(pdp.getCurrent(drivetrainFL.getDeviceID()) - tempLeftCurrentAvg),2) +
-                Math.pow(Math.abs(pdp.getCurrent(drivetrainBL.getDeviceID()) - tempLeftCurrentAvg),2))/2);
-
-        double dtRightCurrentStdDev  =  Math.sqrt((Math.pow(Math.abs(pdp.getCurrent(drivetrainFR.getDeviceID()) - tempRightCurrentAvg),2) +
-                Math.pow(Math.abs(pdp.getCurrent(drivetrainBR.getDeviceID()) - tempRightCurrentAvg),2))/2);
-
-        boolean checkFL;
-        if (Math.abs(pdp.getCurrent(drivetrainFL.getDeviceID()) - tempLeftCurrentAvg) < dtLeftCurrentStdDev){
-            checkFL = true;
-        }else{
-            checkFL = false;
-        }
-
-        boolean checkFR;
-        if (Math.abs(pdp.getCurrent(drivetrainFR.getDeviceID()) - tempRightCurrentAvg) < dtRightCurrentStdDev){
-            checkFR = true;
-        }else{
-            checkFR = false;
-        }
-
-        boolean checkBL;
-        if (Math.abs(pdp.getCurrent(drivetrainBL.getDeviceID()) - tempLeftCurrentAvg) < dtLeftCurrentStdDev){
-            checkBL = true;
-        }else{
-            checkBL = false;
-        }
-
-        boolean checkBR;
-        if (Math.abs(pdp.getCurrent(drivetrainBR.getDeviceID()) - tempRightCurrentAvg) < dtRightCurrentStdDev){
-            checkBR = true;
-        }else{
-            checkBR = false;
-        }
-
-        SmartDashboard.putBoolean("FL within STD Dev",checkFL);
-        SmartDashboard.putBoolean("FR within STD Dev",checkFR);
-        SmartDashboard.putBoolean("BL within STD Dev",checkBL);
-        SmartDashboard.putBoolean("BR within STD Dev",checkBR);
-    }
 
 }

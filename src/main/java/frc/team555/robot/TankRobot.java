@@ -20,6 +20,7 @@ import org.montclairrobotics.sprocket.geometry.XY;
 import org.montclairrobotics.sprocket.motors.Motor;
 import org.montclairrobotics.sprocket.utils.Debug;
 import org.montclairrobotics.sprocket.utils.PID;
+import frc.team555.robot.NavXRollInput;
 
 public class TankRobot extends SprocketRobot {
 
@@ -32,6 +33,7 @@ public class TankRobot extends SprocketRobot {
 
     PID pid;
     NavXRollInput navX;
+    GyroLock gLock;
 
     public final int frontLeftDeviceNumber  = 0; // Steamworks: 3
     public final int frontRightDeviceNumber = 1; // Steamworks: 1
@@ -57,7 +59,7 @@ public class TankRobot extends SprocketRobot {
         PID gyroPID = new PID(0.18*13.75,0,.0003*13.75);
         gyroPID.setInput(navX);
         GyroCorrection gCorrect=new GyroCorrection(navX,gyroPID,20,0.3*20);
-        GyroLock gLock = new GyroLock(gCorrect);
+        gLock = new GyroLock(gCorrect);
 
 
         drivetrainFL = new CANTalon(frontLeftDeviceNumber);
@@ -114,52 +116,7 @@ public class TankRobot extends SprocketRobot {
 
     @Override
     public void update() {
-        checkCurrentDT();
-    }
-
-    private void checkCurrentDT(){
-        double tempLeftCurrentAvg = (pdp.getCurrent(drivetrainFL.getDeviceID()) + pdp.getCurrent(drivetrainBL.getDeviceID()))/2;
-
-        double tempRightCurrentAvg = (pdp.getCurrent(drivetrainFR.getDeviceID())+ pdp.getCurrent(drivetrainBR.getDeviceID()))/2;
-
-        double dtLeftCurrentStdDev  =  Math.sqrt((Math.pow(Math.abs(pdp.getCurrent(drivetrainFL.getDeviceID()) - tempLeftCurrentAvg),2) +
-                Math.pow(Math.abs(pdp.getCurrent(drivetrainBL.getDeviceID()) - tempLeftCurrentAvg),2))/2);
-
-        double dtRightCurrentStdDev  =  Math.sqrt((Math.pow(Math.abs(pdp.getCurrent(drivetrainFR.getDeviceID()) - tempRightCurrentAvg),2) +
-                Math.pow(Math.abs(pdp.getCurrent(drivetrainBR.getDeviceID()) - tempRightCurrentAvg),2))/2);
-
-        boolean checkFL;
-        if (Math.abs(pdp.getCurrent(drivetrainFL.getDeviceID()) - tempLeftCurrentAvg) < dtLeftCurrentStdDev){
-            checkFL = true;
-        }else{
-            checkFL = false;
-        }
-
-        boolean checkFR;
-        if (Math.abs(pdp.getCurrent(drivetrainFR.getDeviceID()) - tempRightCurrentAvg) < dtRightCurrentStdDev){
-            checkFR = true;
-        }else{
-            checkFR = false;
-        }
-
-        boolean checkBL;
-        if (Math.abs(pdp.getCurrent(drivetrainBL.getDeviceID()) - tempLeftCurrentAvg) < dtLeftCurrentStdDev){
-            checkBL = true;
-        }else{
-            checkBL = false;
-        }
-
-        boolean checkBR;
-        if (Math.abs(pdp.getCurrent(drivetrainBR.getDeviceID()) - tempRightCurrentAvg) < dtRightCurrentStdDev){
-            checkBR = true;
-        }else{
-            checkBR = false;
-        }
-
-        SmartDashboard.putBoolean("FL within STD Dev",checkFL);
-        SmartDashboard.putBoolean("FR within STD Dev",checkFR);
-        SmartDashboard.putBoolean("BL within STD Dev",checkBL);
-        SmartDashboard.putBoolean("BR within STD Dev",checkBR);
+        gLock.update();
     }
 
 }
