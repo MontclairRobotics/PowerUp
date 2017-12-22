@@ -55,13 +55,12 @@ public class MecanumRobot extends SprocketRobot {
         DriveModule backL  = new DriveModule(new XY(-1,-1),new XY(-1,1),new Motor(drivetrainBL));
         DriveModule backR  = new DriveModule(new XY(1,-1),new XY(-1,1),new Motor(drivetrainBR));
 
-        dtBuilder.addDriveModule(frontL);
-        dtBuilder.addDriveModule(frontR);
-        dtBuilder.addDriveModule(backL);
-        dtBuilder.addDriveModule(backR);
-
-        dtBuilder.setDriveTrainType(DriveTrainType.MECANUM);
-        dtBuilder.setInput(new SquaredDriveInput(driveStick));
+        dtBuilder.addDriveModule(frontL)
+                .addDriveModule(frontR)
+                .addDriveModule(backL)
+                .addDriveModule(backR)
+                .setDriveTrainType(DriveTrainType.MECANUM)
+                .setInput(new SquaredDriveInput(driveStick));
 
         try {
             dtBuilder.build();
