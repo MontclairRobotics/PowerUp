@@ -41,7 +41,7 @@ Once you've finished, these should all appear in the run drop down menu on the t
 6. Click through the intro screen.
 7. For the project root directory, navigate to where you cloned the project. Then click Finish.
 
-Now your project should be set up. It's recommended you add some build tasks to Eclipse to make building easy:
+Now your project should be set up. It's recommended you add some build tasks to Eclipse to make building easy. (Eclipse saves build tasks between projects so you can skip these steps if you've done it before):
 
 8. From the menu bar, click Run > Run Configurations.
 
