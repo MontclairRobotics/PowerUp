@@ -6,7 +6,7 @@ plugins {
 }
 
 def TEAM = 555
-def ROBOT_CLASS = "frc.team555.robot.Steamworks" //TODO: Change to Steamworks for testing
+def ROBOT_CLASS = "frc.team555.robot.Robot"
 
 // Define my targets (RoboRIO) and artifacts (deployable files)
 // This is added by GradleRIO's backing project EmbeddedTools.
@@ -29,7 +29,7 @@ dependencies {
     compile wpilib()
     compile ctre()
     compile navx()
-    compile files("libs/Sprocket.jar")
+    compile fileTree(dir: "libs", include: ['*.jar'])
 }
 
 // Setting up my Jar File. In this case, adding all libraries into the main jar ('fat jar')
