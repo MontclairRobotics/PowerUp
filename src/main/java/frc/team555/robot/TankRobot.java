@@ -20,7 +20,6 @@ import org.montclairrobotics.sprocket.geometry.XY;
 import org.montclairrobotics.sprocket.motors.Motor;
 import org.montclairrobotics.sprocket.utils.Debug;
 import org.montclairrobotics.sprocket.utils.PID;
-import org.usfirst.frc.team555.robot.NavXRollInput;
 
 public class TankRobot extends SprocketRobot {
 
