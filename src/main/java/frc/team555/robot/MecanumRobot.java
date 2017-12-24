@@ -77,14 +77,15 @@ public class MecanumRobot extends SprocketRobot {
     }
 
     private void checkCurrentDT(){
-        double tempCurrentAvg = (hw.pdb.getCurrent(hw.pdbSlots.get(Devices.FrontLeftDriveMotor).get())+ hw.pdb.getCurrent(HardwareConfig.PDBChannel.FrontRight.getChannel())+
-                hw.pdb.getCurrent(HardwareConfig.PDBChannel.BackLeft.getChannel())+ hw.pdb.getCurrent(HardwareConfig.PDBChannel.BackRight.getChannel()))/4;
+
+        double tempCurrentAvg = (hw.pdb.getCurrent(Devices.FrontLeftDriveMotor)+ hw.pdb.getCurrent(Devices.FrontRightDriveMotor)+
+                hw.pdb.getCurrent(Devices.BackLeftDriveMotor)+ hw.pdb.getCurrent(Devices.BackRightDriveMotor))/4;
 
         double dtCurrentStdDev  =  Math.sqrt((
-                Math.pow(Math.abs(hw.pdb.getCurrent(HardwareConfig.PDBChannel.FrontLeft.getChannel()) - tempCurrentAvg),2) +
-                Math.pow(Math.abs(hw.pdb.getCurrent(HardwareConfig.PDBChannel.FrontRight.getChannel()) - tempCurrentAvg),2) +
-                Math.pow(Math.abs(hw.pdb.getCurrent(HardwareConfig.PDBChannel.BackLeft.getChannel()) - tempCurrentAvg),2) +
-                Math.pow(Math.abs(hw.pdb.getCurrent(HardwareConfig.PDBChannel.BackRight.getChannel()) - tempCurrentAvg),2) )/4.0f);
+                Math.pow(Math.abs(hw.pdb.getCurrent(Devices.FrontLeftDriveMotor) - tempCurrentAvg),2) +
+                Math.pow(Math.abs(hw.pdb.getCurrent(Devices.FrontRightDriveMotor) - tempCurrentAvg),2) +
+                Math.pow(Math.abs(hw.pdb.getCurrent(Devices.BackLeftDriveMotor) - tempCurrentAvg),2) +
+                Math.pow(Math.abs(hw.pdb.getCurrent(Devices.BackRightDriveMotor) - tempCurrentAvg),2) )/4.0f);
 
         if (Math.abs(hw.pdb.getCurrent(hw.drivetrainFL.getDeviceID()) - tempCurrentAvg) < dtCurrentStdDev){
             SmartDashboard.putBoolean("FL within STD Dev",true);
