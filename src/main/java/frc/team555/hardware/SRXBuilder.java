@@ -1,7 +1,5 @@
 package frc.team555.hardware;
 
-import frc.team555.hardware.HardwareConfigBase.*;
-
 public class SRXBuilder {
     private CANBus bus;
     public SRXBuilder(CANBus canBus) {

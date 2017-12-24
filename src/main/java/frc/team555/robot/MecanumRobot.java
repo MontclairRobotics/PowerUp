@@ -46,15 +46,14 @@ public class MecanumRobot extends SprocketRobot {
                 .setDriveTrainType(DriveTrainType.MECANUM);
                 // the following line is not hardware
                 //.setInput(new SquaredDriveInput(driveStick));
-        DriveTrain driveTrain;
+        DriveTrain driveTrain=null;
         try {
             driveTrain = dtBuilder.build();
-            driveTrain.setDefaultInput(new SquaredDriveInput(driveStick));
         } catch (InvalidDriveTrainException e) {
             e.printStackTrace();
         }
         // end of drivetrain hardware config
-
+        driveTrain.setDefaultInput(new SquaredDriveInput(driveStick));
 
         // Module 1
         Button module1 = new JoystickButton(driveStick, buttonModule1);

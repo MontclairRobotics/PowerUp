@@ -1,12 +1,11 @@
 package frc.team555.hardware;
 
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
-import frc.team555.hardware.HardwareConfigBase.*;
 
 public class PDB extends PowerDistributionPanel {
-    private HardwareConfigBase.PDBSlots pdbSlots;
+    private PDBSlots pdbSlots;
 
-    public PDB(HardwareConfigBase.PDBSlots pdbSlots) {
+    public PDB(PDBSlots pdbSlots) {
         this.pdbSlots = pdbSlots;
     }
 
