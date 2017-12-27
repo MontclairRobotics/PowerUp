@@ -10,9 +10,9 @@ public class HardwareConfig extends HardwareConfigBase {
 
     // Create list of devices so that multiple uses of any device will be standardized
     // For example, the FrontLeftDriveMotor is used in canBus, pdbSlots, and when creating the speed controller
-    // all of these are "immune" from spelling errors by using the enum.
+    // all of these are "immune" from spelling errors by using the enum instance.
     public enum Devices implements DeviceEnum {
-        FrontLeftDriveMotor, FrontRightDriveMotor, BackLeftDriveMotor,BackRightDriveMotor;
+        FrontLeftDriveMotor, FrontRightDriveMotor, BackLeftDriveMotor,BackRightDriveMotor
     }
 
     public HardwareConfig() {
