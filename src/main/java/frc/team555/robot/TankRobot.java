@@ -96,50 +96,47 @@ public class TankRobot extends SprocketRobot {
     public void update() {
         checkCurrentDT();
     }
-
+    
     private void checkCurrentDT(){
-        double tempLeftCurrentAvg = (hw.pdb.getCurrent(hw.drivetrainFL.getDeviceID()) + hw.pdb.getCurrent(hw.drivetrainBL.getDeviceID()))/2;
-
-        double tempRightCurrentAvg = (hw.pdb.getCurrent(hw.drivetrainFR.getDeviceID())+ hw.pdb.getCurrent(hw.drivetrainBR.getDeviceID()))/2;
-
-        double dtLeftCurrentStdDev  =  Math.sqrt((Math.pow(Math.abs(hw.pdb.getCurrent(hw.drivetrainFL.getDeviceID()) - tempLeftCurrentAvg),2) +
-                Math.pow(Math.abs(hw.pdb.getCurrent(hw.drivetrainBL.getDeviceID()) - tempLeftCurrentAvg),2))/2);
-
-        double dtRightCurrentStdDev  =  Math.sqrt((Math.pow(Math.abs(hw.pdb.getCurrent(hw.drivetrainFR.getDeviceID()) - tempRightCurrentAvg),2) +
-                Math.pow(Math.abs(hw.pdb.getCurrent(hw.drivetrainBR.getDeviceID()) - tempRightCurrentAvg),2))/2);
-
-        boolean checkFL;
-        if (Math.abs(hw.pdb.getCurrent(hw.drivetrainFL.getDeviceID()) - tempLeftCurrentAvg) < dtLeftCurrentStdDev){
-            checkFL = true;
-        }else{
-            checkFL = false;
-        }
-
-        boolean checkFR;
-        if (Math.abs(hw.pdb.getCurrent(hw.drivetrainFR.getDeviceID()) - tempRightCurrentAvg) < dtRightCurrentStdDev){
-            checkFR = true;
-        }else{
-            checkFR = false;
-        }
-
-        boolean checkBL;
-        if (Math.abs(hw.pdb.getCurrent(hw.drivetrainBL.getDeviceID()) - tempLeftCurrentAvg) < dtLeftCurrentStdDev){
-            checkBL = true;
-        }else{
-            checkBL = false;
-        }
-
-        boolean checkBR;
-        if (Math.abs(hw.pdb.getCurrent(hw.drivetrainBR.getDeviceID()) - tempRightCurrentAvg) < dtRightCurrentStdDev){
-            checkBR = true;
-        }else{
-            checkBR = false;
-        }
-
+        // Calculate Averages and standard deviations for drive train current draws
+        double tempLeftCurrentAvg = avg(hw.pdb.getCurrent(hw.drivetrainFL.getDeviceID()) + hw.pdb.getCurrent(hw.drivetrainBL.getDeviceID()));
+        double tempRightCurrentAvg = avg(hw.pdb.getCurrent(hw.drivetrainFR.getDeviceID())+ hw.pdb.getCurrent(hw.drivetrainBR.getDeviceID()));
+        double dtLeftCurrentStdDev  = stdDiv(hw.pdb.getCurrent(hw.drivetrainFR.getDeviceID()), hw.pdb.getCurrent(hw.drivetrainBR.getDeviceID()));
+        double dtRightCurrentStdDev  =  stdDiv(hw.pdb.getCurrent(hw.drivetrainFL.getDeviceID()), hw.pdb.getCurrent(hw.drivetrainBL.getDeviceID()));
+        
+        // Check if the motor current draw is withing 1 standard deviation
+        boolean checkFL = check(hw.pdb.getCurrent(hw.drivetrainFL.getDeviceID()), tempLeftCurrentAvg,  dtLeftCurrentStdDev);
+        boolean checkFR = check(hw.pdb.getCurrent(hw.drivetrainFR.getDeviceID()), tempRightCurrentAvg, dtRightCurrentStdDev);
+        boolean checkBL = check(hw.pdb.getCurrent(hw.drivetrainBL.getDeviceID()), tempLeftCurrentAvg, dtLeftCurrentStdDev);
+        boolean checkBR = check(hw.pdb.getCurrent(hw.drivetrainBR.getDeviceID()), tempLeftCurrentAvg, dtRightCurrentStdDev);
+        
+        // Debug motor checks
         SmartDashboard.putBoolean("FL within STD Dev",checkFL);
         SmartDashboard.putBoolean("FR within STD Dev",checkFR);
         SmartDashboard.putBoolean("BL within STD Dev",checkBL);
         SmartDashboard.putBoolean("BR within STD Dev",checkBR);
+    }
+    
+    private double stdDiv(double ... values){
+        double avg = avg(values);
+        double total = 0;
+        for(double value : values){
+            total += Math.pow(value - avg, 2);
+        }
+        return Math.sqrt(total / values.length);
+        
+    }
+    
+    private double avg(double ... values){
+        double total = 0;
+        for(double value : values){
+            total += value;
+        }
+        return total / values.length;
+    }
+    
+    private boolean check(double current, double avg, double stdDiv){
+        return Math.abs(current - avg) < stdDiv;
     }
 
 }
