@@ -145,16 +145,11 @@ public class Steamworks  extends SprocketRobot{
     }
 
     private void checkCurrentDT(){
-        double tempLeftCurrentAvg = (pdp.getCurrent(drivetrainFL.getDeviceID()) + pdp.getCurrent(drivetrainBL.getDeviceID()))/2;
-
-        double tempRightCurrentAvg = (pdp.getCurrent(drivetrainFR.getDeviceID())+ pdp.getCurrent(drivetrainBR.getDeviceID()))/2;
-
-        double dtLeftCurrentStdDev  =  Math.sqrt((Math.pow(Math.abs(pdp.getCurrent(drivetrainFL.getDeviceID()) - tempLeftCurrentAvg),2) +
-                Math.pow(Math.abs(pdp.getCurrent(drivetrainBL.getDeviceID()) - tempLeftCurrentAvg),2))/2);
-
-        double dtRightCurrentStdDev  =  Math.sqrt((Math.pow(Math.abs(pdp.getCurrent(drivetrainFR.getDeviceID()) - tempRightCurrentAvg),2) +
-                Math.pow(Math.abs(pdp.getCurrent(drivetrainBR.getDeviceID()) - tempRightCurrentAvg),2))/2);
-
+        double tempLeftCurrentAvg = avg(pdp.getCurrent(drivetrainFL.getDeviceID()) + pdp.getCurrent(drivetrainBL.getDeviceID()));
+        double tempRightCurrentAvg = avg(pdp.getCurrent(drivetrainFR.getDeviceID())+ pdp.getCurrent(drivetrainBR.getDeviceID()));
+        double dtLeftCurrentStdDev  = stdDiv(pdp.getCurrent(drivetrainFR.getDeviceID()), pdp.getCurrent(drivetrainBR.getDeviceID()));
+        double dtRightCurrentStdDev  =  stdDiv(pdp.getCurrent(drivetrainFL.getDeviceID()), pdp.getCurrent(drivetrainBL.getDeviceID()));
+        
         boolean checkFL;
         if (Math.abs(pdp.getCurrent(drivetrainFL.getDeviceID()) - tempLeftCurrentAvg) < dtLeftCurrentStdDev){
             checkFL = true;
@@ -187,6 +182,24 @@ public class Steamworks  extends SprocketRobot{
         SmartDashboard.putBoolean("FR within STD Dev",checkFR);
         SmartDashboard.putBoolean("BL within STD Dev",checkBL);
         SmartDashboard.putBoolean("BR within STD Dev",checkBR);
+    }
+    
+    private double stdDiv(double ... values){
+        double avg = avg(values);
+        double total = 0;
+        for(double value : values){
+            total += Math.pow(value - avg, 2);
+        }
+        return Math.sqrt(total / values.length);
+        
+    }
+    
+    private double avg(double ... values){
+        double total = 0;
+        for(double value : values){
+            total += value;
+        }
+        return total / values.length;
     }
 
 }
