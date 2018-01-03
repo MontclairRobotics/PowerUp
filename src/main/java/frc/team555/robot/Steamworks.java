@@ -145,39 +145,19 @@ public class Steamworks  extends SprocketRobot{
     }
 
     private void checkCurrentDT(){
+        // Calculate Averages and standard deviations for drive train current draws
         double tempLeftCurrentAvg = avg(pdp.getCurrent(drivetrainFL.getDeviceID()) + pdp.getCurrent(drivetrainBL.getDeviceID()));
         double tempRightCurrentAvg = avg(pdp.getCurrent(drivetrainFR.getDeviceID())+ pdp.getCurrent(drivetrainBR.getDeviceID()));
         double dtLeftCurrentStdDev  = stdDiv(pdp.getCurrent(drivetrainFR.getDeviceID()), pdp.getCurrent(drivetrainBR.getDeviceID()));
         double dtRightCurrentStdDev  =  stdDiv(pdp.getCurrent(drivetrainFL.getDeviceID()), pdp.getCurrent(drivetrainBL.getDeviceID()));
         
-        boolean checkFL;
-        if (Math.abs(pdp.getCurrent(drivetrainFL.getDeviceID()) - tempLeftCurrentAvg) < dtLeftCurrentStdDev){
-            checkFL = true;
-        }else{
-            checkFL = false;
-        }
-
-        boolean checkFR;
-        if (Math.abs(pdp.getCurrent(drivetrainFR.getDeviceID()) - tempRightCurrentAvg) < dtRightCurrentStdDev){
-            checkFR = true;
-        }else{
-            checkFR = false;
-        }
-
-        boolean checkBL;
-        if (Math.abs(pdp.getCurrent(drivetrainBL.getDeviceID()) - tempLeftCurrentAvg) < dtLeftCurrentStdDev){
-            checkBL = true;
-        }else{
-            checkBL = false;
-        }
-
-        boolean checkBR;
-        if (Math.abs(pdp.getCurrent(drivetrainBR.getDeviceID()) - tempRightCurrentAvg) < dtRightCurrentStdDev){
-            checkBR = true;
-        }else{
-            checkBR = false;
-        }
-
+        // Check if the motor current draw is withing 1 standard deviation
+        boolean checkFL = check(pdp.getCurrent(drivetrainFL.getDeviceID()), tempLeftCurrentAvg,  dtLeftCurrentStdDev);
+        boolean checkFR = check(pdp.getCurrent(drivetrainFR.getDeviceID()), tempRightCurrentAvg, dtRightCurrentStdDev);
+        boolean checkBL = check(pdp.getCurrent(drivetrainBL.getDeviceID()), tempLeftCurrentAvg, dtLeftCurrentStdDev);
+        boolean checkBR = check(pdp.getCurrent(drivetrainBR.getDeviceID()), tempLeftCurrentAvg, dtRightCurrentStdDev);
+        
+        // Debug motor checks
         SmartDashboard.putBoolean("FL within STD Dev",checkFL);
         SmartDashboard.putBoolean("FR within STD Dev",checkFR);
         SmartDashboard.putBoolean("BL within STD Dev",checkBL);
@@ -200,6 +180,10 @@ public class Steamworks  extends SprocketRobot{
             total += value;
         }
         return total / values.length;
+    }
+    
+    private boolean check(double current, double avg, double stdDiv){
+        return Math.abs(current - avg) < stdDiv;
     }
 
 }
