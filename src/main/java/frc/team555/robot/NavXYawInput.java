@@ -7,9 +7,9 @@ import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.SPI.Port;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
-public class NavXRollInput extends AHRS implements Input<Double>{
+public class NavXYawInput extends AHRS implements Input<Double>{
 
-    public NavXRollInput(Port id) {
+    public NavXYawInput(Port id) {
         super(id);
     }
 
