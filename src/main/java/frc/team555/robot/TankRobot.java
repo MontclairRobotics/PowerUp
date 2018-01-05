@@ -1,6 +1,6 @@
 package frc.team555.robot;
 
-import com.ctre.CANTalon;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
@@ -23,10 +23,10 @@ import org.montclairrobotics.sprocket.utils.PID;
 
 public class TankRobot extends SprocketRobot {
 
-    CANTalon drivetrainFL;
-    CANTalon drivetrainFR;
-    CANTalon drivetrainBL;
-    CANTalon drivetrainBR;
+    WPI_TalonSRX drivetrainFL;
+    WPI_TalonSRX drivetrainFR;
+    WPI_TalonSRX drivetrainBL;
+    WPI_TalonSRX drivetrainBR;
 
     PowerDistributionPanel pdp;
 
@@ -60,10 +60,10 @@ public class TankRobot extends SprocketRobot {
         GyroLock gLock = new GyroLock(gCorrect);
 
 
-        drivetrainFL = new CANTalon(frontLeftDeviceNumber);
-        drivetrainFR = new CANTalon(frontRightDeviceNumber);
-        drivetrainBL = new CANTalon(backLeftDeviceNumber);
-        drivetrainBR = new CANTalon(backRightDeviceNumber);
+        drivetrainFL = new WPI_TalonSRX(frontLeftDeviceNumber);
+        drivetrainFR = new WPI_TalonSRX(frontRightDeviceNumber);
+        drivetrainBL = new WPI_TalonSRX(backLeftDeviceNumber);
+        drivetrainBR = new WPI_TalonSRX(backRightDeviceNumber);
 
         DriveModule dtLeft  = new DriveModule(new XY(-1,0), new XY(0,1), new Motor(drivetrainFL), new Motor(drivetrainBL));
         DriveModule dtRight = new DriveModule(new XY( 1,0), new XY(0,1), new Motor(drivetrainFR), new Motor(drivetrainBR));

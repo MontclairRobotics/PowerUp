@@ -1,6 +1,6 @@
 package frc.team555.robot;
 
-import com.ctre.CANTalon;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.montclairrobotics.sprocket.SprocketRobot;
@@ -17,7 +17,7 @@ import org.montclairrobotics.sprocket.geometry.XY;
 import org.montclairrobotics.sprocket.motors.Motor;
 import org.montclairrobotics.sprocket.utils.PID;
 
-public class Steamworks  extends SprocketRobot{
+public class Steamworks  extends SprocketRobot {
 
     public final int frontLeftDeviceNumber = 3;
     public final int frontRightDeviceNumber = 1;
@@ -36,10 +36,10 @@ public class Steamworks  extends SprocketRobot{
     DigitalInput openRightSwitch;
     DigitalInput closeRightSwitch;
 
-    CANTalon drivetrainFL;
-    CANTalon drivetrainFR;
-    CANTalon drivetrainBL;
-    CANTalon drivetrainBR;
+    WPI_TalonSRX drivetrainFL;
+    WPI_TalonSRX drivetrainFR;
+    WPI_TalonSRX drivetrainBL;
+    WPI_TalonSRX drivetrainBR;
 
     PowerDistributionPanel pdp;
     NavXRollInput navX;
@@ -51,7 +51,7 @@ public class Steamworks  extends SprocketRobot{
         pdp = new PowerDistributionPanel();
 
         //INTAKE
-        intakeRight = new Motor(new CANTalon(5));
+        intakeRight = new Motor(new WPI_TalonSRX(5));
         intakeRight.setInverted(true);
         intakeLeft = new Motor(new VictorSP(0));
         intakeLeft.setInverted(true);
@@ -61,10 +61,10 @@ public class Steamworks  extends SprocketRobot{
         closeRightSwitch = new DigitalInput(7);
 
         //DRIVETRAIN
-        drivetrainFL = new CANTalon(frontLeftDeviceNumber);
-        drivetrainFR = new CANTalon(frontRightDeviceNumber);
-        drivetrainBL = new CANTalon(backLeftDeviceNumber);
-        drivetrainBR = new CANTalon(backRightDeviceNumber);
+        drivetrainFL = new WPI_TalonSRX(frontLeftDeviceNumber);
+        drivetrainFR = new WPI_TalonSRX(frontRightDeviceNumber);
+        drivetrainBL = new WPI_TalonSRX(backLeftDeviceNumber);
+        drivetrainBR = new WPI_TalonSRX(backRightDeviceNumber);
 
         navX = new NavXRollInput(SPI.Port.kMXP);
         PID gyroPID = new PID(0.18*13.75,0,.0003*13.75);
