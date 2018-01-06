@@ -7,7 +7,7 @@
 3. [GradleRIO command reference](#gradlerio-command-reference)
 
 ## IntelliJ set up
-1. Clone the project.
+1. Make sure IntelliJ is closed if it's open, then clone the project.
 2. Double click `setup_intellij.bat`. This will generate files all the IntelliJ specific files for the project. Alternatively, you can run `./gradlew idea` in the project directory on either Powershell or a Linux shell.
 3. Double click the `PowerUp.ipr` file which was just generated. IntelliJ should open the project.
 4. Once IntelliJ is opened, a tooltip should open in the bottom right which says `Unlinked gradle project?`. Click `Import gradle project`.
@@ -33,7 +33,7 @@ That's all you need to add a build task. You should repeat steps 8-11 for the fo
 Once you've finished, these should all appear in the run drop down menu on the toolbar.
 
 ## Eclipse set up
-1. Clone the project. This does not have to be in your Eclipse workspace.
+1. Make sure Eclipse is closed if it's not already, then clone the project. This does not have to be in your Eclipse workspace.
 2. Double click `setup_eclipse.bat`. This will generate files all the Eclipse specific files for the project. Alternatively, you can run `./gradlew eclipse` in the project directory on either Powershell or a Linux shell.
 3. Open Eclipse.
 4. From the menu bar, click File > Import.
