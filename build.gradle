@@ -2,11 +2,11 @@ plugins {
     id "java"
     id "eclipse"
     id "idea"
-    id "jaci.openrio.gradle.GradleRIO" version "2017.11.27"
+    id "jaci.openrio.gradle.GradleRIO" version "2018.01.06"
 }
 
 def TEAM = 555
-def ROBOT_CLASS = "frc.team555.robot.Steamworks" //TODO: Change to Steamworks for testing
+def ROBOT_CLASS = "frc.team555.robot.TankRobot"
 
 // Define my targets (RoboRIO) and artifacts (deployable files)
 // This is added by GradleRIO's backing project EmbeddedTools.
@@ -23,13 +23,32 @@ deploy {
     }
 }
 
+/*wpi {
+//From: https://github.com/Open-RIO/GradleRIO/blob/master/src/main/groovy/jaci/openrio/gradle/wpi/WPIExtension.groovy
+//By default, GradleRIO uses known stable versions. This shouldn't change without explicitly updating GradleRIO, but
+//uncommenting this block will pin the libraries to specific versions. These are known stable for 2017.
+    wpilibVersion = '2017.2.1'
+    ntcoreVersion = '3.1.7'
+    opencvVersion = '3.1.0'
+    cscoreVersion = '1.0.1'
+    wpiutilVersion = '1.0.2'
+
+    ctreVersion = '4.4.1.14'
+    navxVersion = '3.0.323'
+
+    smartDashboardVersion = '2.0.4'
+    javaInstallerVersion = '2.0.3'
+
+    toolchainVersion = '2017-4.9.3'
+}*/
+
 // Defining my dependencies. In this case, WPILib (+ friends), CTRE Toolsuite (Talon SRX)
 // and NavX.
 dependencies {
     compile wpilib()
     compile ctre()
     compile navx()
-    compile files("libs/Sprocket.jar")
+    compile fileTree(dir: "libs", include: ['*.jar'])
 }
 
 // Setting up my Jar File. In this case, adding all libraries into the main jar ('fat jar')
@@ -41,5 +60,5 @@ jar {
 }
 
 task wrapper(type: Wrapper) {
-    gradleVersion = '4.2.1'
+    gradleVersion = '4.4'
 }

@@ -1,4 +1,4 @@
-package org.usfirst.frc.team555.robot;
+package frc.team555.robot;
 
 import org.montclairrobotics.sprocket.utils.Input;
 
