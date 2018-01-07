@@ -21,7 +21,7 @@ import org.montclairrobotics.sprocket.utils.PID;
 public class MecanumRobot extends SprocketRobot {
 
     WPI_TalonSRX drivetrainFL;
-    WPI_TalonSRX drivetrainFR
+    WPI_TalonSRX drivetrainFR;
     WPI_TalonSRX drivetrainBL;
     WPI_TalonSRX drivetrainBR;
     PowerDistributionPanel pdp;
