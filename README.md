@@ -1,6 +1,8 @@
 # PowerUp [![Build Status](https://travis-ci.org/MontclairRobotics/PowerUp.svg?branch=master)](https://travis-ci.org/MontclairRobotics/PowerUp)
 2018 FRC PowerUp Code
 
+Jenkins test 8
+
 ## Table of Contents
 1. [IntelliJ set up](#intellij-set-up)
 2. [Eclipse set up](#eclipse-set-up)
