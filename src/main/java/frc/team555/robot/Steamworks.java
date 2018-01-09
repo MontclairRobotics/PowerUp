@@ -1,6 +1,6 @@
 package frc.team555.robot;
 
-import com.ctre.CANTalon;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.montclairrobotics.sprocket.SprocketRobot;
@@ -20,7 +20,6 @@ import org.montclairrobotics.sprocket.utils.Debug;
 import org.montclairrobotics.sprocket.utils.PID;
 import org.montclairrobotics.sprocket.utils.Togglable;
 import org.opencv.core.Mat;
-
 
 
 public class Steamworks  extends SprocketRobot{
@@ -73,11 +72,10 @@ public class Steamworks  extends SprocketRobot{
     Motor climbLeft;
     Motor climbRight;
 
-    // Drive Train Motors
-    CANTalon drivetrainFL;
-    CANTalon drivetrainFR;
-    CANTalon drivetrainBL;
-    CANTalon drivetrainBR;
+    WPI_TalonSRX drivetrainFL;
+    WPI_TalonSRX drivetrainFR;
+    WPI_TalonSRX drivetrainBL;
+    WPI_TalonSRX drivetrainBR;
 
 
     // Control Devices
@@ -90,16 +88,29 @@ public class Steamworks  extends SprocketRobot{
         Joystick driveStick = new Joystick(driveStickDeviceNumber);
         Joystick auxStick = new Joystick(auxStickDeviceNumber);
         pdp = new PowerDistributionPanel();
-        
-        // intake motors
-        intakeRight = new Motor(new CANTalon(intakeRightID));
-        intakeLeft = new Motor(new VictorSP(intakeLeftID));
-        intakeLeft.setInverted(true);
+
+
+        //INTAKE
+        intakeRight = new Motor(new WPI_TalonSRX(5));
         intakeRight.setInverted(true);
+        intakeLeft = new Motor(new VictorSP(0));
+        intakeLeft.setInverted(true);
+        openLeftSwitch = new DigitalInput(1);
+        closeLeftSwitch = new DigitalInput(0);
+        openRightSwitch = new DigitalInput(6);
+        closeRightSwitch = new DigitalInput(7);
+
+        //DRIVETRAIN
+        drivetrainFL = new WPI_TalonSRX(frontLeftID);
+        drivetrainFR = new WPI_TalonSRX(frontRightID);
+        drivetrainBL = new WPI_TalonSRX(backLeftID);
+        drivetrainBR = new WPI_TalonSRX(backRightID);
+
+
 
         // climb motors
-        climbLeft  = new Motor(new CANTalon(climbLeftID));
-        climbRight = new Motor(new CANTalon(climbRightID));
+        climbLeft  = new Motor(new WPI_TalonSRX(climbLeftID));
+        climbRight = new Motor(new WPI_TalonSRX(climbRightID));
         climbLeft.setInverted(true);
         climbRight.setInverted(true);
         
@@ -110,10 +121,10 @@ public class Steamworks  extends SprocketRobot{
         closeRightSwitch = new DigitalInput(closeRightID);
     
         // ========= DRIVETRAIN ========= //
-        drivetrainFL = new CANTalon(frontLeftID);
-        drivetrainFR = new CANTalon(frontRightID);
-        drivetrainBL = new CANTalon(backLeftID);
-        drivetrainBR = new CANTalon(backRightID);
+        drivetrainFL = new WPI_TalonSRX(frontLeftID);
+        drivetrainFR = new WPI_TalonSRX(frontRightID);
+        drivetrainBL = new WPI_TalonSRX(backLeftID);
+        drivetrainBR = new WPI_TalonSRX(backRightID);
         
 
 

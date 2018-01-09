@@ -5,7 +5,6 @@ import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.IterativeRobot;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
-import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.montclairrobotics.sprocket.SprocketRobot;
 import org.montclairrobotics.sprocket.control.Button;
@@ -13,27 +12,19 @@ import org.montclairrobotics.sprocket.control.ButtonAction;
 import org.montclairrobotics.sprocket.control.JoystickButton;
 import org.montclairrobotics.sprocket.control.SquaredDriveInput;
 import org.montclairrobotics.sprocket.drive.*;
-import org.montclairrobotics.sprocket.drive.steps.GyroCorrection;
-import org.montclairrobotics.sprocket.drive.utils.GyroLock;
-import org.montclairrobotics.sprocket.geometry.Degrees;
 import org.montclairrobotics.sprocket.geometry.XY;
 import org.montclairrobotics.sprocket.motors.Motor;
 import org.montclairrobotics.sprocket.utils.Debug;
 import org.montclairrobotics.sprocket.utils.PID;
-import frc.team555.robot.NavXRollInput;
 
-public class TankRobot extends SprocketRobot {
+//Status: Needs Testing
+public class MecanumRobot extends SprocketRobot {
 
     WPI_TalonSRX drivetrainFL;
     WPI_TalonSRX drivetrainFR;
     WPI_TalonSRX drivetrainBL;
     WPI_TalonSRX drivetrainBR;
-
     PowerDistributionPanel pdp;
-
-    PID pid;
-    NavXRollInput navX;
-    GyroLock gLock;
 
     public final int frontLeftDeviceNumber  = 0; // Steamworks: 3
     public final int frontRightDeviceNumber = 1; // Steamworks: 1
@@ -44,7 +35,6 @@ public class TankRobot extends SprocketRobot {
     public final int auxStickDeviceNumber   = 1;
 
     public final int buttonModule1 = 1;
-    public final int buttonModule2 = 2;
 
     @Override
     public void robotInit() {
@@ -52,31 +42,25 @@ public class TankRobot extends SprocketRobot {
         Joystick driveStick = new Joystick(driveStickDeviceNumber);
         Joystick auxStick = new Joystick(auxStickDeviceNumber);
         pdp = new PowerDistributionPanel();
-        pid = new PID();
 
         // DRIVETRAIN
-        navX = new NavXRollInput(SPI.Port.kMXP);
-        PID gyroPID = new PID(0.18*13.75,0,.0003*13.75);
-        gyroPID.setInput(navX);
-        GyroCorrection gCorrect=new GyroCorrection(navX,gyroPID,20,0.3*20);
-        gLock = new GyroLock(gCorrect);
-
-
         drivetrainFL = new WPI_TalonSRX(frontLeftDeviceNumber);
         drivetrainFR = new WPI_TalonSRX(frontRightDeviceNumber);
         drivetrainBL = new WPI_TalonSRX(backLeftDeviceNumber);
         drivetrainBR = new WPI_TalonSRX(backRightDeviceNumber);
 
-        DriveModule dtLeft  = new DriveModule(new XY(-1,0), new XY(0,1), new Motor(drivetrainFL), new Motor(drivetrainBL));
-        DriveModule dtRight = new DriveModule(new XY( 1,0), new XY(0,1), new Motor(drivetrainFR), new Motor(drivetrainBR));
-
         DriveTrainBuilder dtBuilder = new DriveTrainBuilder();
-        dtBuilder.addDriveModule(dtLeft);
-        dtBuilder.addDriveModule(dtRight);
-        dtBuilder.setDriveTrainType(DriveTrainType.TANK);
-        dtBuilder.setInput(new SquaredDriveInput(driveStick));
+        DriveModule frontL = new DriveModule(new XY(-1,1),new XY(-1,1),new Motor(drivetrainFL));
+        DriveModule frontR = new DriveModule(new XY(1,1),new XY(-1,1),new Motor(drivetrainFR));
+        DriveModule backL  = new DriveModule(new XY(-1,-1),new XY(-1,1),new Motor(drivetrainBL));
+        DriveModule backR  = new DriveModule(new XY(1,-1),new XY(-1,1),new Motor(drivetrainBR));
 
-
+        dtBuilder.addDriveModule(frontL)
+                .addDriveModule(frontR)
+                .addDriveModule(backL)
+                .addDriveModule(backR)
+                .setDriveTrainType(DriveTrainType.MECANUM)
+                .setInput(new SquaredDriveInput(driveStick));
 
         try {
             dtBuilder.build();
@@ -98,25 +82,47 @@ public class TankRobot extends SprocketRobot {
             }
         });
 
-        //Module 2
-        Button module2 = new JoystickButton(driveStick, buttonModule2);
-        module2.setHeldAction(new ButtonAction() {
-            @Override
-            public void onAction() {
-
-            }
-        });
-        module1.setOffAction(new ButtonAction() {
-            @Override
-            public void onAction() {
-            }
-        });
 
     }
 
     @Override
     public void update() {
-        gLock.update();
+        checkCurrentDT();
+    }
+
+    private void checkCurrentDT(){
+        double tempCurrentAvg;
+        tempCurrentAvg = (pdp.getCurrent(drivetrainFL.getDeviceID())+ pdp.getCurrent(drivetrainFR.getDeviceID())+
+                pdp.getCurrent(drivetrainBL.getDeviceID())+ pdp.getCurrent(drivetrainBR.getDeviceID()))/4;
+
+        double dtCurrentStdDev  =  Math.sqrt((Math.pow(Math.abs(pdp.getCurrent(drivetrainFL.getDeviceID()) - tempCurrentAvg),2) +
+                Math.pow(Math.abs(pdp.getCurrent(drivetrainFR.getDeviceID()) - tempCurrentAvg),2) +
+                Math.pow(Math.abs(pdp.getCurrent(drivetrainBL.getDeviceID()) - tempCurrentAvg),2) +
+                Math.pow(Math.abs(pdp.getCurrent(drivetrainBR.getDeviceID()) - tempCurrentAvg),2))/4);
+
+        if (Math.abs(pdp.getCurrent(drivetrainFL.getDeviceID()) - tempCurrentAvg) < dtCurrentStdDev){
+            SmartDashboard.putBoolean("FL within STD Dev",true);
+        }else{
+            SmartDashboard.putBoolean("FL within STD Dev",false);
+        }
+
+        if (Math.abs(pdp.getCurrent(drivetrainFR.getDeviceID()) - tempCurrentAvg) < dtCurrentStdDev){
+            SmartDashboard.putBoolean("FR within STD Dev",true);
+        }else{
+            SmartDashboard.putBoolean("FR within STD Dev",false);
+        }
+
+        if (Math.abs(pdp.getCurrent(drivetrainBL.getDeviceID()) - tempCurrentAvg) < dtCurrentStdDev){
+            SmartDashboard.putBoolean("BL within STD Dev",true);
+        }else{
+            SmartDashboard.putBoolean("BL within STD Dev",false);
+        }
+
+        if (Math.abs(pdp.getCurrent(drivetrainBR.getDeviceID()) - tempCurrentAvg) < dtCurrentStdDev){
+            SmartDashboard.putBoolean("BR within STD Dev",true);
+        }else{
+            SmartDashboard.putBoolean("BR within STD Dev",false);
+        }
     }
 
 }
