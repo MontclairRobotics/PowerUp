@@ -20,8 +20,8 @@ import org.montclairrobotics.sprocket.utils.Debug;
 import org.montclairrobotics.sprocket.utils.PID;
 import org.montclairrobotics.sprocket.utils.Togglable;
 import org.opencv.core.Mat;
-import frc.team555.robot.NavXYawInput;
-import frc.team555.robot.MathAlgorithms;
+
+
 
 public class Steamworks  extends SprocketRobot{
     
@@ -59,13 +59,15 @@ public class Steamworks  extends SprocketRobot{
     public final double intakePow = 0.4;
     public final double climbPow  = 0.5;
 
+
+    Motor intakeRight;
+    Motor intakeLeft;
+
     // Intake
     DigitalInput openLeftSwitch;
     DigitalInput closeLeftSwitch;
     DigitalInput openRightSwitch;
     DigitalInput closeRightSwitch;
-    Motor intakeRight;
-    Motor intakeLeft;
 
     //climber
     Motor climbLeft;
@@ -80,8 +82,7 @@ public class Steamworks  extends SprocketRobot{
 
     // Control Devices
     PowerDistributionPanel pdp;
-    MathAlgorithms mathAlgorithms;
-    NavXYawInput navX;
+
     GyroLock gLock;
 
     @Override
@@ -114,13 +115,8 @@ public class Steamworks  extends SprocketRobot{
         drivetrainBL = new CANTalon(backLeftID);
         drivetrainBR = new CANTalon(backRightID);
         
-        // Gyro locking
-        navX = new NavXYawInput(SPI.Port.kMXP);
-        PID gyroPID = new PID(0.18*13.75,0,.0003*13.75);
-        gyroPID.setInput(navX);
-        GyroCorrection gCorrect=new GyroCorrection(navX,gyroPID,20,0.3*20);
-        gLock = new GyroLock(gCorrect);
-        new ToggleButton(driveStick, gLockID, gLock);
+
+
         
         // Drive train setup
         DriveModule dtLeft  = new DriveModule(new XY(-1,0), new XY(0,-1), new Motor(drivetrainFL), new Motor(drivetrainBL));
@@ -133,7 +129,7 @@ public class Steamworks  extends SprocketRobot{
         //Drive train control
         dtBuilder.setDriveTrainType(DriveTrainType.TANK);
         dtBuilder.setInput(new SquaredDriveInput(driveStick));
-        dtBuilder.addStep(gCorrect);
+
         
         // Create drive train
         try {
@@ -186,7 +182,7 @@ public class Steamworks  extends SprocketRobot{
 
     @Override
     public void update() {
-        gLock.update();
+
         stdDevCurrentCheckDT();
         differenceCurrentCheckDT();
 
@@ -197,16 +193,16 @@ public class Steamworks  extends SprocketRobot{
     //Current Checks Maths using STD DEV
     private void stdDevCurrentCheckDT(){
         // Calculate Averages and standard deviations for drive train current draws
-        double tempLeftCurrentAvg   = mathAlgorithms.avg(pdp.getCurrent(drivetrainFL.getDeviceID()) + pdp.getCurrent(drivetrainBL.getDeviceID()));
-        double tempRightCurrentAvg  = mathAlgorithms.avg(pdp.getCurrent(drivetrainFR.getDeviceID())+ pdp.getCurrent(drivetrainBR.getDeviceID()));
-        double dtLeftCurrentStdDev  = mathAlgorithms.stdDiv(pdp.getCurrent(drivetrainFR.getDeviceID()), pdp.getCurrent(drivetrainBR.getDeviceID()));
-        double dtRightCurrentStdDev = mathAlgorithms.stdDiv(pdp.getCurrent(drivetrainFL.getDeviceID()), pdp.getCurrent(drivetrainBL.getDeviceID()));
+        double tempLeftCurrentAvg   = MathAlgorithms.avg(pdp.getCurrent(drivetrainFL.getDeviceID()) + pdp.getCurrent(drivetrainBL.getDeviceID()));
+        double tempRightCurrentAvg  = MathAlgorithms.avg(pdp.getCurrent(drivetrainFR.getDeviceID())+ pdp.getCurrent(drivetrainBR.getDeviceID()));
+        double dtLeftCurrentStdDev  = MathAlgorithms.stdDiv(pdp.getCurrent(drivetrainFR.getDeviceID()), pdp.getCurrent(drivetrainBR.getDeviceID()));
+        double dtRightCurrentStdDev = MathAlgorithms.stdDiv(pdp.getCurrent(drivetrainFL.getDeviceID()), pdp.getCurrent(drivetrainBL.getDeviceID()));
         
         // Check if the motor current draw is withing 1 standard deviation
-        boolean checkFL = mathAlgorithms.checkSTDDT(pdp.getCurrent(drivetrainFL.getDeviceID()), tempLeftCurrentAvg,  dtLeftCurrentStdDev);
-        boolean checkFR = mathAlgorithms.checkSTDDT(pdp.getCurrent(drivetrainFR.getDeviceID()), tempRightCurrentAvg, dtRightCurrentStdDev);
-        boolean checkBL = mathAlgorithms.checkSTDDT(pdp.getCurrent(drivetrainBL.getDeviceID()), tempLeftCurrentAvg, dtLeftCurrentStdDev);
-        boolean checkBR = mathAlgorithms.checkSTDDT(pdp.getCurrent(drivetrainBR.getDeviceID()), tempLeftCurrentAvg, dtRightCurrentStdDev);
+        boolean checkFL = MathAlgorithms.checkSTDDT(pdp.getCurrent(drivetrainFL.getDeviceID()), tempLeftCurrentAvg,  dtLeftCurrentStdDev);
+        boolean checkFR = MathAlgorithms.checkSTDDT(pdp.getCurrent(drivetrainFR.getDeviceID()), tempRightCurrentAvg, dtRightCurrentStdDev);
+        boolean checkBL = MathAlgorithms.checkSTDDT(pdp.getCurrent(drivetrainBL.getDeviceID()), tempLeftCurrentAvg, dtLeftCurrentStdDev);
+        boolean checkBR = MathAlgorithms.checkSTDDT(pdp.getCurrent(drivetrainBR.getDeviceID()), tempLeftCurrentAvg, dtRightCurrentStdDev);
         
         // Debug motor checks
         SmartDashboard.putBoolean("DT FL within 1 STD",checkFL);
@@ -217,14 +213,14 @@ public class Steamworks  extends SprocketRobot{
 
     //DT Current Checks MAths using Diff from Motor
     private void differenceCurrentCheckDT(){
-        double tempLeftCurrentAvg   = mathAlgorithms.avg(pdp.getCurrent(drivetrainFL.getDeviceID()) + pdp.getCurrent(drivetrainBL.getDeviceID()));
-        double tempRightCurrentAvg  = mathAlgorithms.avg(pdp.getCurrent(drivetrainFR.getDeviceID())+ pdp.getCurrent(drivetrainBR.getDeviceID()));
+        double tempLeftCurrentAvg   = MathAlgorithms.avg(pdp.getCurrent(drivetrainFL.getDeviceID()) + pdp.getCurrent(drivetrainBL.getDeviceID()));
+        double tempRightCurrentAvg  = MathAlgorithms.avg(pdp.getCurrent(drivetrainFR.getDeviceID())+ pdp.getCurrent(drivetrainBR.getDeviceID()));
 
         // Check if the motor current draw is withing 1 standard deviation
-        double checkFL = mathAlgorithms.checkDiffDT(pdp.getCurrent(drivetrainFL.getDeviceID()), tempLeftCurrentAvg);
-        double checkFR = mathAlgorithms.checkDiffDT(pdp.getCurrent(drivetrainFR.getDeviceID()), tempRightCurrentAvg);
-        double checkBL = mathAlgorithms.checkDiffDT(pdp.getCurrent(drivetrainBL.getDeviceID()), tempLeftCurrentAvg);
-        double checkBR = mathAlgorithms.checkDiffDT(pdp.getCurrent(drivetrainBR.getDeviceID()), tempRightCurrentAvg);
+        double checkFL = MathAlgorithms.checkDiffDT(pdp.getCurrent(drivetrainFL.getDeviceID()), tempLeftCurrentAvg);
+        double checkFR = MathAlgorithms.checkDiffDT(pdp.getCurrent(drivetrainFR.getDeviceID()), tempRightCurrentAvg);
+        double checkBL = MathAlgorithms.checkDiffDT(pdp.getCurrent(drivetrainBL.getDeviceID()), tempLeftCurrentAvg);
+        double checkBR = MathAlgorithms.checkDiffDT(pdp.getCurrent(drivetrainBR.getDeviceID()), tempRightCurrentAvg);
 
         // Debug motor checks
         SmartDashboard.putNumber("DT FL Diff",checkFL);
@@ -232,6 +228,5 @@ public class Steamworks  extends SprocketRobot{
         SmartDashboard.putNumber("DT BL Diff",checkBL);
         SmartDashboard.putNumber("DT BR Diff",checkBR);
     }
-
 
 }
