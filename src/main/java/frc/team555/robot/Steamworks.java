@@ -1,6 +1,5 @@
 package frc.team555.robot;
 
-import com.ctre.CANTalon;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -15,7 +14,7 @@ import org.montclairrobotics.sprocket.geometry.XY;
 import org.montclairrobotics.sprocket.motors.Motor;
 import org.montclairrobotics.sprocket.utils.PID;
 
-public class Steamworks  extends SprocketRobot{
+public class Steamworks  extends SprocketRobot {
 
     // DT IDs
     public final int frontLeftDeviceNumber  = 3;
@@ -79,6 +78,7 @@ public class Steamworks  extends SprocketRobot{
         closeRightSwitch = new DigitalInput(intakeCR);
 
         // ========= DRIVETRAIN ========= //
+
         drivetrainFL = new WPI_TalonSRX(frontLeftDeviceNumber);
         drivetrainFR = new WPI_TalonSRX(frontRightDeviceNumber);
         drivetrainBL = new WPI_TalonSRX(backLeftDeviceNumber);
