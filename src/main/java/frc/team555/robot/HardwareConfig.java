@@ -1,6 +1,7 @@
 package frc.team555.robot;
 
 import com.ctre.CANTalon;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import frc.team555.hardware.*;
 
 public class HardwareConfig extends HardwareConfigBase {
@@ -32,11 +33,10 @@ public class HardwareConfig extends HardwareConfigBase {
 
     // These should probably be built like the devices above, but using
     // a collection (not Bus) that is geared to hold another type (i.e. SpeedController)
-    public CANTalon drivetrainFL = srxBuilder.build(Devices.FrontLeftDriveMotor);
-    public CANTalon drivetrainFR = srxBuilder.build(Devices.FrontRightDriveMotor);
-    public CANTalon drivetrainBL = srxBuilder.build(Devices.BackLeftDriveMotor);
-    public CANTalon drivetrainBR = srxBuilder.build(Devices.BackRightDriveMotor);
-
+    public WPI_TalonSRX drivetrainFL = srxBuilder.build(Devices.FrontLeftDriveMotor);
+    public WPI_TalonSRX drivetrainFR = srxBuilder.build(Devices.FrontRightDriveMotor);
+    public WPI_TalonSRX drivetrainBL = srxBuilder.build(Devices.BackLeftDriveMotor);
+    public WPI_TalonSRX drivetrainBR = srxBuilder.build(Devices.BackRightDriveMotor);
 
 
 }

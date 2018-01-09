@@ -18,8 +18,8 @@ public class SprocketHardwareConfig extends HardwareConfig {
 
         frontL = new DriveModule(new XY(-1, 1), new XY(-1, 1), new Motor(drivetrainFL));
         frontR = new DriveModule(new XY(1, 1), new XY(-1, 1), new Motor(drivetrainFR));
-        backL = new DriveModule(new XY(-1, -1), new XY(-1, 1), new Motor(drivetrainBL));
-        backR = new DriveModule(new XY(1, -1), new XY(-1, 1), new Motor(drivetrainBR));
+        backL  = new DriveModule(new XY(-1, -1), new XY(-1, 1), new Motor(drivetrainBL));
+        backR  = new DriveModule(new XY(1, -1), new XY(-1, 1), new Motor(drivetrainBR));
 
     }
 }
