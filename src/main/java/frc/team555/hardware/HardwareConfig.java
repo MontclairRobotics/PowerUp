@@ -1,4 +1,4 @@
-package frc.team555.robot;
+package frc.team555.hardware;
 
 import com.ctre.CANTalon;
 import frc.team555.hardware.*;

@@ -1,7 +1,7 @@
 package frc.team555.robot;
 
 
-import com.ctre.CANTalon;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.Joystick;
 
 /**
@@ -49,22 +49,20 @@ public class Hardware {
     // ============================
 
     // Drive Train Motors
-    public static CANTalon motorDriveBR;
-    public static CANTalon motorDriveBL;
-    public static CANTalon motorDriveFR;
-    public static CANTalon motorDriveFL;
+    public static WPI_TalonSRX motorDriveBR;
+    public static WPI_TalonSRX motorDriveBL;
+    public static WPI_TalonSRX motorDriveFR;
+    public static WPI_TalonSRX motorDriveFL;
 
 
-    // ============================
-    // Joystick Configuration
-    // ============================
-    public Hardware(){
 
+
+    public static void init(){
         // Instantiate drive train motors using motor ID's
-        motorDriveBR = new CANTalon(motorDriveBRID);
-        motorDriveBL = new CANTalon(motorDriveBLID);
-        motorDriveFR = new CANTalon(motorDriveFRID);
-        motorDriveFL = new CANTalon(motorDriveFLID);
+        motorDriveBR = new WPI_TalonSRX(motorDriveBRID);
+        motorDriveBL = new WPI_TalonSRX(motorDriveBLID);
+        motorDriveFR = new WPI_TalonSRX(motorDriveFRID);
+        motorDriveFL = new WPI_TalonSRX(motorDriveFLID);
 
         // Instantiate joysticks using joystick ID's
         driveStick = new Joystick(driveStickID);
