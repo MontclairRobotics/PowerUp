@@ -1,5 +1,6 @@
 package frc.team555.robot;
 
+import edu.wpi.first.wpilibj.interfaces.Gyro;
 import org.montclairrobotics.sprocket.SprocketRobot;
 import org.montclairrobotics.sprocket.control.SquaredDriveInput;
 import org.montclairrobotics.sprocket.drive.*;
@@ -17,6 +18,8 @@ public class PowerUpRobot extends SprocketRobot {
 
     Hardware hardware;
     DriveTrain driveTrain;
+    Gyro navx;
+
 
     @Override
     public void robotInit(){
@@ -31,8 +34,13 @@ public class PowerUpRobot extends SprocketRobot {
         driveTrain.setMapper(new TankMapper());
         driveTrain.setDefaultInput(new SquaredDriveInput(Hardware.driveStick));
         ArrayList<Step<DTTarget>> steps = new ArrayList<>();
+
+
+
         steps.add(new Deadzone());
         DTPipeline pipeline;
         driveTrain.setPipeline(new DTPipeline(steps));
+
+
     }
 }

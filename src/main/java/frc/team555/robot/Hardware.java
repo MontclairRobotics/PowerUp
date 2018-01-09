@@ -2,7 +2,10 @@ package frc.team555.robot;
 
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.kauailabs.navx.frc.AHRS;
+import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.SPI;
 
 /**
  * The hardware class is in charge of storing all hardware
@@ -38,10 +41,13 @@ public class Hardware {
     public static final int motorDriveFLID = 4;
 
     // Joysitck ID's TODO: joystick configurations
-    public static final int driveStickID = 0;
-    public static final int auxStickID   = 0;
+    public static final int driveStickID = 1;
+    public static final int auxStickID   = 2;
     public static Joystick driveStick;
     public static Joystick auxStick;
+
+    // Gyro ID
+    public static final int navxID = 1;
 
 
     // ============================
@@ -54,8 +60,7 @@ public class Hardware {
     public static WPI_TalonSRX motorDriveFR;
     public static WPI_TalonSRX motorDriveFL;
 
-
-
+    public static AHRS navx;
 
     public static void init(){
         // Instantiate drive train motors using motor ID's
@@ -67,5 +72,7 @@ public class Hardware {
         // Instantiate joysticks using joystick ID's
         driveStick = new Joystick(driveStickID);
         auxStick   = new Joystick(auxStickID);
+
+        navx = new AHRS(new SPI.Port(navxID));
     }
 }
