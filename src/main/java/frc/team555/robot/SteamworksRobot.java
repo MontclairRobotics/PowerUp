@@ -15,11 +15,7 @@ import org.montclairrobotics.sprocket.geometry.XY;
 import org.montclairrobotics.sprocket.motors.Motor;
 import org.montclairrobotics.sprocket.utils.PID;
 
-<<<<<<< HEAD:src/main/java/frc/team555/robot/SteamworksRobot.java
 public class SteamworksRobot extends SprocketRobot{
-=======
-public class Steamworks  extends SprocketRobot {
->>>>>>> 1d0f90a6f1f888d55c096068966ef1651e92d492:src/main/java/frc/team555/robot/Steamworks.java
 
     // DT IDs
     public final int frontLeftDeviceNumber  = 3;

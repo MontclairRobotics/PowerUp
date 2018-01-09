@@ -1,5 +1,5 @@
 package frc.team555.robot;
 
-public class Robot extends TankRobot {
+public class Robot extends SteamworksRobot {
 
 }
