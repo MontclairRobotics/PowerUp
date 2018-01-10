@@ -1,6 +1,7 @@
 package frc.team555.robot;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.*;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.montclairrobotics.sprocket.SprocketRobot;
@@ -13,30 +14,37 @@ import org.montclairrobotics.sprocket.drive.steps.GyroCorrection;
 import org.montclairrobotics.sprocket.drive.utils.GyroLock;
 import org.montclairrobotics.sprocket.geometry.XY;
 import org.montclairrobotics.sprocket.motors.Motor;
+import org.montclairrobotics.sprocket.utils.DoubleInput;
 import org.montclairrobotics.sprocket.utils.PID;
 
 public class SteamworksRobot extends SprocketRobot{
 
     // DT IDs
-    public final int frontLeftDeviceNumber  = 3;
-    public final int frontRightDeviceNumber = 1;
-    public final int backLeftDeviceNumber   = 4;
-    public final int backRightDeviceNumber  = 2;
+    public static final int frontLeftDeviceNumber  = 3;
+    public static final int frontRightDeviceNumber = 1;
+    public static final int backLeftDeviceNumber   = 4;
+    public static final int backRightDeviceNumber  = 2;
 
     // Joysticks IDs
-    public final int driveStickDeviceNumber = 0;
-    public final int auxStickDeviceNumber   = 1;
+    public static final int driveStickDeviceNumber = 0;
+    public static final int auxStickDeviceNumber   = 1;
 
     // Buttons IDs
-    public final int intakeButtonID = 1;
+    public static final int intakeButtonID = 1;
 
     // Intake IDs
-    public final int intakeOL = 1;
-    public final int intakeCL = 0;
-    public final int intakeOR = 6;
-    public final int intakeCR = 7;
-    public final int intakeL  = 0;
-    public final int intakeR  = 5;
+    public static final int intakeOL = 1;
+    public static final int intakeCL = 0;
+    public static final int intakeOR = 6;
+    public static final int intakeCR = 7;
+    public static final int intakeL  = 0;
+    public static final int intakeR  = 5;
+
+    // PID VALs TODO: RETUNING
+    public static final double pidP = 0.18*13.75;
+    public static final double pidI = 0;
+    public static final double pidD = .0003*13.75;
+
 
     // Intake Motors
     Motor intakeRight;
@@ -56,9 +64,11 @@ public class SteamworksRobot extends SprocketRobot{
 
     // Control Devices
     PowerDistributionPanel pdp;
-    NavXYawInput navX;
+    AHRS navX;
+
     MathAlgorithms mathAlgorithms;
     GyroLock gLock;
+    DoubleInput gyroInput;
 
     @Override
     public void robotInit() {
@@ -88,10 +98,11 @@ public class SteamworksRobot extends SprocketRobot{
         drivetrainBR = new WPI_TalonSRX(backRightDeviceNumber);
 
         // Gyro locking
-        navX = new NavXYawInput(SPI.Port.kMXP);
-        PID gyroPID = new PID(0.18*13.75,0,.0003*13.75); //TODO: Needs Retuning
-        gyroPID.setInput(navX);
-        GyroCorrection gCorrect=new GyroCorrection(navX,gyroPID,20,0.3*20);
+        navX = new AHRS(SPI.Port.kMXP);
+        gyroInput = new DoubleInput(navX.getYaw());
+        PID gyroPID = new PID(pidP, pidI, pidD);
+        gyroPID.setInput(gyroInput);
+        GyroCorrection gCorrect=new GyroCorrection(gyroInput, gyroPID,20,0.3*20);
         gLock = new GyroLock(gCorrect);
 
         // Drive train setup
@@ -104,7 +115,7 @@ public class SteamworksRobot extends SprocketRobot{
 
         //Drive train control
         dtBuilder.setDriveTrainType(DriveTrainType.TANK);
-        dtBuilder.setArcadeDriveInput(driveStick);
+        dtBuilder.setInput(new SquaredDriveInput(driveStick));
         dtBuilder.addStep(gCorrect);
 
         // Create drive train
@@ -113,8 +124,6 @@ public class SteamworksRobot extends SprocketRobot{
         } catch (InvalidDriveTrainException e) {
             e.printStackTrace();
         }
-
-
 
         // ========= CONTROL ========= //
         double intakePow=0.3;
@@ -141,7 +150,9 @@ public class SteamworksRobot extends SprocketRobot{
     @Override
     public void update() {
         checkCurrentDT();
+        sendPidVals();
         gLock.update();
+
     }
 
     private void checkCurrentDT(){
@@ -209,4 +220,9 @@ public class SteamworksRobot extends SprocketRobot{
 
     }
 
+    private void sendPidVals(){
+        SmartDashboard.putNumber("P", pidP);
+        SmartDashboard.putNumber("I", pidI);
+        SmartDashboard.putNumber("D", pidD);
+    }
 }

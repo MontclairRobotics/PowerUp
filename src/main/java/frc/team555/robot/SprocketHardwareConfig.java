@@ -16,10 +16,10 @@ public class SprocketHardwareConfig extends HardwareConfig {
     public SprocketHardwareConfig() {
         navX = new NavXYawInput(SPI.Port.kMXP);
 
-        frontL = new DriveModule(new XY(-1, 1), new XY(-1, 1), new Motor(drivetrainFL));
-        frontR = new DriveModule(new XY(1, 1), new XY(-1, 1), new Motor(drivetrainFR));
-        backL  = new DriveModule(new XY(-1, -1), new XY(-1, 1), new Motor(drivetrainBL));
-        backR  = new DriveModule(new XY(1, -1), new XY(-1, 1), new Motor(drivetrainBR));
+        frontL = new DriveModule(new XY(-1, 1), new XY(0, 1), new Motor(drivetrainFL));
+        frontR = new DriveModule(new XY(1, 1),  new XY(0, 1), new Motor(drivetrainFR));
+        backL  = new DriveModule(new XY(-1,-1), new XY(0, 1), new Motor(drivetrainBL));
+        backR  = new DriveModule(new XY(1,-1),  new XY(0, 1), new Motor(drivetrainBR));
 
     }
 }

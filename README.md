@@ -67,4 +67,4 @@ Here's a collection of some useful GradleRIO commands and tips for development. 
 - `clean` will clean your code.
 - `build` will build your code.
 - `deploy` will build and deploy your code.
-- `smartDashboard` will launch Smart Dashboard.
+- `shuffleboard` will launch Smart Dashboard.
