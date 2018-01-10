@@ -16,9 +16,14 @@ public enum Side {
 		
 		for (int i = 0; i < msg.length(); i++) {
 			switch (msg.charAt(i)) {
-			case 'L': sides[i] = LEFT;
-			case 'R': sides[i] = RIGHT;
-			default: break; //TODO: Program some sort of error case.
+			case 'L':
+				sides[i] = LEFT;
+				break;
+			case 'R':
+				sides[i] = RIGHT;
+				break;
+			default:
+				break;
 			}
 		}
 		
