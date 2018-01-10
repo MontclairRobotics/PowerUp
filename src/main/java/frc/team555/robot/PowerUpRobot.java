@@ -11,6 +11,7 @@ public class PowerUpRobot extends SprocketRobot{
 
     SprocketHardwareConfig hwConfig;
 
+
     //CONSTANTS
     public static final int driveStickPort = 0;
 
