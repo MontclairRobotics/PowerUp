@@ -42,11 +42,6 @@ public class Robot extends SprocketRobot{
     public static final int intakeL  = 0;
     public static final int intakeR  = 5;
 
-    // PID VALs TODO: RETUNING
-    public static final double pidP = 0.18*13.75;
-    public static final double pidI = 0;
-    public static final double pidD = .0003*13.75;
-
     // Intake Motors
     Motor intakeRight;
     Motor intakeLeft;
@@ -63,19 +58,10 @@ public class Robot extends SprocketRobot{
     WPI_TalonSRX drivetrainBL;
     WPI_TalonSRX drivetrainBR;
 
-    // Control Devices
-    PowerDistributionPanel pdp;
-    AHRS navX;
-    MathAlgorithms mathAlgorithms;
-    GyroLock gLock;
-    DoubleInput gyroInput;
-
     @Override
     public void robotInit() {
         Joystick driveStick = new Joystick(driveStickDeviceNumber);
         Joystick auxStick = new Joystick(auxStickDeviceNumber);
-
-        pdp = new PowerDistributionPanel();
 
         // ========= INTAKE ========= //
 
@@ -98,14 +84,6 @@ public class Robot extends SprocketRobot{
         drivetrainBL = new WPI_TalonSRX(backLeftDeviceNumber);
         drivetrainBR = new WPI_TalonSRX(backRightDeviceNumber);
 
-        // Gyro locking
-        navX = new AHRS(SPI.Port.kMXP);
-        gyroInput = new DoubleInput(navX.getYaw());
-        PID gyroPID = new PID(pidP, pidI, pidD);
-        gyroPID.setInput(gyroInput);
-        GyroCorrection gCorrect=new GyroCorrection(gyroInput, gyroPID,20,0.3*20);
-        gLock = new GyroLock(gCorrect);
-
         // Drive train setup
         DriveModule dtLeft  = new DriveModule(new XY(-1,0), new XY(0,-1), new Motor(drivetrainFL), new Motor(drivetrainBL));
         DriveModule dtRight = new DriveModule(new XY( 1,0), new XY(0, 1), new Motor(drivetrainFR), new Motor(drivetrainBR));
@@ -117,7 +95,6 @@ public class Robot extends SprocketRobot{
         //Drive train control
         dtBuilder.setDriveTrainType(DriveTrainType.TANK);
         dtBuilder.setInput(new SquaredDriveInput(driveStick));
-        dtBuilder.addStep(gCorrect);
 
         // Create drive train
         try { dtBuilder.build(); } catch (InvalidDriveTrainException e) { e.printStackTrace(); }
@@ -156,52 +133,6 @@ public class Robot extends SprocketRobot{
     @Override
 
     public void update() {
-        checkCurrentDT();
-        gLock.update();
-    }
-
-
-
-    private void checkCurrentDT(){
-        double tempLeftCurrentAvg = mathAlgorithms.avg(pdp.getCurrent(frontLeftDeviceNumber),
-                pdp.getCurrent(backLeftDeviceNumber));
-
-        double tempRightCurrentAvg = mathAlgorithms.avg(pdp.getCurrent(frontRightDeviceNumber),
-                pdp.getCurrent(backRightDeviceNumber));
-
-        double dtLeftCurrentStdDev  =  mathAlgorithms.stdDiv(pdp.getCurrent(frontLeftDeviceNumber),
-                pdp.getCurrent(backLeftDeviceNumber));
-
-        double dtRightCurrentStdDev  = mathAlgorithms.stdDiv(pdp.getCurrent(frontRightDeviceNumber),
-                pdp.getCurrent(backRightDeviceNumber));
-
-        boolean STDDEVcheckFL;
-        STDDEVcheckFL = mathAlgorithms.checkSTDDT(pdp.getCurrent(frontLeftDeviceNumber),
-                tempLeftCurrentAvg,
-                dtLeftCurrentStdDev);
-
-        boolean STDDEVcheckFR;
-        STDDEVcheckFR = mathAlgorithms.checkSTDDT(pdp.getCurrent(frontRightDeviceNumber),
-                tempRightCurrentAvg,
-                dtRightCurrentStdDev);
-
-
-
-        boolean STDDEVcheckBL;
-        STDDEVcheckBL = mathAlgorithms.checkSTDDT(pdp.getCurrent(backLeftDeviceNumber),
-                tempLeftCurrentAvg,
-                dtLeftCurrentStdDev);
-
-        boolean STDDEVcheckBR;
-        STDDEVcheckBR = mathAlgorithms.checkSTDDT(pdp.getCurrent(backRightDeviceNumber),
-                tempRightCurrentAvg,
-                dtRightCurrentStdDev);
-
-        // STD DEV to Smart Dashboard
-        SmartDashboard.putBoolean("FL within STD Dev",STDDEVcheckFL);
-        SmartDashboard.putBoolean("FR within STD Dev",STDDEVcheckFR);
-        SmartDashboard.putBoolean("BL within STD Dev",STDDEVcheckBL);
-        SmartDashboard.putBoolean("BR within STD Dev",STDDEVcheckBR);
 
     }
 
