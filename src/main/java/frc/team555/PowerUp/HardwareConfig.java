@@ -1,6 +1,5 @@
-package frc.team555.robot;
+package frc.team555.PowerUp;
 
-import com.ctre.CANTalon;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import frc.team555.hardware.*;
 
