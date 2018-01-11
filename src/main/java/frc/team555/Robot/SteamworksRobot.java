@@ -19,7 +19,7 @@ import org.montclairrobotics.sprocket.utils.PID;
 
 
 
-public class Robot extends SprocketRobot{
+public class SteamworksRobot extends SprocketRobot{
 
     // DT IDs
     public static final int frontLeftDeviceNumber  = 3;
