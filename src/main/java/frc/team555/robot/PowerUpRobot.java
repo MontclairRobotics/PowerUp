@@ -5,12 +5,16 @@ import org.montclairrobotics.sprocket.SprocketRobot;
 import org.montclairrobotics.sprocket.control.SquaredDriveInput;
 import org.montclairrobotics.sprocket.drive.*;
 import org.montclairrobotics.sprocket.drive.steps.Deadzone;
+import org.montclairrobotics.sprocket.drive.steps.GyroCorrection;
+import org.montclairrobotics.sprocket.drive.utils.GyroLock;
 import org.montclairrobotics.sprocket.geometry.Vector;
 import org.montclairrobotics.sprocket.geometry.XY;
 import org.montclairrobotics.sprocket.motors.Module;
 import org.montclairrobotics.sprocket.motors.Motor;
 import org.montclairrobotics.sprocket.pipeline.Pipeline;
 import org.montclairrobotics.sprocket.pipeline.Step;
+import org.montclairrobotics.sprocket.utils.Input;
+import org.montclairrobotics.sprocket.utils.PID;
 
 import java.util.ArrayList;
 
@@ -34,13 +38,18 @@ public class PowerUpRobot extends SprocketRobot {
         driveTrain.setMapper(new TankMapper());
         driveTrain.setDefaultInput(new SquaredDriveInput(Hardware.driveStick));
         ArrayList<Step<DTTarget>> steps = new ArrayList<>();
-
-
-
+        GyroCorrection correction = new GyroCorrection(new Input<Double>() {
+            @Override
+            public Double get() {
+                return (double)Hardware.navx.getYaw();
+            }
+        }, new PID(0, 0, 0), 90, 1);
+        GyroLock lock = new GyroLock(correction);
+        steps.add(correction);
         steps.add(new Deadzone());
         DTPipeline pipeline;
         driveTrain.setPipeline(new DTPipeline(steps));
-
+        
 
     }
 }

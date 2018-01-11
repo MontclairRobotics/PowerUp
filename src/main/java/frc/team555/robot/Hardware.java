@@ -47,7 +47,7 @@ public class Hardware {
     public static Joystick auxStick;
 
     // Gyro ID
-    public static final int navxID = 1;
+    public static final SPI.Port navxPort = SPI.Port.kOnboardCS0;
 
 
     // ============================
@@ -73,6 +73,6 @@ public class Hardware {
         driveStick = new Joystick(driveStickID);
         auxStick   = new Joystick(auxStickID);
 
-        navx = new AHRS(new SPI.Port(navxID));
+        navx = new AHRS(navxPort);
     }
 }
