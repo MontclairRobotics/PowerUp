@@ -72,6 +72,6 @@ Here's a collection of some useful GradleRIO commands and tips for development. 
 - `deploy` will build and deploy your code.
 - `deploy --offline` will build and deploy your code over ethernet.
 - `riolog` will display the RoboRIO console output.
-- `smartDashboard` will launch Smart Dashboard
+- `shuffleboard` will launch Shuffleboard
 
 You can chain multiple commands in your build configuration if you so desire by separating your build tasks with a space like `deploy smartDashboard` or `deploy riolog`.
