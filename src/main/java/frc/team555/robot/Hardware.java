@@ -18,13 +18,15 @@ import edu.wpi.first.wpilibj.SPI;
  *
  *
  * Hardware device: Any physical device on the robot that is connected to the electronics
- * board or on roborio. This includes motors, joysticks, cameras, sensors, etc.
+ * board or on roborio. This includes motors, cameras, servos, etc.
+ *
+ * Sensors and inputs should be defined in the control class and not in hardware
+ * @see Control
  *
  * Structure
  *
  * - Device Port configuration: All port ID's for hardware devices.
  *      - Drive Train Motor ID's: motor ports to be used for the drive train
- *      - Joystick ID's: Joystick ports
  * - Motor Configuration: Declaration of all motor controllers on the robot
  *      - Drive Train Motors: Declaration of the drive train motors
  *
@@ -40,11 +42,6 @@ public class Hardware {
     public static final int motorDriveFRID = 3;
     public static final int motorDriveFLID = 4;
 
-    // Joysitck ID's TODO: joystick configurations
-    public static final int driveStickID = 1;
-    public static final int auxStickID   = 2;
-    public static Joystick driveStick;
-    public static Joystick auxStick;
 
     // Gyro ID
     public static final SPI.Port navxPort = SPI.Port.kOnboardCS0;
@@ -69,9 +66,7 @@ public class Hardware {
         motorDriveFR = new WPI_TalonSRX(motorDriveFRID);
         motorDriveFL = new WPI_TalonSRX(motorDriveFLID);
 
-        // Instantiate joysticks using joystick ID's
-        driveStick = new Joystick(driveStickID);
-        auxStick   = new Joystick(auxStickID);
+
 
         navx = new AHRS(navxPort);
     }

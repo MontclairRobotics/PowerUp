@@ -2,6 +2,7 @@ package frc.team555.robot;
 
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import org.montclairrobotics.sprocket.SprocketRobot;
+import org.montclairrobotics.sprocket.control.ButtonAction;
 import org.montclairrobotics.sprocket.control.SquaredDriveInput;
 import org.montclairrobotics.sprocket.drive.*;
 import org.montclairrobotics.sprocket.drive.steps.Deadzone;
@@ -23,7 +24,8 @@ public class PowerUpRobot extends SprocketRobot {
     Hardware hardware;
     DriveTrain driveTrain;
     Gyro navx;
-
+    GyroCorrection correction;
+    GyroLock lock;
 
     @Override
     public void robotInit(){
@@ -36,20 +38,38 @@ public class PowerUpRobot extends SprocketRobot {
 
         driveTrain = new DriveTrain(modules);
         driveTrain.setMapper(new TankMapper());
-        driveTrain.setDefaultInput(new SquaredDriveInput(Hardware.driveStick));
+        driveTrain.setDefaultInput(Control.driveInput);
         ArrayList<Step<DTTarget>> steps = new ArrayList<>();
-        GyroCorrection correction = new GyroCorrection(new Input<Double>() {
+        correction = new GyroCorrection(new Input<Double>() {
             @Override
             public Double get() {
                 return (double)Hardware.navx.getYaw();
             }
         }, new PID(0, 0, 0), 90, 1);
-        GyroLock lock = new GyroLock(correction);
+        lock = new GyroLock(correction);
         steps.add(correction);
         steps.add(new Deadzone());
         DTPipeline pipeline;
         driveTrain.setPipeline(new DTPipeline(steps));
-        
 
+
+        Control.lock.setHeldAction(new ButtonAction() {
+            @Override
+            public void onAction() {
+                lock.enable();
+            }
+        });
+
+        Control.lock.setOffAction(new ButtonAction() {
+            @Override
+            public void onAction() {
+                lock.disable();
+            }
+        });
+    }
+
+    @Override
+    public void update(){
+        lock.update();
     }
 }
