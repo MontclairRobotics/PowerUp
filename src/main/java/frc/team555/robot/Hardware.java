@@ -44,7 +44,7 @@ public class Hardware {
 
 
     // Gyro ID
-    public static final SPI.Port navxPort = SPI.Port.kOnboardCS0;
+    public static final SPI.Port navxPort = SPI.Port.kMXP;
 
 
     // ============================

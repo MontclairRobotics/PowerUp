@@ -1,7 +1,5 @@
 ## Power Up Branch: I2 [![Build Status](https://travis-ci.org/MontclairRobotics/PowerUp.svg?branch=i2)](https://travis-ci.org/MontclairRobotics/PowerUp)
 
-This is the second implementation of GradleRIO and the test of the IntelliJ platorm on Power Up Code for 2018
-
 ## Table of Contents		
  1. [IntelliJ set up](#intellij-set-up)		
  2. [Eclipse set up](#eclipse-set-up)		
