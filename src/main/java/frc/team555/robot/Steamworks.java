@@ -193,51 +193,8 @@ public class Steamworks  extends SprocketRobot{
 
     @Override
     public void update() {
-
-        stdDevCurrentCheckDT();
-        differenceCurrentCheckDT();
-
         SmartDashboard.putNumber("Intake Power", intakePow);
         SmartDashboard.putNumber("Climb Power", climbPow);
-    }
-
-    //Current Checks Maths using STD DEV
-    private void stdDevCurrentCheckDT(){
-        // Calculate Averages and standard deviations for drive train current draws
-        double tempLeftCurrentAvg   = MathAlgorithms.avg(pdp.getCurrent(drivetrainFL.getDeviceID()) + pdp.getCurrent(drivetrainBL.getDeviceID()));
-        double tempRightCurrentAvg  = MathAlgorithms.avg(pdp.getCurrent(drivetrainFR.getDeviceID())+ pdp.getCurrent(drivetrainBR.getDeviceID()));
-        double dtLeftCurrentStdDev  = MathAlgorithms.stdDiv(pdp.getCurrent(drivetrainFR.getDeviceID()), pdp.getCurrent(drivetrainBR.getDeviceID()));
-        double dtRightCurrentStdDev = MathAlgorithms.stdDiv(pdp.getCurrent(drivetrainFL.getDeviceID()), pdp.getCurrent(drivetrainBL.getDeviceID()));
-        
-        // Check if the motor current draw is withing 1 standard deviation
-        boolean checkFL = MathAlgorithms.checkSTDDT(pdp.getCurrent(drivetrainFL.getDeviceID()), tempLeftCurrentAvg,  dtLeftCurrentStdDev);
-        boolean checkFR = MathAlgorithms.checkSTDDT(pdp.getCurrent(drivetrainFR.getDeviceID()), tempRightCurrentAvg, dtRightCurrentStdDev);
-        boolean checkBL = MathAlgorithms.checkSTDDT(pdp.getCurrent(drivetrainBL.getDeviceID()), tempLeftCurrentAvg, dtLeftCurrentStdDev);
-        boolean checkBR = MathAlgorithms.checkSTDDT(pdp.getCurrent(drivetrainBR.getDeviceID()), tempLeftCurrentAvg, dtRightCurrentStdDev);
-        
-        // Debug motor checks
-        SmartDashboard.putBoolean("DT FL within 1 STD",checkFL);
-        SmartDashboard.putBoolean("DT FR within 1 STD",checkFR);
-        SmartDashboard.putBoolean("DT BL within 1 STD",checkBL);
-        SmartDashboard.putBoolean("DT BR within 1 STD",checkBR);
-    }
-
-    //DT Current Checks MAths using Diff from Motor
-    private void differenceCurrentCheckDT(){
-        double tempLeftCurrentAvg   = MathAlgorithms.avg(pdp.getCurrent(drivetrainFL.getDeviceID()) + pdp.getCurrent(drivetrainBL.getDeviceID()));
-        double tempRightCurrentAvg  = MathAlgorithms.avg(pdp.getCurrent(drivetrainFR.getDeviceID())+ pdp.getCurrent(drivetrainBR.getDeviceID()));
-
-        // Check if the motor current draw is withing 1 standard deviation
-        double checkFL = MathAlgorithms.checkDiffDT(pdp.getCurrent(drivetrainFL.getDeviceID()), tempLeftCurrentAvg);
-        double checkFR = MathAlgorithms.checkDiffDT(pdp.getCurrent(drivetrainFR.getDeviceID()), tempRightCurrentAvg);
-        double checkBL = MathAlgorithms.checkDiffDT(pdp.getCurrent(drivetrainBL.getDeviceID()), tempLeftCurrentAvg);
-        double checkBR = MathAlgorithms.checkDiffDT(pdp.getCurrent(drivetrainBR.getDeviceID()), tempRightCurrentAvg);
-
-        // Debug motor checks
-        SmartDashboard.putNumber("DT FL Diff",checkFL);
-        SmartDashboard.putNumber("DT FR Diff",checkFR);
-        SmartDashboard.putNumber("DT BL Diff",checkBL);
-        SmartDashboard.putNumber("DT BR Diff",checkBR);
     }
 
 }

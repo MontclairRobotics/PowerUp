@@ -84,6 +84,8 @@ local.properties
 .idea/**/gradle.xml
 .idea/**/libraries
 
+
+
 # CMake
 cmake-build-debug/
 
@@ -224,3 +226,6 @@ gradle-app.setting
 
 # Cache of project
 .gradletasknamecache
+
+.gradle/
+build/
