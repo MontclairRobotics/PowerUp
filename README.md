@@ -1,18 +1,12 @@
 ## Power Up Branch: I2 [![Build Status](https://travis-ci.org/MontclairRobotics/PowerUp.svg?branch=i2)](https://travis-ci.org/MontclairRobotics/PowerUp)
 
-<<<<<<< HEAD
 This is the second implementation of GradleRIO and the test of the IntelliJ platorm on Power Up Code for 2018
-
-## GradleRIO Command Reference
-=======
-=======
 
 ## Table of Contents		
  1. [IntelliJ set up](#intellij-set-up)		
  2. [Eclipse set up](#eclipse-set-up)		
  3. [GradleRIO command reference](#gradlerio-command-reference)
  
->>>>>>> origin/master
 ## IntelliJ set up
 1. Make sure IntelliJ is closed if it's open, then clone the project.
 2. Double click `setup_intellij.bat`. This will generate files all the IntelliJ specific files for the project. Alternatively, you can run `./gradlew idea` in the project directory on either Powershell or a Linux shell.
@@ -73,18 +67,12 @@ To get these to show in Eclipse's run dropdown, you either need to have ran the 
 4. Tick the box in `Display in favorites menu` next to `Run`.
 
 ## GradleRIO command reference
-<<<<<<< HEAD
->>>>>>> master
-=======
 
->>>>>>> origin/master
+
 Here's a collection of some useful GradleRIO commands and tips for development. Reading the full documentation [here](https://github.com/Open-RIO/GradleRIO) is recommended.
 
 - `clean` will clean your code.
 - `build` will build your code.
 - `deploy` will build and deploy your code.
-<<<<<<< HEAD
-- `smartDashboard` will launch Smart Dashboard.
-=======
+
 - `shuffleboard` will launch Shuffleboard.
->>>>>>> origin/master
