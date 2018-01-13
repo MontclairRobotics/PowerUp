@@ -1,6 +1,11 @@
 ## Power Up Branch: I2 [![Build Status](https://travis-ci.org/MontclairRobotics/PowerUp.svg?branch=i2)](https://travis-ci.org/MontclairRobotics/PowerUp)
 
 
+## Table of Contents		
+ 1. [IntelliJ set up](#intellij-set-up)		
+ 2. [Eclipse set up](#eclipse-set-up)		
+ 3. [GradleRIO command reference](#gradlerio-command-reference)
+ 
 ## IntelliJ set up
 1. Make sure IntelliJ is closed if it's open, then clone the project.
 2. Double click `setup_intellij.bat`. This will generate files all the IntelliJ specific files for the project. Alternatively, you can run `./gradlew idea` in the project directory on either Powershell or a Linux shell.
