@@ -1,5 +1,6 @@
 package frc.team555.robot;
 
+import org.montclairrobotics.sprocket.control.SquaredDriveInput;
 import org.montclairrobotics.sprocket.drive.DriveModule;
 import org.montclairrobotics.sprocket.drive.DriveTrain;
 import org.montclairrobotics.sprocket.drive.TankMapper;
@@ -18,5 +19,6 @@ public class TankDriveTrain extends DriveTrain {
 		);
 		
 		this.setMapper(new TankMapper());
+		this.setDefaultInput(new SquaredDriveInput(new Joystick(1)));
 	}
 }
