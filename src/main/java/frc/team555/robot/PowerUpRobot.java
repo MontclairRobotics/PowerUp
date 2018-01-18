@@ -30,13 +30,19 @@ public class PowerUpRobot extends SprocketRobot {
     @Override
     public void robotInit(){
         Hardware.init();
+        Control.init();
         DriveModule[] modules = new DriveModule[4];
         modules[0] = new DriveModule(new XY(-1, -1), Vector.ZERO, new Motor(Hardware.motorDriveBL));
         modules[1] = new DriveModule(new XY(1, -1), Vector.ZERO, new Motor(Hardware.motorDriveBR));
         modules[2] = new DriveModule(new XY(-1, 1), Vector.ZERO, new Motor(Hardware.motorDriveFL));
         modules[3] = new DriveModule(new XY(1, 1), Vector.ZERO, new Motor(Hardware.motorDriveFL));
-
-        driveTrain = new DriveTrain(modules);
+        DriveTrainBuilder dtBuilder = new DriveTrainBuilder();
+        dtBuilder.addDriveModule(modules[0]).addDriveModule(modules[1]).addDriveModule(modules[2]).addDriveModule(modules[3]);
+        try {
+            driveTrain = dtBuilder.build();
+        } catch (InvalidDriveTrainException e) {
+            e.printStackTrace();
+        }
         driveTrain.setMapper(new TankMapper());
         driveTrain.setDefaultInput(Control.driveInput);
         ArrayList<Step<DTTarget>> steps = new ArrayList<>();
