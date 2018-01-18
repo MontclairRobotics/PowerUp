@@ -2,6 +2,7 @@ package frc.team555.robot;
 
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import org.montclairrobotics.sprocket.SprocketRobot;
+import org.montclairrobotics.sprocket.auto.AutoMode;
 import org.montclairrobotics.sprocket.control.ButtonAction;
 import org.montclairrobotics.sprocket.control.SquaredDriveInput;
 import org.montclairrobotics.sprocket.drive.*;
@@ -66,7 +67,17 @@ public class PowerUpRobot extends SprocketRobot {
                 lock.disable();
             }
         });
+
+        super.addAutoMode(new AutoMode("Right Auto"));
+
+        sendAutoModes();
     }
+
+    @Override
+    public void userAutonomousSetup(){
+        
+    }
+
 
     @Override
     public void update(){
