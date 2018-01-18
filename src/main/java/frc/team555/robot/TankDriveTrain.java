@@ -1,6 +1,5 @@
 package frc.team555.robot;
 
-import org.montclairrobotics.sprocket.control.SquaredDriveInput;
 import org.montclairrobotics.sprocket.drive.DriveModule;
 import org.montclairrobotics.sprocket.drive.DriveTrain;
 import org.montclairrobotics.sprocket.drive.TankMapper;
@@ -8,8 +7,6 @@ import org.montclairrobotics.sprocket.geometry.XY;
 import org.montclairrobotics.sprocket.motors.Motor;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-
-import edu.wpi.first.wpilibj.Joystick;
 
 public class TankDriveTrain extends DriveTrain {
 	public TankDriveTrain(int fl, int fr, int bl, int br) {
@@ -19,6 +16,5 @@ public class TankDriveTrain extends DriveTrain {
 		);
 		
 		this.setMapper(new TankMapper());
-		this.setDefaultInput(new SquaredDriveInput(new Joystick(1)));
 	}
 }
