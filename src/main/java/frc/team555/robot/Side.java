@@ -34,4 +34,16 @@ public enum Side {
 	public static Side[] fromDriverStation() {
 		return Side.fromString(DriverStation.getInstance().getGameSpecificMessage());
 	}
+
+	@Override
+	public String toString() {
+		switch (this){
+			case LEFT:
+				return "Left";
+			case RIGHT:
+				return "Right";
+			default:
+				return "Invalid side";
+		}
+	}
 }
