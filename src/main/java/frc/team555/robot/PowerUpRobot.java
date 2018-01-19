@@ -38,13 +38,13 @@ public class PowerUpRobot extends SprocketRobot {
         modules[3] = new DriveModule(new XY(1, 1), Vector.ZERO, new Motor(Hardware.motorDriveFL));
         DriveTrainBuilder dtBuilder = new DriveTrainBuilder();
         dtBuilder.addDriveModule(modules[0]).addDriveModule(modules[1]).addDriveModule(modules[2]).addDriveModule(modules[3]);
+        dtBuilder.setInput(Control.driveInput);
+        dtBuilder.setDriveTrainType(DriveTrainType.TANK);
         try {
             driveTrain = dtBuilder.build();
         } catch (InvalidDriveTrainException e) {
             e.printStackTrace();
         }
-        driveTrain.setMapper(new TankMapper());
-        driveTrain.setDefaultInput(Control.driveInput);
         ArrayList<Step<DTTarget>> steps = new ArrayList<>();
         correction = new GyroCorrection(new Input<Double>() {
             @Override
