@@ -33,8 +33,10 @@ public class PowerUpRobot extends SprocketRobot {
 
         drivetrainFL = new WPI_TalonSRX(frontLeftDeviceNumber);
         drivetrainFR = new WPI_TalonSRX(frontRightDeviceNumber);
+        drivetrainFR.setInverted(true);
         drivetrainBL = new WPI_TalonSRX(backLeftDeviceNumber);
         drivetrainBR = new WPI_TalonSRX(backRightDeviceNumber);
+        drivetrainBR.setInverted(true);
 
         // Drive train setup
         DriveModule dtLeft  = new DriveModule(new XY(-1,0), new XY(0,1), new Motor(drivetrainFL), new Motor(drivetrainBL));
