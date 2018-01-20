@@ -74,7 +74,7 @@ public class PowerUpRobot extends SprocketRobot {
             }
         });
 
-        super.addAutoMode(new AutoMode("Right Auto"));
+        super.addAutoMode(new AutoMode("Dynamic Auto", new DynamicAuto()));
 
         sendAutoModes();
     }

@@ -8,10 +8,11 @@ import org.montclairrobotics.sprocket.states.State;
 import org.montclairrobotics.sprocket.utils.Debug;
 
 
-public class DashboardInput implements State {
+public class DriverStationInput implements State {
     private String dashboardMessage;
-    private Side[] sides;
+    public static Side[] sides;
     private double startTime = 0;
+
 
 
     @Override
