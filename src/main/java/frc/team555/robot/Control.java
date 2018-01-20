@@ -9,8 +9,8 @@ public class Control {
 
     // Port Configuration
     public static int lockButtonID = 1;
-    public static final int driveStickID = 1;
-    public static final int auxStickID   = 2;
+    public static final int driveStickID = 0;
+    public static final int auxStickID   = 1;
 
 
     // Drive Inputs
