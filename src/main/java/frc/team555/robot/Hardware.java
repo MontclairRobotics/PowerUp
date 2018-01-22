@@ -54,24 +54,15 @@ public class Hardware {
 
     public static void init(){
         // Instantiate drive train motors using motor ID's
-<<<<<<< HEAD
         motorDriveBR = new WPI_TalonSRX(DeviceID.motorDriveBR);
+        motorDriveBR.setInverted(true);
         motorDriveBL = new WPI_TalonSRX(DeviceID.motorDriveBL);
         motorDriveFR = new WPI_TalonSRX(DeviceID.motorDriveFR);
-        motorDriveFL = new WPI_TalonSRX(DeviceID.motorDriveFL);
-        
-        navx = new AHRS(DeviceID.navxPort);
-=======
-        motorDriveBR = new WPI_TalonSRX(motorDriveBRID);
-        motorDriveBR.setInverted(true);
-        motorDriveBL = new WPI_TalonSRX(motorDriveBLID);
-        motorDriveFR = new WPI_TalonSRX(motorDriveFRID);
         motorDriveFR.setInverted(true);
-        motorDriveFL = new WPI_TalonSRX(motorDriveFLID);
+        motorDriveFL = new WPI_TalonSRX(DeviceID.motorDriveFL);
 
 
 
-        navx = new AHRS(navxPort);
->>>>>>> 2d9c55aca1a2010615632761bb1af310f3be3d40
+        navx = new AHRS(DeviceID.navxPort);
     }
 }

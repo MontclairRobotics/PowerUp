@@ -13,11 +13,6 @@ public class DriverStationInput implements State {
     public static Side[] sides;
     private double startTime = 0;
 
-<<<<<<< HEAD:src/main/java/frc/team555/robot/DashboardInput.java
-=======
-
-
->>>>>>> 2d9c55aca1a2010615632761bb1af310f3be3d40:src/main/java/frc/team555/robot/DriverStationInput.java
     @Override
     public void start() {
         startTime = Updater.getTime();
