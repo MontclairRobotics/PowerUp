@@ -1,6 +1,5 @@
 ## Power Up Branch: I2 [![Build Status](https://travis-ci.org/MontclairRobotics/PowerUp.svg?branch=i2)](https://travis-ci.org/MontclairRobotics/PowerUp)
 
-
 ## Table of Contents		
  1. [IntelliJ set up](#intellij-set-up)		
  2. [Eclipse set up](#eclipse-set-up)		
@@ -67,9 +66,11 @@ To get these to show in Eclipse's run dropdown, you either need to have ran the 
 
 ## GradleRIO command reference
 
+
 Here's a collection of some useful GradleRIO commands and tips for development. Reading the full documentation [here](https://github.com/Open-RIO/GradleRIO) is recommended.
 
 - `clean` will clean your code.
 - `build` will build your code.
 - `deploy` will build and deploy your code.
+
 - `shuffleboard` will launch Shuffleboard.
