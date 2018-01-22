@@ -72,7 +72,7 @@ public class SteamworksRobot extends SprocketRobot{
 
         // ========= DRIVETRAIN ========= //
 
-        drivetrainFL = new WPI_TalonSRX(frontLeftDeviceNumber);
+        drivetrainFL = new WPI_TalonSRX(frontLeftDeviceNumber)
         drivetrainFR = new WPI_TalonSRX(frontRightDeviceNumber);
         drivetrainBL = new WPI_TalonSRX(backLeftDeviceNumber);
         drivetrainBR = new WPI_TalonSRX(backRightDeviceNumber);
