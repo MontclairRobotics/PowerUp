@@ -3,6 +3,7 @@ package frc.team555.robot;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import org.montclairrobotics.sprocket.SprocketRobot;
 import org.montclairrobotics.sprocket.auto.AutoMode;
+import org.montclairrobotics.sprocket.auto.states.DriveTime;
 import org.montclairrobotics.sprocket.control.ButtonAction;
 import org.montclairrobotics.sprocket.control.SquaredDriveInput;
 import org.montclairrobotics.sprocket.drive.*;
@@ -35,16 +36,23 @@ public class PowerUpRobot extends SprocketRobot {
         /* Build Drive Train */
         
         DriveTrainBuilder dtBuilder = new DriveTrainBuilder();
+<<<<<<< HEAD
         dtBuilder.addDriveModule(new DriveModule(new XY(-1, -1), Vector.ZERO, new Motor(Hardware.motorDriveBL)));
         dtBuilder.addDriveModule(new DriveModule(new XY(1, -1), Vector.ZERO, new Motor(Hardware.motorDriveBR)));
         dtBuilder.addDriveModule(new DriveModule(new XY(-1, 1), Vector.ZERO, new Motor(Hardware.motorDriveFL)));
         dtBuilder.addDriveModule(new DriveModule(new XY(1, 1), Vector.ZERO, new Motor(Hardware.motorDriveFL)));
         
+=======
+        dtBuilder.addDriveModule(modules[0]).addDriveModule(modules[1]).addDriveModule(modules[2]).addDriveModule(modules[3]);
+        dtBuilder.setInput(Control.driveInput);
+        dtBuilder.setDriveTrainType(DriveTrainType.TANK);
+>>>>>>> 2d9c55aca1a2010615632761bb1af310f3be3d40
         try {
             driveTrain = dtBuilder.build();
         } catch (InvalidDriveTrainException e) {
             e.printStackTrace();
         }
+<<<<<<< HEAD
         
         /* Drive Train Configurations: Tank, Control */
         
@@ -53,6 +61,8 @@ public class PowerUpRobot extends SprocketRobot {
         
         /* Drive Train Pipeline: GyroCorrection, Deadzone */
         
+=======
+>>>>>>> 2d9c55aca1a2010615632761bb1af310f3be3d40
         ArrayList<Step<DTTarget>> steps = new ArrayList<>();
         
         correction = new GyroCorrection(new Input<Double>() {
@@ -76,11 +86,18 @@ public class PowerUpRobot extends SprocketRobot {
         Control.lock.setOffAction(new ButtonAction() {
         		@Override public void onAction() { lock.disable(); }
         });
+<<<<<<< HEAD
         
         /* Add and Send AutoModes */
         
         super.addAutoMode(new AutoMode("Right Auto"));
         super.sendAutoModes();
+=======
+
+        super.addAutoMode(new AutoMode("Dynamic Auto",new DriverStationInput(), new DynamicAuto()));
+
+        sendAutoModes();
+>>>>>>> 2d9c55aca1a2010615632761bb1af310f3be3d40
     }
 
     @Override

@@ -8,11 +8,16 @@ import org.montclairrobotics.sprocket.states.State;
 import org.montclairrobotics.sprocket.utils.Debug;
 
 
-public class DashboardInput implements State {
+public class DriverStationInput implements State {
     private String dashboardMessage;
-    private Side[] sides;
+    public static Side[] sides;
     private double startTime = 0;
 
+<<<<<<< HEAD:src/main/java/frc/team555/robot/DashboardInput.java
+=======
+
+
+>>>>>>> 2d9c55aca1a2010615632761bb1af310f3be3d40:src/main/java/frc/team555/robot/DriverStationInput.java
     @Override
     public void start() {
         startTime = Updater.getTime();
@@ -33,6 +38,6 @@ public class DashboardInput implements State {
 
     @Override
     public boolean isDone() {
-        return Updater.getTime() - startTime > 30;
+        return true;
     }
 }
