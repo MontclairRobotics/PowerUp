@@ -79,10 +79,7 @@ public class PowerUpRobot extends SprocketRobot {
         Control.lock.setOffAction(new ButtonAction() {
         		@Override public void onAction() { lock.disable(); }
         });
-
-        super.addAutoMode(new AutoMode("Dynamic Auto",new DriverStationInput(), new DynamicAuto()));
-
-        sendAutoModes();
+        
     }
 
     @Override
