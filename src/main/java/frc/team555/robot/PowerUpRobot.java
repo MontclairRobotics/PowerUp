@@ -26,6 +26,7 @@ public class PowerUpRobot extends SprocketRobot {
     Gyro navx;
     GyroCorrection correction;
     GyroLock lock;
+    CubeIntake intake;
 
     @Override
     public void robotInit(){
@@ -41,7 +42,7 @@ public class PowerUpRobot extends SprocketRobot {
         dtBuilder.setInput(Control.driveInput);
         dtBuilder.setDriveTrainType(DriveTrainType.TANK);
         try {
-            driveTrain = dtBuilder.build();
+            this.driveTrain = dtBuilder.build();
         } catch (InvalidDriveTrainException e) {
             e.printStackTrace();
         }
@@ -72,10 +73,14 @@ public class PowerUpRobot extends SprocketRobot {
                 lock.disable();
             }
         });
+        
+        this.intake = new CubeIntake();
     }
 
     @Override
     public void update(){
+    		driveTrain.update();
+    		intake.update();
         lock.update();
     }
 }

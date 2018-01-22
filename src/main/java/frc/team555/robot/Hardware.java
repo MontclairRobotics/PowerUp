@@ -36,13 +36,16 @@ public class Hardware {
     // Device Port configuration
     // ============================
 
-    //Drive Train Motor IDS
+    // Drive Train Motor IDs
     public static final int motorDriveBRID = 1;
     public static final int motorDriveBLID = 2;
     public static final int motorDriveFRID = 3;
     public static final int motorDriveFLID = 4;
 
-
+    // Power Cube Intake Motor IDs
+    public static final int motorIntakeLID = 5;
+    public static final int motorIntakeRID = 6;
+    
     // Gyro ID
     public static final SPI.Port navxPort = SPI.Port.kMXP;
 
@@ -51,12 +54,17 @@ public class Hardware {
     // Motor configuration
     // ============================
 
-    // Drive Train Motors
+    // Drive Train Motor Controllers
     public static WPI_TalonSRX motorDriveBR;
     public static WPI_TalonSRX motorDriveBL;
     public static WPI_TalonSRX motorDriveFR;
     public static WPI_TalonSRX motorDriveFL;
 
+    // Power Cube Intake Motor Controllers
+    public static WPI_TalonSRX motorIntakeL;
+    public static WPI_TalonSRX motorIntakeR;
+    
+    // Gyroscope
     public static AHRS navx;
 
     public static void init(){
@@ -68,7 +76,9 @@ public class Hardware {
         motorDriveFR.setInverted(true);
         motorDriveFL = new WPI_TalonSRX(motorDriveFLID);
 
-
+        motorIntakeL = new WPI_TalonSRX(motorIntakeLID);
+        motorIntakeL.setInverted(true);
+        motorIntakeR = new WPI_TalonSRX(motorIntakeRID);
 
         navx = new AHRS(navxPort);
     }
