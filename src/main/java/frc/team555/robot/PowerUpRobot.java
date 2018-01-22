@@ -33,13 +33,11 @@ public class PowerUpRobot extends SprocketRobot {
     public void robotInit(){
         Hardware.init();
         Control.init();
-        DriveModule[] modules = new DriveModule[4];
-        modules[0] = new DriveModule(new XY(-1, -1), Vector.ZERO, new Motor(Hardware.motorDriveBL));
-        modules[1] = new DriveModule(new XY(1, -1), Vector.ZERO, new Motor(Hardware.motorDriveBR));
-        modules[2] = new DriveModule(new XY(-1, 1), Vector.ZERO, new Motor(Hardware.motorDriveFL));
-        modules[3] = new DriveModule(new XY(1, 1), Vector.ZERO, new Motor(Hardware.motorDriveFL));
+        DriveModule[] modules = new DriveModule[2];
+        modules[0] = new DriveModule(new XY(-1, 0), new XY(0, 1), new Motor(Hardware.motorDriveBL), new Motor(Hardware.motorDriveFL));
+        modules[1] = new DriveModule(new XY(1, 0), new XY(0, 1), new Motor(Hardware.motorDriveBR), new Motor(Hardware.motorDriveFR));
         DriveTrainBuilder dtBuilder = new DriveTrainBuilder();
-        dtBuilder.addDriveModule(modules[0]).addDriveModule(modules[1]).addDriveModule(modules[2]).addDriveModule(modules[3]);
+        dtBuilder.addDriveModule(modules[0]).addDriveModule(modules[1]);
         dtBuilder.setInput(Control.driveInput);
         dtBuilder.setDriveTrainType(DriveTrainType.TANK);
         try {
