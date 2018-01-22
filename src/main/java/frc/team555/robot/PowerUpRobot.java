@@ -3,6 +3,7 @@ package frc.team555.robot;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import org.montclairrobotics.sprocket.SprocketRobot;
 import org.montclairrobotics.sprocket.auto.AutoMode;
+import org.montclairrobotics.sprocket.auto.states.DriveTime;
 import org.montclairrobotics.sprocket.control.ButtonAction;
 import org.montclairrobotics.sprocket.control.SquaredDriveInput;
 import org.montclairrobotics.sprocket.drive.*;
@@ -74,7 +75,7 @@ public class PowerUpRobot extends SprocketRobot {
             }
         });
 
-        super.addAutoMode(new AutoMode("Dynamic Auto", new DynamicAuto()));
+        super.addAutoMode(new AutoMode("Dynamic Auto",new DriverStationInput(), new DynamicAuto()));
 
         sendAutoModes();
     }

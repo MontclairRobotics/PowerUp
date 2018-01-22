@@ -7,9 +7,10 @@ import org.montclairrobotics.sprocket.states.State;
 import org.montclairrobotics.sprocket.states.StateMachine;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class DynamicAuto implements State {
-    ArrayList<State> states = new ArrayList<>();
+    ArrayList<State> states = new ArrayList<State>();
     AutoMode rightAuto;
 
 
@@ -24,7 +25,7 @@ public class DynamicAuto implements State {
                 break;
         }
 
-        rightAuto = new AutoMode("Right Auto", (State[])states.toArray());
+        rightAuto = new AutoMode("Right Auto", states.toArray(new State[states.size()]));
         rightAuto.start();
     }
 

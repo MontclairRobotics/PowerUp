@@ -35,6 +35,6 @@ public class DriverStationInput implements State {
 
     @Override
     public boolean isDone() {
-        return Updater.getTime() - startTime > 30;
+        return true;
     }
 }
