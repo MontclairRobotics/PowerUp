@@ -22,7 +22,6 @@ import org.montclairrobotics.sprocket.utils.PID;
 import java.util.ArrayList;
 
 public class PowerUpRobot extends SprocketRobot {
-
     Hardware hardware;
     DriveTrain driveTrain;
     Gyro navx;
@@ -38,6 +37,9 @@ public class PowerUpRobot extends SprocketRobot {
         modules[1] = new DriveModule(new XY(1, 0), new XY(0, 1), new Motor(Hardware.motorDriveBR), new Motor(Hardware.motorDriveFR));
         DriveTrainBuilder dtBuilder = new DriveTrainBuilder();
         dtBuilder.addDriveModule(modules[0]).addDriveModule(modules[1]);
+
+        /* Build Drive Train */
+
         dtBuilder.setInput(Control.driveInput);
         dtBuilder.setDriveTrainType(DriveTrainType.TANK);
         try {
@@ -45,32 +47,37 @@ public class PowerUpRobot extends SprocketRobot {
         } catch (InvalidDriveTrainException e) {
             e.printStackTrace();
         }
+
+        /* Drive Train Configurations: Tank, Control */
+        
+        driveTrain.setMapper(new TankMapper());
+        driveTrain.setDefaultInput(Control.driveInput);
+        
+        /* Drive Train Pipeline: GyroCorrection, Deadzone */
+        
+
         ArrayList<Step<DTTarget>> steps = new ArrayList<>();
+        
         correction = new GyroCorrection(new Input<Double>() {
-            @Override
+            	@Override
             public Double get() {
-                return (double)Hardware.navx.getYaw();
+                return (double) Hardware.navx.getYaw();
             }
         }, new PID(0, 0, 0), 90, 1);
+        
         lock = new GyroLock(correction);
         steps.add(correction);
         steps.add(new Deadzone());
-        DTPipeline pipeline;
         driveTrain.setPipeline(new DTPipeline(steps));
 
-
+        /* Enabling and Disabling GyroLock */
+        
         Control.lock.setHeldAction(new ButtonAction() {
-            @Override
-            public void onAction() {
-                lock.enable();
-            }
+            @Override public void onAction() { lock.enable(); }
         });
 
         Control.lock.setOffAction(new ButtonAction() {
-            @Override
-            public void onAction() {
-                lock.disable();
-            }
+        		@Override public void onAction() { lock.disable(); }
         });
 
         super.addAutoMode(new AutoMode("Dynamic Auto",new DriverStationInput(), new DynamicAuto()));
@@ -85,7 +92,7 @@ public class PowerUpRobot extends SprocketRobot {
 
 
     @Override
-    public void update(){
+    public void update() {
         lock.update();
     }
 }
