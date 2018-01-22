@@ -79,12 +79,7 @@ public class PowerUpRobot extends SprocketRobot {
         Control.lock.setOffAction(new ButtonAction() {
         		@Override public void onAction() { lock.disable(); }
         });
-        
-    }
 
-    @Override
-    public void userAutonomousSetup(){
-        
     }
 
 
