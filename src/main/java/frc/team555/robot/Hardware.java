@@ -32,6 +32,7 @@ import edu.wpi.first.wpilibj.SPI;
  *
  */
 public class Hardware {
+
     // ============================
     // Device Port configuration
     // ============================
@@ -55,6 +56,7 @@ public class Hardware {
     // ============================
 
     // Drive Train Motor Controllers
+
     public static WPI_TalonSRX motorDriveBR;
     public static WPI_TalonSRX motorDriveBL;
     public static WPI_TalonSRX motorDriveFR;
@@ -63,23 +65,23 @@ public class Hardware {
     // Power Cube Intake Motor Controllers
     public static WPI_TalonSRX motorIntakeL;
     public static WPI_TalonSRX motorIntakeR;
-    
+
     // Gyroscope
     public static AHRS navx;
 
     public static void init(){
         // Instantiate drive train motors using motor ID's
-        motorDriveBR = new WPI_TalonSRX(motorDriveBRID);
+        motorDriveBR = new WPI_TalonSRX(DeviceID.motorDriveBR);
         motorDriveBR.setInverted(true);
-        motorDriveBL = new WPI_TalonSRX(motorDriveBLID);
-        motorDriveFR = new WPI_TalonSRX(motorDriveFRID);
+        motorDriveBL = new WPI_TalonSRX(DeviceID.motorDriveBL);
+        motorDriveFR = new WPI_TalonSRX(DeviceID.motorDriveFR);
         motorDriveFR.setInverted(true);
-        motorDriveFL = new WPI_TalonSRX(motorDriveFLID);
+        motorDriveFL = new WPI_TalonSRX(DeviceID.motorDriveFL);
 
         motorIntakeL = new WPI_TalonSRX(motorIntakeLID);
         motorIntakeL.setInverted(true);
         motorIntakeR = new WPI_TalonSRX(motorIntakeRID);
 
-        navx = new AHRS(navxPort);
+        navx = new AHRS(DeviceID.navxPort);
     }
 }
