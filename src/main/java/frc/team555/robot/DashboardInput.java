@@ -13,7 +13,6 @@ public class DashboardInput implements State {
     private Side[] sides;
     private double startTime = 0;
 
-
     @Override
     public void start() {
         startTime = Updater.getTime();

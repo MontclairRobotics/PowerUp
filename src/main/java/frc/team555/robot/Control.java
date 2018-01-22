@@ -12,18 +12,15 @@ public class Control {
     public static final int driveStickID = 1;
     public static final int auxStickID   = 2;
 
-
     // Drive Inputs
     public static DTInput driveInput;
     public static Button lock;
-
-
 
     // Joystick Declaration
     public static Joystick driveStick;
     public static Joystick auxStick;
 
-    public static void init(){
+    public static void init() {
 
         // ==================
         // Joystick Creation
@@ -49,7 +46,7 @@ public class Control {
         };
 
 
-        // Aux Buttons
+        // Auxiliary Buttons
 
     }
 }
