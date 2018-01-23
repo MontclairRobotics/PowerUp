@@ -15,10 +15,13 @@ import org.montclairrobotics.sprocket.motors.Motor;
 public class SteamworksRobot extends SprocketRobot{
 
     // DT IDs
-    public static final int frontLeftDeviceNumber  = 3;
-    public static final int frontRightDeviceNumber = 1;
-    public static final int backLeftDeviceNumber   = 4;
+    public static final int backLeftDeviceNumber   = 1;
     public static final int backRightDeviceNumber  = 2;
+    public static final int frontRightDeviceNumber = 3;
+    public static final int frontLeftDeviceNumber  = 4;
+
+
+
 
     // Joysticks IDs
     public static final int driveStickDeviceNumber = 0;
