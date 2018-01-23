@@ -78,7 +78,7 @@ public class SteamworksRobot extends SprocketRobot{
         drivetrainBR = new WPI_TalonSRX(backRightDeviceNumber);
 
         // Drive train setup
-        DriveModule dtLeft  = new DriveModule(new XY(-1,0), new XY(0,-1), new Motor(drivetrainFL), new Motor(drivetrainBL));
+        DriveModule dtLeft  = new DriveModule(new XY(-1,0), new XY(0,1), new Motor(drivetrainFL), new Motor(drivetrainBL));
         DriveModule dtRight = new DriveModule(new XY( 1,0), new XY(0, 1), new Motor(drivetrainFR), new Motor(drivetrainBR));
 
         DriveTrainBuilder dtBuilder = new DriveTrainBuilder();
