@@ -67,8 +67,8 @@ public class Hardware {
         motorDriveFR.setInverted(true);
         motorDriveFL = new WPI_TalonSRX(DeviceID.motorDriveFL);
 
-        backLeftEncoder   = new SEncoder(new Encoder(0,1),1636/103);
-        frontRightEncoder = new SEncoder(new Encoder(3,2), 1636/103);
+        backLeftEncoder   = new SEncoder(new Encoder(0,1),6544.0/143.0);
+        frontRightEncoder = new SEncoder(new Encoder(3,2), 6544.0/143.0);
 
         navx = new NavXInput(DeviceID.navxPort);
     }

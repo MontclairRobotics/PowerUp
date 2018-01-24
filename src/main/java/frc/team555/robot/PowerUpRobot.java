@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.montclairrobotics.sprocket.SprocketRobot;
 import org.montclairrobotics.sprocket.auto.AutoMode;
 import org.montclairrobotics.sprocket.auto.states.DriveEncoderGyro;
+import org.montclairrobotics.sprocket.auto.states.DriveEncoders;
 import org.montclairrobotics.sprocket.auto.states.DriveTime;
 import org.montclairrobotics.sprocket.control.ButtonAction;
 import org.montclairrobotics.sprocket.control.SquaredDriveInput;
@@ -106,6 +107,9 @@ public class PowerUpRobot extends SprocketRobot {
                         0,
                         correction));
 
+        AutoMode fuck = new AutoMode("Fuck this",
+                new DriveEncoders(100,1,0,0));
+
         AutoMode centerRight = new AutoMode("Center Right",
                 new DriveEncoderGyro(new Distance(30),
                         Angle.ZERO,
@@ -131,6 +135,7 @@ public class PowerUpRobot extends SprocketRobot {
 
         super.addAutoMode(autoDrive);
         super.addAutoMode(centerRight);
+        super.addAutoMode(fuck);
         sendAutoModes();
     }
 
@@ -138,8 +143,8 @@ public class PowerUpRobot extends SprocketRobot {
     @Override
     public void update() {
         lock.update();
-
-        SmartDashboard.putNumber("Left Encoder", Hardware.backLeftEncoder.getTicks());
-        SmartDashboard.putNumber("Right Encoder", Hardware.frontRightEncoder.getTicks());
+        SmartDashboard.putNumber("Distance", driveTrain.getDistance().getY());
+        SmartDashboard.putNumber("Left Encoder", Hardware.backLeftEncoder.getInches().get());
+        SmartDashboard.putNumber("Right Encoder", Hardware.frontRightEncoder.getInches().get());
     }
 }
