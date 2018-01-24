@@ -96,14 +96,42 @@ public class PowerUpRobot extends SprocketRobot {
         		@Override public void onAction() { lock.disable(); }
         });
 
+        //Auto
         AutoMode autoDrive = new AutoMode("Auto Drive",
-                new DriveEncoderGyro(new Distance(100),
+                new DriveEncoderGyro(new Distance(120),
                         Angle.ZERO,
                         true,
                         1,
                         0,
                         0,
                         correction));
+
+        AutoMode centerRight = new AutoMode("Center Right",
+                new DriveEncoderGyro(new Distance(30),
+                        Angle.ZERO,
+                        true,
+                        1,
+                        0,
+                        0,
+                        correction),
+                new DriveEncoderGyro(new Distance(88),
+                        Angle.QUARTER,
+                        true,
+                        1,
+                        0,
+                        0,
+                        correction),
+                new DriveEncoderGyro(new Distance(90),
+                        Angle.QUARTER.negative(),
+                        true,
+                        1,
+                        0,
+                        0,
+                        correction));
+
+        super.addAutoMode(autoDrive);
+        super.addAutoMode(centerRight);
+        sendAutoModes();
     }
 
 
