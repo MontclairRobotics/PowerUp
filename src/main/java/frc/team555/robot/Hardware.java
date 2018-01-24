@@ -3,9 +3,11 @@ package frc.team555.robot;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SPI;
+import org.montclairrobotics.sprocket.motors.SEncoder;
 
 /**
  * The hardware class is in charge of storing all hardware
@@ -49,8 +51,12 @@ public class Hardware {
     public static WPI_TalonSRX motorDriveFR;
     public static WPI_TalonSRX motorDriveFL;
 
+    //Encoders
+    public static SEncoder backLeftEncoder;
+    public static SEncoder frontRightEncoder;
+
     // Gyroscope
-    public static AHRS navx;
+    public static NavXInput navx;
 
     public static void init(){
         // Instantiate drive train motors using motor ID's
@@ -61,8 +67,9 @@ public class Hardware {
         motorDriveFR.setInverted(true);
         motorDriveFL = new WPI_TalonSRX(DeviceID.motorDriveFL);
 
+        backLeftEncoder   = new SEncoder(new Encoder(0,1),1636/103);
+        frontRightEncoder = new SEncoder(new Encoder(3,2), 1636/103);
 
-
-        navx = new AHRS(DeviceID.navxPort);
+        navx = new NavXInput(DeviceID.navxPort);
     }
 }
