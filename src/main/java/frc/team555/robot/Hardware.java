@@ -3,9 +3,11 @@ package frc.team555.robot;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SPI;
+import org.montclairrobotics.sprocket.motors.SEncoder;
 
 /**
  * The hardware class is in charge of storing all hardware
@@ -34,10 +36,10 @@ import edu.wpi.first.wpilibj.SPI;
 public class Hardware {
 	private static class DeviceID {
 		// Drive Train Motor IDS
-	    public static final int motorDriveBR = 1;
-	    public static final int motorDriveBL = 2;
-	    public static final int motorDriveFR = 3;
-	    public static final int motorDriveFL = 4;
+	    public static final int motorDriveBR = 4;
+	    public static final int motorDriveBL = 3;
+	    public static final int motorDriveFR = 2;
+	    public static final int motorDriveFL = 1;
 	    
 	    // Gyroscope ID
 	    public static final SPI.Port navxPort = SPI.Port.kMXP;
@@ -49,8 +51,12 @@ public class Hardware {
     public static WPI_TalonSRX motorDriveFR;
     public static WPI_TalonSRX motorDriveFL;
 
+    // Encoders
+    public static SEncoder rightEncoder;
+    public static SEncoder leftEncoder;
+
     // Gyroscope
-    public static AHRS navx;
+    public static NavXInput navx;
 
     public static void init(){
         // Instantiate drive train motors using motor ID's
@@ -61,8 +67,9 @@ public class Hardware {
         motorDriveFR.setInverted(true);
         motorDriveFL = new WPI_TalonSRX(DeviceID.motorDriveFL);
 
+        rightEncoder = new SEncoder(new Encoder(3,2),6544.0/143.0);
+        leftEncoder  = new SEncoder(new Encoder(0,1),6544.0/143.0);
 
-
-        navx = new AHRS(DeviceID.navxPort);
+        navx = new NavXInput(DeviceID.navxPort);
     }
 }
