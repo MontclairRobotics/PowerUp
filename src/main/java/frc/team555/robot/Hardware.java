@@ -46,7 +46,17 @@ public class Hardware {
     // Power Cube Intake Motor IDs
     public static final int motorIntakeLID = 5;
     public static final int motorIntakeRID = 6;
-    
+
+    // Lift Motor IDs TODO: electronics spreadsheet
+    public static final int motorLiftRID   = 0;
+    public static final int motorLiftLID   = 0;
+
+
+    // Output Motor IDs TODO: electronics spreadsheet
+    public static final int motorOutputRID = 0;
+    public static final int motorOutputLID = 0;
+
+
     // Gyro ID
     public static final SPI.Port navxPort = SPI.Port.kMXP;
 
@@ -66,6 +76,15 @@ public class Hardware {
     public static WPI_TalonSRX motorIntakeL;
     public static WPI_TalonSRX motorIntakeR;
 
+    // Lift Motor Controllers
+    public static WPI_TalonSRX motorLiftR;
+    public static WPI_TalonSRX motorLiftL;
+
+    // Output Motor Controllers
+    public static WPI_TalonSRX motorOutputR;
+    public static WPI_TalonSRX motorOutputL;
+
+
     // Gyroscope
     public static AHRS navx;
 
@@ -78,9 +97,20 @@ public class Hardware {
         motorDriveFR.setInverted(true);
         motorDriveFL = new WPI_TalonSRX(motorDriveFLID);
 
+
+        // Instantiate intake motors using motor ID's
         motorIntakeL = new WPI_TalonSRX(motorIntakeLID);
         motorIntakeL.setInverted(true);
         motorIntakeR = new WPI_TalonSRX(motorIntakeRID);
+
+        // Instantiate lift motors using motor ID's
+        motorLiftR = new WPI_TalonSRX(motorLiftRID);
+        motorLiftL = new WPI_TalonSRX(motorLiftLID);
+
+        // Instantiate output motors using motor ID's
+        motorOutputR = new WPI_TalonSRX(motorOutputRID);
+        motorOutputR = new WPI_TalonSRX(motorOutputRID);
+
 
         navx = new AHRS(navxPort);
     }

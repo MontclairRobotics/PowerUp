@@ -16,13 +16,7 @@ public class CubeIntake implements Updatable, Togglable {
 	public CubeIntake() {
 		this.left = new Motor(Hardware.motorIntakeL);
 		this.right = new Motor(Hardware.motorIntakeR);
-		
-		this.power = new Input<Double>() {
-			@Override
-			public Double get() {
-				return -Control.auxStick.getY();
-			}
-		};
+		this.power = Control.intakeInput;
 		
 		Updater.add(this, Priority.CALC);
 	}

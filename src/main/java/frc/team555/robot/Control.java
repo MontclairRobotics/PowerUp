@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.Joystick;
 import org.montclairrobotics.sprocket.control.Button;
 import org.montclairrobotics.sprocket.control.SquaredDriveInput;
 import org.montclairrobotics.sprocket.drive.DTInput;
+import org.montclairrobotics.sprocket.utils.Input;
 
 
 public class Control {
@@ -20,6 +21,12 @@ public class Control {
     // Joystick Declaration
     public static Joystick driveStick;
     public static Joystick auxStick;
+
+
+    // Inputs
+    public static Input<Double> intakeInput;
+    public static Input<Double> liftInput;
+
 
     public static void init() {
 
@@ -48,6 +55,13 @@ public class Control {
 
 
         // Auxiliary Buttons
+
+
+        // Inputs
+
+        intakeInput = () -> auxStick.getY();
+
+
 
     }
 }
