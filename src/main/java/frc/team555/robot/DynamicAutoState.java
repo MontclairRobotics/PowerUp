@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.montclairrobotics.sprocket.auto.AutoMode;
 import org.montclairrobotics.sprocket.auto.states.DriveTime;
+import org.montclairrobotics.sprocket.auto.states.Enable;
 import org.montclairrobotics.sprocket.loop.Updater;
 import org.montclairrobotics.sprocket.states.State;
 import org.montclairrobotics.sprocket.states.StateMachine;
@@ -30,7 +31,6 @@ public class DynamicAutoState implements State {
                 Debug.msg("Value", "Left");
                 break;
         }
-
         int stateSize = states.size();
         rightAuto = new StateMachine(false,  states.toArray(new State[stateSize]));
         states = new ArrayList<State>();
