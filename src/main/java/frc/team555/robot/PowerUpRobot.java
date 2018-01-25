@@ -42,7 +42,7 @@ public class PowerUpRobot extends SprocketRobot {
         DriveModule[] modules = new DriveModule[2];
 
         modules[0] = new DriveModule(new XY(-1, 0),
-                new XY(0, 1),
+                new XY(0, -1),
                 Hardware.backLeftEncoder,
                 new PID(0,0,0),
                 Module.MotorInputType.PERCENT,
@@ -50,7 +50,7 @@ public class PowerUpRobot extends SprocketRobot {
                 new Motor(Hardware.motorDriveFL));
 
         modules[1] = new DriveModule(new XY(1, 0),
-                new XY(0, 1),
+                new XY(0, -1),
                 Hardware.frontRightEncoder,
                 new PID(0,0,0),
                 Module.MotorInputType.PERCENT,
@@ -107,35 +107,11 @@ public class PowerUpRobot extends SprocketRobot {
                         0,
                         correction));
 
-        AutoMode fuck = new AutoMode("Fuck this",
+        AutoMode encoder = new AutoMode("encoder",
                 new DriveEncoders(100,1,0,0));
 
-        AutoMode centerRight = new AutoMode("Center Right",
-                new DriveEncoderGyro(new Distance(30),
-                        Angle.ZERO,
-                        true,
-                        1,
-                        0,
-                        0,
-                        correction),
-                new DriveEncoderGyro(new Distance(88),
-                        Angle.QUARTER,
-                        true,
-                        1,
-                        0,
-                        0,
-                        correction),
-                new DriveEncoderGyro(new Distance(90),
-                        Angle.QUARTER.negative(),
-                        true,
-                        1,
-                        0,
-                        0,
-                        correction));
-
-        super.addAutoMode(autoDrive);
-        super.addAutoMode(centerRight);
-        super.addAutoMode(fuck);
+        addAutoMode(encoder);
+        addAutoMode(autoDrive);
         sendAutoModes();
     }
 

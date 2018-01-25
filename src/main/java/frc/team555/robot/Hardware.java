@@ -36,10 +36,10 @@ import org.montclairrobotics.sprocket.motors.SEncoder;
 public class Hardware {
 	private static class DeviceID {
 		// Drive Train Motor IDS
-	    public static final int motorDriveBR = 1;
-	    public static final int motorDriveBL = 2;
-	    public static final int motorDriveFR = 3;
-	    public static final int motorDriveFL = 4;
+	    public static final int motorDriveBR = 3;
+	    public static final int motorDriveBL = 4;
+	    public static final int motorDriveFR = 1;
+	    public static final int motorDriveFL = 2;
 	    
 	    // Gyroscope ID
 	    public static final SPI.Port navxPort = SPI.Port.kMXP;
