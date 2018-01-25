@@ -20,7 +20,7 @@ public class DynamicAutoState implements State {
     @Override
     public void start() {
         SmartDashboard.putString("I got here","Yes I did");
-        switch (DriverStationInput.sides[0]){
+        switch (Side.fromDriverStation()[0]){
             case RIGHT:
                 states.add(new DriveTime(1, .1));
                 Debug.msg("Value","Right");

@@ -32,37 +32,56 @@ import edu.wpi.first.wpilibj.SPI;
  *
  */
 public class Hardware {
-	private static class DeviceID {
-		// Drive Train Motor IDS
-	    public static final int motorDriveBR = 1;
-	    public static final int motorDriveBL = 2;
-	    public static final int motorDriveFR = 3;
-	    public static final int motorDriveFL = 4;
-	    
-	    // Gyroscope ID
-	    public static final SPI.Port navxPort = SPI.Port.kMXP;
-	}
+
+    // ============================
+    // Device Port configuration
+    // ============================
+
+    // Drive Train Motor IDs
+    public static final int motorDriveBRID = 1;
+    public static final int motorDriveBLID = 2;
+    public static final int motorDriveFRID = 3;
+    public static final int motorDriveFLID = 4;
+
+    // Power Cube Intake Motor IDs
+    public static final int motorIntakeLID = 5;
+    public static final int motorIntakeRID = 6;
     
-    // Drive Train Motors
+    // Gyro ID
+    public static final SPI.Port navxPort = SPI.Port.kMXP;
+
+
+    // ============================
+    // Motor configuration
+    // ============================
+
+    // Drive Train Motor Controllers
+
     public static WPI_TalonSRX motorDriveBR;
     public static WPI_TalonSRX motorDriveBL;
     public static WPI_TalonSRX motorDriveFR;
     public static WPI_TalonSRX motorDriveFL;
+
+    // Power Cube Intake Motor Controllers
+    public static WPI_TalonSRX motorIntakeL;
+    public static WPI_TalonSRX motorIntakeR;
 
     // Gyroscope
     public static AHRS navx;
 
     public static void init(){
         // Instantiate drive train motors using motor ID's
-        motorDriveBR = new WPI_TalonSRX(DeviceID.motorDriveBR);
+        motorDriveBR = new WPI_TalonSRX(motorDriveBRID);
         motorDriveBR.setInverted(true);
-        motorDriveBL = new WPI_TalonSRX(DeviceID.motorDriveBL);
-        motorDriveFR = new WPI_TalonSRX(DeviceID.motorDriveFR);
+        motorDriveBL = new WPI_TalonSRX(motorDriveBLID);
+        motorDriveFR = new WPI_TalonSRX(motorDriveFRID);
         motorDriveFR.setInverted(true);
-        motorDriveFL = new WPI_TalonSRX(DeviceID.motorDriveFL);
+        motorDriveFL = new WPI_TalonSRX(motorDriveFLID);
 
+        motorIntakeL = new WPI_TalonSRX(motorIntakeLID);
+        motorIntakeL.setInverted(true);
+        motorIntakeR = new WPI_TalonSRX(motorIntakeRID);
 
-
-        navx = new AHRS(DeviceID.navxPort);
+        navx = new AHRS(navxPort);
     }
 }
