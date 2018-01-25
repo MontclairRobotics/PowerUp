@@ -80,7 +80,7 @@ public class PowerUpRobot extends SprocketRobot {
 
         ArrayList<Step<DTTarget>> steps = new ArrayList<>();
         
-        correction = new GyroCorrection(Hardware.navx, new PID(1, 0, 0), 90, 1);
+        correction = new GyroCorrection(Hardware.navx, new PID(-1.5, 0, -0.0015), 90, 1);
         lock = new GyroLock(correction);
         steps.add(correction);
         steps.add(new Deadzone());
@@ -119,7 +119,7 @@ public class PowerUpRobot extends SprocketRobot {
     public void update() {
         lock.update();
         SmartDashboard.putNumber("Distance", driveTrain.getDistance().getY());
-        SmartDashboard.putNumber("Left Encoder", Hardware.backLeftEncoder.getInches().get());
-        SmartDashboard.putNumber("Right Encoder", Hardware.frontRightEncoder.getInches().get());
+        SmartDashboard.putNumber("Left Encoder", Hardware.leftEncoder.getInches().get());
+        SmartDashboard.putNumber("Right Encoder", Hardware.rightEncoder.getInches().get());
     }
 }
