@@ -73,7 +73,7 @@ public class PowerUpRobot extends SprocketRobot {
 
         ArrayList<Step<DTTarget>> steps = new ArrayList<>();
         
-        correction = new GyroCorrection(Hardware.navx, new PID(1, 0, 0), 90, 1);
+        correction = new GyroCorrection(Hardware.navx, new PID(-1.5, 0, -0.0015), 90, 1);
         
         lock = new GyroLock(correction);
         steps.add(correction);
