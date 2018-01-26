@@ -42,7 +42,7 @@ public class PowerUpRobot extends SprocketRobot {
         DriveModule[] modules = new DriveModule[2];
 
         modules[0] = new DriveModule(new XY(-1, 0),
-                new XY(0, -1),
+                new XY(0, 1),
                 Hardware.leftEncoder,
                 new PID(0.5,0,0),
                 Module.MotorInputType.PERCENT,
@@ -50,7 +50,7 @@ public class PowerUpRobot extends SprocketRobot {
                 new Motor(Hardware.motorDriveFL));
 
         modules[1] = new DriveModule(new XY(1, 0),
-                new XY(0, -1),
+                new XY(0, 1),
                 Hardware.rightEncoder,
                 new PID(0.5,0,0),
                 Module.MotorInputType.PERCENT,
@@ -97,19 +97,19 @@ public class PowerUpRobot extends SprocketRobot {
         });
 
         //Auto
+        final double driveSpeed = 0.4;
+        final int maxEncAccel = 10;
+        final int maxTicksPerSec = 10;
         AutoMode autoDrive = new AutoMode("Auto Drive",
                 new DriveEncoderGyro(new Distance(120),
                         Angle.ZERO,
                         true,
-                        1,
-                        0,
-                        0,
+                        driveSpeed,
+                        maxEncAccel,
+                        maxTicksPerSec,
                         correction));
 
-        AutoMode encoder = new AutoMode("encoder",
-                new DriveEncoders(100,1,0,0));
 
-        addAutoMode(encoder);
         addAutoMode(autoDrive);
         sendAutoModes();
     }
