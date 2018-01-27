@@ -42,7 +42,7 @@ public class PowerUpRobot extends SprocketRobot {
         DriveModule[] modules = new DriveModule[2];
 
         modules[0] = new DriveModule(new XY(-1, 0),
-                new XY(0, -1),
+                new XY(0, 1),
                 Hardware.leftEncoder,
                 new PID(0.5,0,0),
                 Module.MotorInputType.PERCENT,
@@ -50,7 +50,7 @@ public class PowerUpRobot extends SprocketRobot {
                 new Motor(Hardware.motorDriveFL));
 
         modules[1] = new DriveModule(new XY(1, 0),
-                new XY(0, -1),
+                new XY(0, 1),
                 Hardware.rightEncoder,
                 new PID(0.5,0,0),
                 Module.MotorInputType.PERCENT,
@@ -80,7 +80,7 @@ public class PowerUpRobot extends SprocketRobot {
 
         ArrayList<Step<DTTarget>> steps = new ArrayList<>();
         
-        correction = new GyroCorrection(Hardware.navx, new PID(-1.5, 0, -0.0015), 90, 1);
+        correction = new GyroCorrection(Hardware.navx, new PID(1.5, 0, 0.0015), 90, 1);
         lock = new GyroLock(correction);
         steps.add(correction);
         steps.add(new Deadzone());

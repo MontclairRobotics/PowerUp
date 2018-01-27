@@ -36,11 +36,14 @@ import org.montclairrobotics.sprocket.motors.SEncoder;
 public class Hardware {
 	private static class DeviceID {
 		// Drive Train Motor IDS
-	    public static final int motorDriveBR = 4;
+	    /*public static final int motorDriveBR = 4;
 	    public static final int motorDriveBL = 3;
 	    public static final int motorDriveFR = 2;
-	    public static final int motorDriveFL = 1;
-
+	    public static final int motorDriveFL = 1;*/
+        public static final int motorDriveBR = 4;
+        public static final int motorDriveBL = 3;
+        public static final int motorDriveFR = 2;
+        public static final int motorDriveFL = 1;
 	    // Gyroscope ID
 	    public static final SPI.Port navxPort = SPI.Port.kMXP;
 	}
@@ -61,11 +64,11 @@ public class Hardware {
     public static void init(){
         // Instantiate drive train motors using motor ID's
         motorDriveBR = new WPI_TalonSRX(DeviceID.motorDriveBR);
-        motorDriveBR.setInverted(true);
         motorDriveBL = new WPI_TalonSRX(DeviceID.motorDriveBL);
         motorDriveFR = new WPI_TalonSRX(DeviceID.motorDriveFR);
-        motorDriveFR.setInverted(true);
         motorDriveFL = new WPI_TalonSRX(DeviceID.motorDriveFL);
+        motorDriveBR.setInverted(true);
+        motorDriveFR.setInverted(true);
 
         rightEncoder = new SEncoder(new Encoder(3,2),6544.0/143.0);
         leftEncoder  = new SEncoder(new Encoder(0,1),6544.0/143.0);
