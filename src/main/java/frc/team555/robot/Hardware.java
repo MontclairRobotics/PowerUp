@@ -3,9 +3,11 @@ package frc.team555.robot;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
+import edu.wpi.first.wpilibj.Encoder;
 import edu.wpi.first.wpilibj.I2C;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.SPI;
+import org.montclairrobotics.sprocket.motors.SEncoder;
 
 /**
  * The hardware class is in charge of storing all hardware
@@ -33,20 +35,20 @@ import edu.wpi.first.wpilibj.SPI;
  */
 public class Hardware {
 
-    // ============================
-    // Device Port configuration
-    // ============================
+	private static class DeviceID {
+		// Drive Train Motor IDS
+	    /*public static final int motorDriveBR = 4;
+	    public static final int motorDriveBL = 3;
+	    public static final int motorDriveFR = 2;
+	    public static final int motorDriveFL = 1;*/
+        public static final int motorDriveBR = 4;
+        public static final int motorDriveBL = 3;
+        public static final int motorDriveFR = 2;
+        public static final int motorDriveFL = 1;
+	    // Gyroscope ID
+	    public static final SPI.Port navxPort = SPI.Port.kMXP;
+	}
 
-    // Drive Train Motor IDs
-    public static final int motorDriveBRID = 1;
-    public static final int motorDriveBLID = 2;
-    public static final int motorDriveFRID = 3;
-    public static final int motorDriveFLID = 4;
-
-    // Power Cube Intake Motor IDs
-    public static final int motorIntakeLID = 5;
-    public static final int motorIntakeRID = 6;
-    
     // Gyro ID
     public static final SPI.Port navxPort = SPI.Port.kMXP;
 
@@ -66,22 +68,26 @@ public class Hardware {
     public static WPI_TalonSRX motorIntakeL;
     public static WPI_TalonSRX motorIntakeR;
 
+    // Encoders
+    public static SEncoder rightEncoder;
+    public static SEncoder leftEncoder;
+
     // Gyroscope
-    public static AHRS navx;
+    public static NavXInput navx;
 
     public static void init(){
         // Instantiate drive train motors using motor ID's
-        motorDriveBR = new WPI_TalonSRX(motorDriveBRID);
+
+        motorDriveBR = new WPI_TalonSRX(DeviceID.motorDriveBR);
+        motorDriveBL = new WPI_TalonSRX(DeviceID.motorDriveBL);
+        motorDriveFR = new WPI_TalonSRX(DeviceID.motorDriveFR);
+        motorDriveFL = new WPI_TalonSRX(DeviceID.motorDriveFL);
         motorDriveBR.setInverted(true);
-        motorDriveBL = new WPI_TalonSRX(motorDriveBLID);
-        motorDriveFR = new WPI_TalonSRX(motorDriveFRID);
         motorDriveFR.setInverted(true);
-        motorDriveFL = new WPI_TalonSRX(motorDriveFLID);
 
-        motorIntakeL = new WPI_TalonSRX(motorIntakeLID);
-        motorIntakeL.setInverted(true);
-        motorIntakeR = new WPI_TalonSRX(motorIntakeRID);
+        rightEncoder = new SEncoder(new Encoder(3,2),6544.0/143.0);
+        leftEncoder  = new SEncoder(new Encoder(0,1),6544.0/143.0);
 
-        navx = new AHRS(navxPort);
+        navx = new NavXInput(DeviceID.navxPort);
     }
 }
