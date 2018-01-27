@@ -97,6 +97,9 @@ public class PowerUpRobot extends SprocketRobot {
         });
 
         //Auto
+        final double driveSpeed = 0.4;
+        final int maxEncAccel = 10;
+        final int maxTicksPerSec = 10;
         AutoMode autoDrive = new AutoMode("Auto Drive",
                 new DriveEncoderGyro(120,
                         0.25,
