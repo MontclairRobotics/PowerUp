@@ -5,19 +5,14 @@ import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.montclairrobotics.sprocket.SprocketRobot;
 import org.montclairrobotics.sprocket.auto.AutoMode;
-import org.montclairrobotics.sprocket.auto.states.DriveEncoderGyro;
-import org.montclairrobotics.sprocket.auto.states.DriveEncoders;
-import org.montclairrobotics.sprocket.auto.states.DriveTime;
+import org.montclairrobotics.sprocket.auto.states.*;
 import org.montclairrobotics.sprocket.control.ButtonAction;
 import org.montclairrobotics.sprocket.control.SquaredDriveInput;
 import org.montclairrobotics.sprocket.drive.*;
 import org.montclairrobotics.sprocket.drive.steps.Deadzone;
 import org.montclairrobotics.sprocket.drive.steps.GyroCorrection;
 import org.montclairrobotics.sprocket.drive.utils.GyroLock;
-import org.montclairrobotics.sprocket.geometry.Angle;
-import org.montclairrobotics.sprocket.geometry.Distance;
-import org.montclairrobotics.sprocket.geometry.Vector;
-import org.montclairrobotics.sprocket.geometry.XY;
+import org.montclairrobotics.sprocket.geometry.*;
 import org.montclairrobotics.sprocket.motors.Module;
 import org.montclairrobotics.sprocket.motors.Motor;
 import org.montclairrobotics.sprocket.motors.SEncoder;
@@ -37,6 +32,11 @@ public class PowerUpRobot extends SprocketRobot {
 
     @Override
     public void robotInit(){
+
+        DriveEncoders.TOLLERANCE=3;
+        TurnGyro.TURN_SPEED=0.3;
+        TurnGyro.tolerance=new Degrees(5);
+
         Hardware.init();
         Control.init();
         DriveModule[] modules = new DriveModule[2];
@@ -98,19 +98,41 @@ public class PowerUpRobot extends SprocketRobot {
 
         //Auto
         AutoMode autoDrive = new AutoMode("Auto Drive",
-                new DriveEncoderGyro(new Distance(120),
+                new DriveEncoderGyro(120,
+                        0.25,
                         Angle.ZERO,
                         true,
-                        1,
-                        0,
-                        0,
                         correction));
 
         AutoMode encoder = new AutoMode("encoder",
-                new DriveEncoders(100,1,0,0));
+                new DriveEncoders(100,.25));
 
+        AutoMode turn90 = new AutoMode("Turn 90",
+                new TurnGyro(new Degrees(90),correction,true));
+
+        AutoMode square = new AutoMode("Square",
+                new ResetGyro(correction),
+                new DriveEncoders(4*12,0.25),
+                new TurnGyro(new Degrees(90),correction,false),
+                new DriveEncoders(4*12,0.25),
+                new TurnGyro(new Degrees(180),correction,false),
+                new DriveEncoders(4*12,0.25),
+                new TurnGyro(new Degrees(270),correction,false),
+                new DriveEncoders(4*12,0.25),
+                new TurnGyro(new Degrees(0),correction,false));
+
+        AutoMode square2 = new AutoMode("Square 2",
+                new ResetGyro(correction),
+                new DriveEncoderGyro(4*12,0.25,new Degrees(0),false,correction),
+                new DriveEncoderGyro(4*12,0.25,new Degrees(90),false,correction),
+                new DriveEncoderGyro(4*12,0.25,new Degrees(180),false,correction),
+                new DriveEncoderGyro(4*12,0.25,new Degrees(270),false,correction));
+
+        addAutoMode(square2);
         addAutoMode(encoder);
         addAutoMode(autoDrive);
+        addAutoMode(turn90);
+        addAutoMode(square);
         sendAutoModes();
     }
 
