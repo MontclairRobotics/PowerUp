@@ -45,6 +45,8 @@ public class Hardware {
         public static final int motorDriveBL = 3;
         public static final int motorDriveFR = 2;
         public static final int motorDriveFL = 1;
+
+
 	    // Gyroscope ID
 	    public static final SPI.Port navxPort = SPI.Port.kMXP;
 	}
@@ -67,6 +69,7 @@ public class Hardware {
     // Power Cube Intake Motor Controllers
     public static WPI_TalonSRX motorIntakeL;
     public static WPI_TalonSRX motorIntakeR;
+
 
     // Encoders
     public static SEncoder rightEncoder;

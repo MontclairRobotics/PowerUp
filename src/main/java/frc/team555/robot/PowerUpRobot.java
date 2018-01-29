@@ -7,6 +7,7 @@ import org.montclairrobotics.sprocket.SprocketRobot;
 import org.montclairrobotics.sprocket.auto.AutoMode;
 import org.montclairrobotics.sprocket.auto.states.*;
 import org.montclairrobotics.sprocket.control.ButtonAction;
+import org.montclairrobotics.sprocket.control.DashboardInput;
 import org.montclairrobotics.sprocket.control.SquaredDriveInput;
 import org.montclairrobotics.sprocket.drive.*;
 import org.montclairrobotics.sprocket.drive.steps.Deadzone;
@@ -29,7 +30,7 @@ public class PowerUpRobot extends SprocketRobot {
     DriveTrain driveTrain;
     GyroCorrection correction;
     GyroLock lock;
-    CubeIntake intake;
+    //CubeIntake intake;
 
     @Override
     public void robotInit(){
@@ -79,6 +80,8 @@ public class PowerUpRobot extends SprocketRobot {
         /* Drive Train Pipeline: GyroCorrection, Deadzone */
         
 
+        new DashboardInput("Auto Selection");
+
         ArrayList<Step<DTTarget>> steps = new ArrayList<>();
         
         correction = new GyroCorrection(Hardware.navx, new PID(1.5, 0, 0.0015), 90, 1);
@@ -96,16 +99,12 @@ public class PowerUpRobot extends SprocketRobot {
         Control.lock.setOffAction(new ButtonAction() {
         		@Override public void onAction() { lock.disable(); }
         });
-        this.intake = new CubeIntake();
+        //this.intake = new CubeIntake();
 
         super.addAutoMode(new AutoMode("Dynamic Auto", new DynamicAutoState()));
 
-        sendAutoModes();
-    }
 
-    @Override
-    public void userAutonomousSetup(){
-
+        Debug.msg("Check 1", "Okay");
         //Auto
         final double driveSpeed = 0.4;
         final int maxEncAccel = 10;
@@ -116,6 +115,7 @@ public class PowerUpRobot extends SprocketRobot {
                         Angle.ZERO,
                         true,
                         correction));
+        Debug.msg("Check 4", "Okay");
 
         AutoMode encoder = new AutoMode("encoder",
                 new DriveEncoders(100,.25));
@@ -140,13 +140,34 @@ public class PowerUpRobot extends SprocketRobot {
                 new DriveEncoderGyro(4*12,0.25,new Degrees(90),false,correction),
                 new DriveEncoderGyro(4*12,0.25,new Degrees(180),false,correction),
                 new DriveEncoderGyro(4*12,0.25,new Degrees(270),false,correction));
+        Debug.msg("Check 2", "Okay");
 
+        AutoMode baseLine = new AutoMode("Base Line",
+                new DriveEncoderGyro(140, .5 , new Degrees(0), false, correction));
+        AutoMode centerBaseLineRight = new AutoMode("Center Base Line Right",
+                new DriveEncoderGyro(60, .5, new Degrees(0), false, correction),
+                new DriveEncoderGyro(12, .5, new Degrees(90), false, correction),
+                new DriveEncoderGyro(80, .5, new Degrees(0), false, correction));
+        AutoMode centerBaseLineLeft = new AutoMode("Center Base Line Left",
+                new DriveEncoderGyro(60, .5, new Degrees(0), false, correction),
+                new DriveEncoderGyro(122, .5, new Degrees(-90), false, correction),
+                new DriveEncoderGyro(80, .5, new Degrees(0), false, correction));
+        Debug.msg("Check 3", "Okay");
+        addAutoMode(baseLine);
+        addAutoMode(centerBaseLineLeft);
+        addAutoMode(centerBaseLineRight);
         addAutoMode(square2);
         addAutoMode(encoder);
         addAutoMode(autoDrive);
         addAutoMode(turn90);
         addAutoMode(square);
         sendAutoModes();
+        sendAutoModes();
+    }
+
+    @Override
+    public void userAutonomousSetup(){
+
     }
 
 
@@ -154,7 +175,7 @@ public class PowerUpRobot extends SprocketRobot {
 
     public void update(){
     		driveTrain.update();
-    		intake.update();
+    		//intake.update();
         lock.update();
         SmartDashboard.putNumber("Distance", driveTrain.getDistance().getY());
         SmartDashboard.putNumber("Left Encoder", Hardware.leftEncoder.getInches().get());

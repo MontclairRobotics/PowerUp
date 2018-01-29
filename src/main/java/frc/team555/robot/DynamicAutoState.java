@@ -3,8 +3,8 @@ package frc.team555.robot;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.montclairrobotics.sprocket.auto.AutoMode;
-import org.montclairrobotics.sprocket.auto.states.DriveTime;
-import org.montclairrobotics.sprocket.auto.states.Enable;
+import org.montclairrobotics.sprocket.auto.states.*;
+import org.montclairrobotics.sprocket.geometry.Degrees;
 import org.montclairrobotics.sprocket.loop.Updater;
 import org.montclairrobotics.sprocket.states.State;
 import org.montclairrobotics.sprocket.states.StateMachine;
@@ -18,9 +18,9 @@ public class DynamicAutoState implements State {
     StateMachine rightAuto;
 
 
+
     @Override
     public void start() {
-        SmartDashboard.putString("I got here","Yes I did");
         switch (Side.fromDriverStation()[0]){
             case RIGHT:
                 states.add(new DriveTime(1, .1));
@@ -30,6 +30,14 @@ public class DynamicAutoState implements State {
                 states.add(new DriveTime(1, -.1));
                 Debug.msg("Value", "Left");
                 break;
+        }
+        double selection = SmartDashboard.getNumber("Auto Selection", 0);
+        if (selection == 1) {
+            states.add(new DriveEncoders(100, .25));
+        }else if(selection == 2){
+            states.add(new DriveEncoders(-100, .25));
+        }else{
+            states.add(new TurnEncoders(new Degrees(180), new Degrees(90)));
         }
         int stateSize = states.size();
         rightAuto = new StateMachine(false,  states.toArray(new State[stateSize]));

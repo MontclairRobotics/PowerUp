@@ -26,10 +26,12 @@ public class CubeIntake implements Updatable, Togglable {
 		
 		Updater.add(this, Priority.CALC);
 	}
+	
 
 	@Override
 	public void update() {
 		left.set(power.get());
+		//garrett sucks :(
 		right.set(power.get());
 	}
 
