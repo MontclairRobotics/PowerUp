@@ -146,10 +146,12 @@ public class PowerUpRobot extends SprocketRobot {
                 new ResetGyro(correction),
                 new DriveEncoderGyro(140, .5 , new Degrees(0), false, correction));
         AutoMode centerBaseLineRight = new AutoMode("Center Base Line Right",
+                new ResetGyro(correction),
                 new DriveEncoderGyro(60, .5, new Degrees(0), false, correction),
                 new DriveEncoderGyro(12, .5, new Degrees(90), false, correction),
                 new DriveEncoderGyro(80, .5, new Degrees(0), false, correction));
         AutoMode centerBaseLineLeft = new AutoMode("Center Base Line Left",
+                new ResetGyro(correction),
                 new DriveEncoderGyro(60, .5, new Degrees(0), false, correction),
                 new DriveEncoderGyro(122, .5, new Degrees(-90), false, correction),
                 new DriveEncoderGyro(80, .5, new Degrees(0), false, correction));
@@ -175,8 +177,6 @@ public class PowerUpRobot extends SprocketRobot {
     @Override
 
     public void update(){
-    		driveTrain.update();
-    		//intake.update();
         lock.update();
         SmartDashboard.putNumber("Distance", driveTrain.getDistance().getY());
         SmartDashboard.putNumber("Left Encoder", Hardware.leftEncoder.getInches().get());

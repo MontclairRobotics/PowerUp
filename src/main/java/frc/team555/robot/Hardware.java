@@ -78,6 +78,7 @@ public class Hardware {
     // Gyroscope
     public static NavXInput navx;
 
+
     public static void init(){
         // Instantiate drive train motors using motor ID's
 

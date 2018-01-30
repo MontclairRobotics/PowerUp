@@ -4,7 +4,10 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.montclairrobotics.sprocket.auto.AutoState;
 import org.montclairrobotics.sprocket.auto.states.Delay;
 import org.montclairrobotics.sprocket.auto.states.Disable;
+import org.montclairrobotics.sprocket.auto.states.DriveEncoderGyro;
 import org.montclairrobotics.sprocket.auto.states.Enable;
+import org.montclairrobotics.sprocket.geometry.Angle;
+import org.montclairrobotics.sprocket.geometry.Degrees;
 import org.montclairrobotics.sprocket.states.State;
 import org.montclairrobotics.sprocket.states.StateMachine;
 import org.montclairrobotics.sprocket.utils.Input;
@@ -46,7 +49,7 @@ public class RightAuto implements State {
     @Override
     public void start() {
         if(Side.fromDriverStation()[0] == Side.RIGHT){
-            // Todo: drive to the right switch
+            states.add(new DriveEncoderGyro(60, .75, Angle.ZERO, false))
             states.add(new Enable(intake));
             states.add(new Delay(1));
             states.add(new Disable(intake));
