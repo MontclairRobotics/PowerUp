@@ -21,16 +21,17 @@ public class DynamicAutoState implements State {
 
     @Override
     public void start() {
+        /*
         switch (Side.fromDriverStation()[0]){
             case RIGHT:
-                states.add(new DriveTime(1, .1));
+                states.add(new DriveTime(1, .25));
                 Debug.msg("Value","Right");
                 break;
             case LEFT:
-                states.add(new DriveTime(1, -.1));
+                states.add(new DriveTime(1, -.25));
                 Debug.msg("Value", "Left");
                 break;
-        }
+        }*/
         double selection = SmartDashboard.getNumber("Auto Selection", 0);
         if (selection == 1) {
             states.add(new DriveEncoders(100, .25));

@@ -143,6 +143,7 @@ public class PowerUpRobot extends SprocketRobot {
         Debug.msg("Check 2", "Okay");
 
         AutoMode baseLine = new AutoMode("Base Line",
+                new ResetGyro(correction),
                 new DriveEncoderGyro(140, .5 , new Degrees(0), false, correction));
         AutoMode centerBaseLineRight = new AutoMode("Center Base Line Right",
                 new DriveEncoderGyro(60, .5, new Degrees(0), false, correction),
