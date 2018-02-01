@@ -54,7 +54,7 @@ public class SteamworksRobot extends SprocketRobot{
     @Override
     public void robotInit() {
         Joystick driveStick = new Joystick(driveStickDeviceNumber);
-        Joystick auxStick = new Joystick(auxStickDeviceNumber);
+//        Joystick auxStick = new Joystick(auxStickDeviceNumber);
 
         // ========= INTAKE ========= //
 
