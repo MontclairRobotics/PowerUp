@@ -17,10 +17,9 @@ public class Control {
     public static Button lock;
     
     // Intake Inputs
-    public static Button intakeL;
-    public static Button intakeR;
-    public static Button liftToggle;
-
+    public static Button auxIntakeL;
+    public static Button auxIntakeR;
+    
     // Joystick Declaration
     public static Joystick driveStick;
     public static Joystick auxStick;
@@ -50,25 +49,18 @@ public class Control {
         };
         
         // Intake Buttons
-        intakeL = new Button() {
+        auxIntakeL = new Button() {
         		@Override
             public Boolean get() {
                 return auxStick.getRawButton(4);
             }
         };
         
-        intakeR = new Button() {
+        auxIntakeR = new Button() {
     			@Override
     			public Boolean get() {
     				return auxStick.getRawButton(5);
     			}
-        };
-        
-        liftToggle = new Button() {
-        		@Override
-        		public Boolean get() {
-        			return auxStick.getRawButton(7);
-        		}
         };
 
         // Auxiliary Buttons
