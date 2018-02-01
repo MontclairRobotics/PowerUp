@@ -81,7 +81,6 @@ public class PowerUpRobot extends SprocketRobot {
         		@Override public void onAction() { lock.disable(); }
         });
         this.intake = new CubeIntake();
-
     }
 
 

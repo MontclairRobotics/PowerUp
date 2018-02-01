@@ -1,6 +1,8 @@
 package frc.team555.robot;
 
 
+import org.montclairrobotics.sprocket.motors.SEncoder;
+
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.I2C;
@@ -32,7 +34,9 @@ import edu.wpi.first.wpilibj.SPI;
  *
  */
 public class Hardware {
-
+	public static final double ENC_DRIVE_TPI = 100; // TODO: Find the actual encoder count
+	public static final double ENC_INTAKE_TPI = 100; // TODO: Find the actual encoder count
+	
     // ============================
     // Device Port configuration
     // ============================
@@ -47,6 +51,7 @@ public class Hardware {
     public static final int motorIntakeLID = 5;
     public static final int motorIntakeRID = 6;
     
+    
     // Gyro ID
     public static final SPI.Port navxPort = SPI.Port.kMXP;
 
@@ -56,7 +61,6 @@ public class Hardware {
     // ============================
 
     // Drive Train Motor Controllers
-
     public static WPI_TalonSRX motorDriveBR;
     public static WPI_TalonSRX motorDriveBL;
     public static WPI_TalonSRX motorDriveFR;
@@ -66,6 +70,19 @@ public class Hardware {
     public static WPI_TalonSRX motorIntakeL;
     public static WPI_TalonSRX motorIntakeR;
 
+    // ============================
+    // Encoders
+    // ============================
+    
+    
+    // Drive Train Encoders
+    public static SEncoder encoderDriveL;
+    public static SEncoder encoderDriveR;
+    
+    // Power Cube Intake Encoders
+    public static SEncoder encoderIntakeL;
+    public static SEncoder encoderIntakeR;
+    
     // Gyroscope
     public static AHRS navx;
 
@@ -82,6 +99,13 @@ public class Hardware {
         motorIntakeL.setInverted(true);
         motorIntakeR = new WPI_TalonSRX(motorIntakeRID);
 
+        encoderDriveL = new SEncoder(0, 1, ENC_DRIVE_TPI);
+        encoderDriveR = new SEncoder(2, 3, ENC_DRIVE_TPI);
+        
+        encoderIntakeL = new SEncoder(4, 5, ENC_INTAKE_TPI);
+        encoderIntakeR = new SEncoder(6, 7, ENC_INTAKE_TPI);
+        
+        
         navx = new AHRS(navxPort);
     }
 }

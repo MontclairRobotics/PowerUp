@@ -8,6 +8,8 @@ import org.montclairrobotics.sprocket.utils.Input;
 import org.montclairrobotics.sprocket.utils.Utils;
 
 public class CubeIntake implements Updatable {
+	public static final double CUBE_WIDTH_IN = 13.0;
+	
 	private final Motor motorL;
 	private final Motor motorR;
 	
@@ -40,5 +42,15 @@ public class CubeIntake implements Updatable {
 	public void update() {
 		motorL.set(Utils.constrain(powerL.get(), -1.0, +1.0));
 		motorR.set(Utils.constrain(powerR.get(), -1.0, +1.0));
+	}
+	
+	public void set(double power) {
+		motorL.set(power);
+		motorR.set(power);
+	}
+	
+	public void stop() {
+		motorL.set(0.0);
+		motorR.set(0.0);
 	}
 }
