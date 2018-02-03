@@ -1,9 +1,11 @@
 package frc.team555.robot;
 
+import com.sun.org.apache.xpath.internal.operations.Mod;
 import edu.wpi.first.wpilibj.SpeedController;
 import org.montclairrobotics.sprocket.loop.Priority;
 import org.montclairrobotics.sprocket.loop.Updatable;
 import org.montclairrobotics.sprocket.loop.Updater;
+import org.montclairrobotics.sprocket.motors.Module;
 import org.montclairrobotics.sprocket.motors.Motor;
 import org.montclairrobotics.sprocket.motors.SEncoder;
 import org.montclairrobotics.sprocket.utils.PID;
@@ -14,7 +16,9 @@ import org.montclairrobotics.sprocket.utils.PID;
  * motors to be set to encoder positions
  * This class uses PID control to set the motor positions
  */
-public class TargetMotor extends Motor implements Updatable{
+public class TargetMotor extends Module implements Updatable{
+    public enum Mode {POSITION,POWER};
+
     /**
      * The encoder attached to the motor
      */
@@ -23,22 +27,26 @@ public class TargetMotor extends Motor implements Updatable{
     /**
      * A pid controller that is used to set the position
      */
-    PID pid;
+    public PID pid;
+
+    Mode mode;
 
 
     /**
      * Create a new Target motor using a speed controller, encoder, and pid controller
      *
-     * @param motor The motor controller
+     * @param motors The motor controllers
      * @param encoder The encoder for the motor
      * @param pid The PID controller that will be used to set the position
      */
-    public TargetMotor(SpeedController motor, SEncoder encoder, PID pid) {
-        super(motor);
+    public TargetMotor(SEncoder encoder, PID pid,Motor... motors)
+    {
+        super(motors);
         this.encoder = encoder;
         this.pid = pid;
         this.pid.setInput(encoder);
         this.pid.setTarget();
+        this.mode= Mode.POSITION;
         Updater.add(this, Priority.CALC);
     }
 
@@ -48,7 +56,13 @@ public class TargetMotor extends Motor implements Updatable{
      * @param target Target encoder ticks that the motor will be set to
      */
     public void setTarget(double target){
+        mode = Mode.POSITION;
         pid.setTarget(target);
+    }
+
+    public void setPower(double power){
+        mode = Mode.POWER;
+        super.set(power);
     }
 
     /**
@@ -65,7 +79,9 @@ public class TargetMotor extends Motor implements Updatable{
      */
     @Override
     public void update() {
-        pid.update();
-        super.getMotor().set(pid.get());
+        if(mode==Mode.POSITION) {
+            super.set(pid.get());
+
+        }
     }
 }

@@ -16,7 +16,7 @@ import org.montclairrobotics.sprocket.utils.PID;
 
 import java.util.ArrayList;
 
-public class RightAuto implements State {
+public class LeftAuto implements State {
     CubeIntake intake;
     Lift lift;
     StateMachine rightAuto;
@@ -26,7 +26,7 @@ public class RightAuto implements State {
     GyroCorrection correction;
 
 
-    public RightAuto(CubeIntake intake, Lift lift){
+    public LeftAuto(CubeIntake intake, Lift lift){
         this.intake = intake;
         this.lift = lift;
         correction = new GyroCorrection(Hardware.navx, new PID(1.5, 0, 0.0015), 90, 1);
@@ -53,32 +53,30 @@ public class RightAuto implements State {
 
     @Override
     public void start() {
-        if(Side.fromDriverStation()[0] == Side.RIGHT){
+        if(Side.fromDriverStation()[0] == Side.LEFT){
             states.add(new DriveEncoderGyro(168, .75, Angle.ZERO, false, correction));
-            states.add(new TurnGyro(new Degrees(90), correction, false));
+            states.add(new TurnGyro(new Degrees(-90), correction, false));
             //states.add(new Enable(intake));
             //states.add(new Delay(1));
             //states.add(new Disable(intake));
         }else if(crossover.get()){
-        	states.add(new DriveEncoderGyro(100, .75, Angle.ZERO, false, correction));
-        	states.add(new DriveEncoderGyro(150, .75, new Degrees(90), false, correction));
-        	states.add(new DriveEncoderGyro(68, .75, Angle.ZERO, false, correction));
-            states.add(new TurnGyro(new Degrees(-90), correction, false));
-        	//states.add(new Enable(intake));
+            states.add(new DriveEncoderGyro(100, .75, Angle.ZERO, false, correction));
+            states.add(new DriveEncoderGyro(150, .75, new Degrees(-90), false, correction));
+            states.add(new DriveEncoderGyro(68, .75, Angle.ZERO, false, correction));
+            states.add(new TurnGyro(new Degrees(90), correction, false));
+            //states.add(new Enable(intake));
             //states.add(new Delay(1));
             //states.add(new Disable(intake));
-        }else if(Side.fromDriverStation()[1] == Side.RIGHT){
-        	states.add(new DriveEncoderGyro(300, .75, Angle.ZERO, false, correction));
-            states.add(new TurnGyro(new Degrees(90), correction, false));
-        	//states.add(new LiftState(100));
+        }else if(Side.fromDriverStation()[1] == Side.LEFT){
+            states.add(new DriveEncoderGyro(300, .75, Angle.ZERO, false, correction));
+            //states.add(new LiftState(100));
             //states.add(new Enable(intake));
             //states.add(new Delay(1));
             //states.add(new Disable(intake));
         }else{
-        	states.add(new DriveEncoderGyro(100, .75, Angle.ZERO, false, correction));
-        	states.add(new DriveEncoderGyro(150, .75, new Degrees(90), false, correction));
-        	states.add(new DriveEncoderGyro(200, .75, Angle.ZERO, false, correction));
-            states.add(new TurnGyro(new Degrees(-90), correction, false));
+            states.add(new DriveEncoderGyro(100, .75, Angle.ZERO, false, correction));
+            states.add(new DriveEncoderGyro(150, .75, new Degrees(90), false, correction));
+            states.add(new DriveEncoderGyro(200, .75, Angle.ZERO, false, correction));
             //states.add(new LiftState(100));
             //states.add(new Enable(intake));
             //states.add(new Delay(1));

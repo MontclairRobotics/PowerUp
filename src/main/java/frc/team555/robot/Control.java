@@ -2,6 +2,7 @@ package frc.team555.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import org.montclairrobotics.sprocket.control.Button;
+import org.montclairrobotics.sprocket.control.JoystickButton;
 import org.montclairrobotics.sprocket.control.SquaredDriveInput;
 import org.montclairrobotics.sprocket.drive.DTInput;
 
@@ -15,7 +16,13 @@ public class Control {
 
     // Drive Inputs
     public static DTInput driveInput;
-    public static Button lock;
+    public static Button lock,
+    liftUpButton,
+    liftDownButton,
+    liftTopButton,
+    liftBottomButton,
+    liftManualUp,
+    liftManualDown;
 
     // Joystick Declaration
     public static Joystick driveStick;
@@ -38,14 +45,15 @@ public class Control {
         // Button Creation
         // ==================
 
-        // Drive Buttons
-        lock = new Button() {
-            @Override
-            public Boolean get() {
-                return driveStick.getRawButton(lockButtonID);
-            }
-        };
+        lock = new JoystickButton(driveStick,lockButtonID);
 
+        //Lift Buttons
+        liftUpButton=new JoystickButton(auxStick,10);
+        liftDownButton=new JoystickButton(auxStick,10);
+        liftTopButton=new JoystickButton(auxStick,10);
+        liftBottomButton=new JoystickButton(auxStick,10);
+        liftManualUp=new JoystickButton(auxStick,10);
+        liftManualDown=new JoystickButton(auxStick,10);
 
         // Auxiliary Buttons
 

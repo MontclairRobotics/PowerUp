@@ -3,10 +3,7 @@ package frc.team555.robot;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
-import edu.wpi.first.wpilibj.Encoder;
-import edu.wpi.first.wpilibj.I2C;
-import edu.wpi.first.wpilibj.Joystick;
-import edu.wpi.first.wpilibj.SPI;
+import edu.wpi.first.wpilibj.*;
 import org.montclairrobotics.sprocket.motors.SEncoder;
 
 /**
@@ -46,6 +43,9 @@ public class Hardware {
         public static final int motorDriveFR = 2;
         public static final int motorDriveFL = 1;
 
+        public static final int testMotor1 = 7;
+        public static final int testMotor2 = 8;
+
         public static final int motorLiftR = 0;
         public static final int motorLiftL = 0;
 
@@ -72,16 +72,21 @@ public class Hardware {
     public static WPI_TalonSRX motorLiftR;
     public static WPI_TalonSRX motorLiftL;
 
+    public static WPI_TalonSRX testMotor1;
+    public static WPI_TalonSRX testMotor2;
+
 
     // Encoders
     public static SEncoder rightDriveEncoder;
     public static SEncoder leftDriveEncoder;
 
-    public static SEncoder rightLiftEncoder;
-    public static SEncoder leftLiftEncoder;
+    public static SEncoder liftEncoder;
+//    public static SEncoder leftLiftEncoder;
 
     // Gyroscope
     public static NavXInput navx;
+
+    public static DigitalInput liftLimitSwitch;
 
 
     public static void init(){
@@ -97,14 +102,19 @@ public class Hardware {
         motorLiftR = new WPI_TalonSRX(DeviceID.motorLiftR);
         motorLiftL = new WPI_TalonSRX(DeviceID.motorLiftL);
 
+        testMotor1 = new WPI_TalonSRX(DeviceID.testMotor1);
+        testMotor2 = new WPI_TalonSRX(DeviceID.testMotor2);
+        testMotor2.setInverted(true);
 
 
         rightDriveEncoder = new SEncoder(new Encoder(3,2),6544.0/143.0);
         leftDriveEncoder  = new SEncoder(new Encoder(0,1),6544.0/143.0);
 
-        rightLiftEncoder = new SEncoder(null, 0);
-        leftLiftEncoder  = new SEncoder(null, 0);
+        liftEncoder = new SEncoder(null, 0);
+//        leftLiftEncoder  = new SEncoder(null, 0);
 
         navx = new NavXInput(DeviceID.navxPort);
+
+        liftLimitSwitch=new DigitalInput(10);
     }
 }
