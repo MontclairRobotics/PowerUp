@@ -46,14 +46,12 @@ public class Hardware {
         public static final int motorDriveFR = 2;
         public static final int motorDriveFL = 1;
 
+        public static final int motorLiftR = 0;
+        public static final int motorLiftL = 0;
 
 	    // Gyroscope ID
 	    public static final SPI.Port navxPort = SPI.Port.kMXP;
 	}
-
-    // Gyro ID
-    public static final SPI.Port navxPort = SPI.Port.kMXP;
-
 
     // ============================
     // Motor configuration
@@ -70,10 +68,17 @@ public class Hardware {
     public static WPI_TalonSRX motorIntakeL;
     public static WPI_TalonSRX motorIntakeR;
 
+    // Lift Motor Controllers
+    public static WPI_TalonSRX motorLiftR;
+    public static WPI_TalonSRX motorLiftL;
+
 
     // Encoders
-    public static SEncoder rightEncoder;
-    public static SEncoder leftEncoder;
+    public static SEncoder rightDriveEncoder;
+    public static SEncoder leftDriveEncoder;
+
+    public static SEncoder rightLiftEncoder;
+    public static SEncoder leftLiftEncoder;
 
     // Gyroscope
     public static NavXInput navx;
@@ -89,8 +94,16 @@ public class Hardware {
         motorDriveBR.setInverted(true);
         motorDriveFR.setInverted(true);
 
-        rightEncoder = new SEncoder(new Encoder(3,2),6544.0/143.0);
-        leftEncoder  = new SEncoder(new Encoder(0,1),6544.0/143.0);
+        motorLiftR = new WPI_TalonSRX(DeviceID.motorLiftR);
+        motorLiftL = new WPI_TalonSRX(DeviceID.motorLiftL);
+
+
+
+        rightDriveEncoder = new SEncoder(new Encoder(3,2),6544.0/143.0);
+        leftDriveEncoder  = new SEncoder(new Encoder(0,1),6544.0/143.0);
+
+        rightLiftEncoder = new SEncoder(null, 0);
+        leftLiftEncoder  = new SEncoder(null, 0);
 
         navx = new NavXInput(DeviceID.navxPort);
     }

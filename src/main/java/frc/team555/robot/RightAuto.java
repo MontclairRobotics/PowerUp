@@ -56,16 +56,16 @@ public class RightAuto implements State {
         if(Side.fromDriverStation()[0] == Side.RIGHT){
             states.add(new DriveEncoderGyro(168, .75, Angle.ZERO, false, correction));
             states.add(new TurnGyro(new Degrees(90), correction, false));
-            states.add(new Enable(intake));
-            states.add(new Delay(1));
-            states.add(new Disable(intake));
+            //states.add(new Enable(intake));
+            //states.add(new Delay(1));
+            //states.add(new Disable(intake));
         }else if(crossover.get()){
         	states.add(new DriveEncoderGyro(100, .75, Angle.ZERO, false, correction));
         	states.add(new DriveEncoderGyro(150, .75, new Degrees(90), false, correction));
         	states.add(new DriveEncoderGyro(68, .75, Angle.ZERO, false, correction));
-        	states.add(new Enable(intake));
-            states.add(new Delay(1));
-            states.add(new Disable(intake));
+        	//states.add(new Enable(intake));
+            //states.add(new Delay(1));
+            //states.add(new Disable(intake));
         }else if(Side.fromDriverStation()[1] == Side.RIGHT){
         	states.add(new DriveEncoderGyro(300, .75, Angle.ZERO, false, correction));
         	// Todo: Lift Code

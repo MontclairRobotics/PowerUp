@@ -12,6 +12,7 @@ import org.montclairrobotics.sprocket.control.SquaredDriveInput;
 import org.montclairrobotics.sprocket.drive.*;
 import org.montclairrobotics.sprocket.drive.steps.Deadzone;
 import org.montclairrobotics.sprocket.drive.steps.GyroCorrection;
+import org.montclairrobotics.sprocket.drive.steps.Sensitivity;
 import org.montclairrobotics.sprocket.drive.utils.GyroLock;
 import org.montclairrobotics.sprocket.geometry.*;
 import org.montclairrobotics.sprocket.motors.Module;
@@ -45,7 +46,7 @@ public class PowerUpRobot extends SprocketRobot {
 
         modules[0] = new DriveModule(new XY(-1, 0),
                 new XY(0, 1),
-                Hardware.leftEncoder,
+                Hardware.leftDriveEncoder,
                 new PID(0.5,0,0),
                 Module.MotorInputType.PERCENT,
                 new Motor(Hardware.motorDriveBL),
@@ -53,7 +54,7 @@ public class PowerUpRobot extends SprocketRobot {
 
         modules[1] = new DriveModule(new XY(1, 0),
                 new XY(0, 1),
-                Hardware.rightEncoder,
+                Hardware.rightDriveEncoder,
                 new PID(0.5,0,0),
                 Module.MotorInputType.PERCENT,
                 new Motor(Hardware.motorDriveBR),
@@ -86,8 +87,9 @@ public class PowerUpRobot extends SprocketRobot {
         
         correction = new GyroCorrection(Hardware.navx, new PID(1.5, 0, 0.0015), 90, 1);
         lock = new GyroLock(correction);
-        steps.add(correction);
         steps.add(new Deadzone());
+        steps.add(new Sensitivity(1));
+        steps.add(correction);
         driveTrain.setPipeline(new DTPipeline(steps));
 
         /* Enabling and Disabling GyroLock */
@@ -104,7 +106,7 @@ public class PowerUpRobot extends SprocketRobot {
         super.addAutoMode(new AutoMode("Dynamic Auto", new DynamicAutoState()));
 
 
-        Debug.msg("Check 1", "Okay");
+
         //Auto
         final double driveSpeed = 0.4;
         final int maxEncAccel = 10;
@@ -115,7 +117,7 @@ public class PowerUpRobot extends SprocketRobot {
                         Angle.ZERO,
                         true,
                         correction));
-        Debug.msg("Check 4", "Okay");
+
 
         AutoMode encoder = new AutoMode("encoder",
                 new DriveEncoders(100,.25));
@@ -140,7 +142,7 @@ public class PowerUpRobot extends SprocketRobot {
                 new DriveEncoderGyro(4*12,0.25,new Degrees(90),false,correction),
                 new DriveEncoderGyro(4*12,0.25,new Degrees(180),false,correction),
                 new DriveEncoderGyro(4*12,0.25,new Degrees(270),false,correction));
-        Debug.msg("Check 2", "Okay");
+
 
         AutoMode baseLine = new AutoMode("Base Line",
                 new ResetGyro(correction),
@@ -155,7 +157,10 @@ public class PowerUpRobot extends SprocketRobot {
                 new DriveEncoderGyro(60, .5, new Degrees(0), false, correction),
                 new DriveEncoderGyro(122, .5, new Degrees(-90), false, correction),
                 new DriveEncoderGyro(80, .5, new Degrees(0), false, correction));
-        Debug.msg("Check 3", "Okay");
+
+        AutoMode rightAuto = new AutoMode("Right Auto", new RightAuto(null, null));
+
+
         addAutoMode(baseLine);
         addAutoMode(centerBaseLineLeft);
         addAutoMode(centerBaseLineRight);
@@ -165,7 +170,7 @@ public class PowerUpRobot extends SprocketRobot {
         addAutoMode(turn90);
         addAutoMode(square);
         sendAutoModes();
-        sendAutoModes();
+
     }
 
     @Override
@@ -179,7 +184,7 @@ public class PowerUpRobot extends SprocketRobot {
     public void update(){
         lock.update();
         SmartDashboard.putNumber("Distance", driveTrain.getDistance().getY());
-        SmartDashboard.putNumber("Left Encoder", Hardware.leftEncoder.getInches().get());
-        SmartDashboard.putNumber("Right Encoder", Hardware.rightEncoder.getInches().get());
+        SmartDashboard.putNumber("Left Encoder", Hardware.leftDriveEncoder.getInches().get());
+        SmartDashboard.putNumber("Right Encoder", Hardware.rightDriveEncoder.getInches().get());
     }
 }
