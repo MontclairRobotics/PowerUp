@@ -9,9 +9,9 @@ public class IntakeTestRobot extends PowerUpRobot {
 		super.robotInit();
 		
 		this.addAutoMode(new AutoMode("Test: Cube Intake",
-				AutoIntake.in(intake),	// Intake in
-				new Delay(3),
-				AutoIntake.out(intake)
+				AutoIntake.in(intake),	// Intake In
+				new Delay(3),			// Delay 3s
+				AutoIntake.out(intake)	// Intake Out
 			)
 		);
 	}
