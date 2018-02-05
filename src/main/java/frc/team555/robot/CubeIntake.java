@@ -16,6 +16,7 @@ public class CubeIntake implements Updatable {
 	private final Input<Double> powerL;
 	private final Input<Double> powerR;
 	
+	private double power = 1.0;
 	
 	public CubeIntake() {
 		this.motorL = new Motor(Hardware.motorIntakeL);
@@ -24,18 +25,22 @@ public class CubeIntake implements Updatable {
 		this.powerL = new Input<Double>() {
 			@Override
 			public Double get() {
-				return -Control.auxStick.getY() - (Control.auxIntakeL.get() ? 1.0 : 0.0) + (Control.auxIntakeR.get() ? 1.0 : 0.0);
+				return power*(-Control.auxStick.getY() - (Control.auxIntakeL.get() ? 1.0 : 0.0) + (Control.auxIntakeR.get() ? 1.0 : 0.0));
 			}
 		};
 		
 		this.powerR = new Input<Double>() {
 			@Override
 			public Double get() {
-				return -Control.auxStick.getY() + (Control.auxIntakeL.get() ? 1.0 : 0.0) - (Control.auxIntakeR.get() ? 1.0 : 0.0);
+				return power*(-Control.auxStick.getY() + (Control.auxIntakeL.get() ? 1.0 : 0.0) - (Control.auxIntakeR.get() ? 1.0 : 0.0));
 			}
 		};
 		
 		Updater.add(this, Priority.CALC);
+	}
+	
+	public void setPower(double p) {
+		power = p;
 	}
 
 	@Override
