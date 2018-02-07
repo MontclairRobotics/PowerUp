@@ -29,6 +29,7 @@ public class PowerUpRobot extends SprocketRobot {
     DriveTrain driveTrain;
     GyroCorrection correction;
     GyroLock lock;
+    boolean manualLock;
 
     @Override
     public void robotInit(){
@@ -87,55 +88,24 @@ public class PowerUpRobot extends SprocketRobot {
         driveTrain.setPipeline(new DTPipeline(steps));
 
         /* Enabling and Disabling GyroLock */
-        
-        Control.lock.setHeldAction(new ButtonAction() {
-            @Override public void onAction() { lock.enable(); }
+
+        Control.lock.setPressAction(new ButtonAction() {
+            @Override
+            public void onAction() {
+                manualLock = true;
+            }
         });
 
-        Control.lock.setOffAction(new ButtonAction() {
-        		@Override public void onAction() { lock.disable(); }
+        Control.lock.setReleaseAction(new ButtonAction() {
+            @Override
+            public void onAction() {
+                manualLock = false;
+            }
         });
 
         //Auto
-        final double driveSpeed = 0.4;
-        final int maxEncAccel = 10;
-        final int maxTicksPerSec = 10;
-        AutoMode autoDrive = new AutoMode("Auto Drive",
-                new DriveEncoderGyro(120,
-                        0.25,
-                        Angle.ZERO,
-                        true,
-                        correction));
-
-        AutoMode encoder = new AutoMode("encoder",
-                new DriveEncoders(100,.25));
-
-        AutoMode turn90 = new AutoMode("Turn 90",
-                new TurnGyro(new Degrees(90),correction,true));
-
-        AutoMode square = new AutoMode("Square",
-                new ResetGyro(correction),
-                new DriveEncoders(4*12,0.25),
-                new TurnGyro(new Degrees(90),correction,false),
-                new DriveEncoders(4*12,0.25),
-                new TurnGyro(new Degrees(180),correction,false),
-                new DriveEncoders(4*12,0.25),
-                new TurnGyro(new Degrees(270),correction,false),
-                new DriveEncoders(4*12,0.25),
-                new TurnGyro(new Degrees(0),correction,false));
-
-        AutoMode square2 = new AutoMode("Square 2",
-                new ResetGyro(correction),
-                new DriveEncoderGyro(4*12,0.25,new Degrees(0),false,correction),
-                new DriveEncoderGyro(4*12,0.25,new Degrees(90),false,correction),
-                new DriveEncoderGyro(4*12,0.25,new Degrees(180),false,correction),
-                new DriveEncoderGyro(4*12,0.25,new Degrees(270),false,correction));
-
-        addAutoMode(square2);
-        addAutoMode(encoder);
-        addAutoMode(autoDrive);
-        addAutoMode(turn90);
-        addAutoMode(square);
+        AutoMode auto = new AutoMode("Auto");
+        addAutoMode(auto);
         sendAutoModes();
     }
 
@@ -143,8 +113,17 @@ public class PowerUpRobot extends SprocketRobot {
     @Override
     public void update() {
         lock.update();
-        SmartDashboard.putNumber("Distance", driveTrain.getDistance().getY());
-        SmartDashboard.putNumber("Left Encoder", Hardware.leftEncoder.getInches().get());
-        SmartDashboard.putNumber("Right Encoder", Hardware.rightEncoder.getInches().get());
+        gyroLocking();
+    }
+
+    private void gyroLocking(){
+        boolean autoLock = ((Math.abs(Control.driveInput.getTurn().toDegrees())<10) &&
+                (Math.abs(Control.driveInput.getDir().getY())>0.5));
+        if(autoLock || manualLock){
+            lock.enable();
+        }else{
+            lock.disable();
+        }
+        lock.update();
     }
 }
