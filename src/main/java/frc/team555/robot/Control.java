@@ -24,6 +24,9 @@ public class Control {
     liftManualUp,
     liftManualDown;
 
+
+    public static int FieldCentricID=2;
+    public static int ResetID=3;
     // Joystick Declaration
     public static Joystick driveStick;
     public static Joystick auxStick;

@@ -6,10 +6,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.montclairrobotics.sprocket.SprocketRobot;
 import org.montclairrobotics.sprocket.auto.AutoMode;
 import org.montclairrobotics.sprocket.auto.states.*;
-import org.montclairrobotics.sprocket.control.ButtonAction;
-import org.montclairrobotics.sprocket.control.DashboardInput;
-import org.montclairrobotics.sprocket.control.JoystickYAxis;
-import org.montclairrobotics.sprocket.control.SquaredDriveInput;
+import org.montclairrobotics.sprocket.control.*;
 import org.montclairrobotics.sprocket.drive.*;
 import org.montclairrobotics.sprocket.drive.steps.Deadzone;
 import org.montclairrobotics.sprocket.drive.steps.GyroCorrection;
@@ -24,6 +21,7 @@ import org.montclairrobotics.sprocket.pipeline.Step;
 import org.montclairrobotics.sprocket.utils.Debug;
 import org.montclairrobotics.sprocket.utils.Input;
 import org.montclairrobotics.sprocket.utils.PID;
+import org.montclairrobotics.sprocket.utils.Togglable;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -32,8 +30,7 @@ public class PowerUpRobot extends SprocketRobot {
     DriveTrain driveTrain;
     GyroCorrection correction;
     GyroLock lock;
-    //CubeIntake intake;
-
+    boolean manualLock;
     @Override
     public void robotInit(){
 
@@ -96,18 +93,36 @@ public class PowerUpRobot extends SprocketRobot {
         driveTrain.setPipeline(new DTPipeline(steps));
 
         /* Enabling and Disabling GyroLock */
-        
-        Control.lock.setHeldAction(new ButtonAction() {
-            @Override public void onAction() { lock.enable(); }
+
+        Control.lock.setPressAction(new ButtonAction() {
+            @Override
+            public void onAction() {
+                manualLock = true;
+            }
         });
 
-        Control.lock.setOffAction(new ButtonAction() {
-        		@Override public void onAction() { lock.disable(); }
+        Control.lock.setReleaseAction(new ButtonAction() {
+            @Override
+            public void onAction() {
+                manualLock = false;
+            }
         });
-        //this.intake = new CubeIntake();
+        //this.intake =
+        // new CubeIntake();
 
         super.addAutoMode(new AutoMode("Dynamic Auto", new DynamicAutoState()));
 
+
+        Togglable fieldInput = new FieldCentricDriveInput(Control.driveStick,correction);
+        new ToggleButton(Control.driveStick,Control.FieldCentricID,fieldInput);
+
+        Button resetButton=new JoystickButton(Control.driveStick,Control.ResetID);
+        resetButton.setPressAction(new ButtonAction() {
+            @Override
+            public void onAction() {
+                correction.reset();
+            }
+        });
 
 
         //Auto
@@ -184,11 +199,22 @@ public class PowerUpRobot extends SprocketRobot {
 
 
     @Override
-
     public void update(){
 
         SmartDashboard.putNumber("Distance", driveTrain.getDistance().getY());
         SmartDashboard.putNumber("Left Encoder", Hardware.leftDriveEncoder.getInches().get());
         SmartDashboard.putNumber("Right Encoder", Hardware.rightDriveEncoder.getInches().get());
+        gyroLocking();
+    }
+
+    private void gyroLocking(){
+        boolean autoLock = ((Math.abs(Control.driveInput.getTurn().toDegrees())<10) &&
+                (Math.abs(Control.driveInput.getDir().getY())>0.5));
+        if(autoLock || manualLock){
+            lock.enable();
+        }else{
+            lock.disable();
+        }
+        //lock.update();
     }
 }
