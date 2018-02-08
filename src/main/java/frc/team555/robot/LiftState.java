@@ -13,10 +13,12 @@ public class LiftState extends AutoState {
     @Override
     public void stateUpdate() {
 
+        lift.setPosition(position);
+
+        isDone();
+
     }
 
     @Override
-    public boolean isDone() {
-        return false;
-    }
+    public boolean isDone() { return true; }
 }

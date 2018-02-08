@@ -172,6 +172,7 @@ public class PowerUpRobot extends SprocketRobot {
         addAutoMode(autoDrive);
         addAutoMode(turn90);
         addAutoMode(square);
+        addAutoMode(rightAuto);
         sendAutoModes();
 
     }
@@ -185,7 +186,7 @@ public class PowerUpRobot extends SprocketRobot {
     @Override
 
     public void update(){
-        lock.update();
+
         SmartDashboard.putNumber("Distance", driveTrain.getDistance().getY());
         SmartDashboard.putNumber("Left Encoder", Hardware.leftDriveEncoder.getInches().get());
         SmartDashboard.putNumber("Right Encoder", Hardware.rightDriveEncoder.getInches().get());

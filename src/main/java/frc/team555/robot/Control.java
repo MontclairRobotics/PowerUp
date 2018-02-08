@@ -48,12 +48,12 @@ public class Control {
         lock = new JoystickButton(driveStick,lockButtonID);
 
         //Lift Buttons
-        liftUpButton=new JoystickButton(auxStick,10);
-        liftDownButton=new JoystickButton(auxStick,10);
-        liftTopButton=new JoystickButton(auxStick,10);
-        liftBottomButton=new JoystickButton(auxStick,10);
-        liftManualUp=new JoystickButton(auxStick,10);
-        liftManualDown=new JoystickButton(auxStick,10);
+        //liftUpButton=new JoystickButton(auxStick,10);
+        //liftDownButton=new JoystickButton(auxStick,10);
+        //liftTopButton=new JoystickButton(auxStick,10);
+        //liftBottomButton=new JoystickButton(auxStick,10);
+        //liftManualUp=new JoystickButton(auxStick,10);
+        //liftManualDown=new JoystickButton(auxStick,10);
 
         // Auxiliary Buttons
 
