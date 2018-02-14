@@ -1,8 +1,11 @@
 package frc.team555.robot;
 
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import edu.wpi.cscore.UsbCamera;
+import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.vision.VisionThread;
 import org.montclairrobotics.sprocket.SprocketRobot;
 import org.montclairrobotics.sprocket.auto.AutoMode;
 import org.montclairrobotics.sprocket.auto.states.*;
@@ -22,6 +25,7 @@ import org.montclairrobotics.sprocket.utils.Debug;
 import org.montclairrobotics.sprocket.utils.Input;
 import org.montclairrobotics.sprocket.utils.PID;
 import org.montclairrobotics.sprocket.utils.Togglable;
+import org.opencv.imgproc.Imgproc;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -31,13 +35,27 @@ public class PowerUpRobot extends SprocketRobot {
     GyroCorrection correction;
     GyroLock lock;
     boolean manualLock;
+    CubeIntake intake;
+
+    //vision stuff
+    private static final int IMG_WIDTH = 320;
+    private static final int IMG_HEIGHT = 240;
+
+
+    private static final double oldOverNew=17.1859 * 1.25/(6544.0/143.0);
+
+    //private double centerX = 0.0;
+    //private VisionThread visionThread;
+
+    //private final Object imgLock = new Object();
+
     @Override
     public void robotInit(){
 
-        DriveEncoders.TOLLERANCE=3;
+        DriveEncoders.TOLLERANCE=/*45.5363/17.1859*/6;
         TurnGyro.TURN_SPEED=0.3;
-        TurnGyro.tolerance=new Degrees(5);
-
+        TurnGyro.tolerance=new Degrees(3);
+        //40 ft 5.5 in
         Hardware.init();
         Control.init();
         DriveModule[] modules = new DriveModule[2];
@@ -74,17 +92,17 @@ public class PowerUpRobot extends SprocketRobot {
         }
 
         /* Drive Train Configurations: Tank, Control */
-        
+
         driveTrain.setMapper(new TankMapper());
         driveTrain.setDefaultInput(Control.driveInput);
-        
+
         /* Drive Train Pipeline: GyroCorrection, Deadzone */
-        
+
 
         new DashboardInput("Auto Selection");
 
         ArrayList<Step<DTTarget>> steps = new ArrayList<>();
-        
+
         correction = new GyroCorrection(Hardware.navx, new PID(1.5, 0, 0.0015), 90, 1);
         lock = new GyroLock(correction);
         steps.add(new Deadzone());
@@ -107,11 +125,11 @@ public class PowerUpRobot extends SprocketRobot {
                 manualLock = false;
             }
         });
-        //this.intake =
-        // new CubeIntake();
+        this.intake =
+        new CubeIntake();
 
         super.addAutoMode(new AutoMode("Dynamic Auto", new DynamicAutoState()));
-
+new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
 
         Togglable fieldInput = new FieldCentricDriveInput(Control.driveStick,correction);
         new ToggleButton(Control.driveStick,Control.FieldCentricID,fieldInput);
@@ -178,7 +196,35 @@ public class PowerUpRobot extends SprocketRobot {
 
         AutoMode rightAuto = new AutoMode("Right Auto", new RightAuto(null, null));
 
+        AutoMode twentyFeet=new AutoMode("Twenty Feet",
+                new ResetGyro(correction),
+                new DriveEncoderGyro(12*20,.5,new Degrees(0),false,correction));
+        addAutoMode(twentyFeet);
 
+        AutoMode tenFeet=new AutoMode("ten Feet",
+                new ResetGyro(correction),
+                new DriveEncoderGyro(12*10,.5,new Degrees(0),false,correction));
+        addAutoMode(tenFeet);
+
+        AutoMode thirtyFeet=new AutoMode("thirty Feet",
+                new ResetGyro(correction),
+                new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction));
+        addAutoMode(thirtyFeet);
+        AutoMode farAuto = new AutoMode("Rich Mode",
+                new ResetGyro(correction),
+                new DriveEncoderGyro(12*4*oldOverNew, .5,new Degrees(0),false,correction),
+                new DriveEncoderGyro((12*20+4)*oldOverNew,.5,new Degrees(90),false,correction),
+                new DriveEncoderGyro((12*4)*oldOverNew, .5,new Degrees(180),false,correction),
+                new Delay(5),
+                new DriveEncoderGyro((-12*4)*oldOverNew, .5,new Degrees(180),false,correction),
+                new DriveEncoderGyro((-12*20-4)*oldOverNew,.5,new Degrees(90),false,correction),
+                new DriveEncoderGyro((-12*4)*oldOverNew, .5,new Degrees(0),false,correction));
+
+        AutoMode backTen = new AutoMode("Back Ten",
+                new ResetGyro(correction),
+                new DriveEncoderGyro(-12*10,.5,new Degrees(0),false,correction));
+        addAutoMode(backTen);
+        addAutoMode(farAuto);
         addAutoMode(baseLine);
         addAutoMode(centerBaseLineLeft);
         addAutoMode(centerBaseLineRight);
@@ -190,6 +236,19 @@ public class PowerUpRobot extends SprocketRobot {
         addAutoMode(rightAuto);
         sendAutoModes();
 
+        // vision stuff
+        /*UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
+        camera.setResolution(IMG_WIDTH, IMG_HEIGHT);
+
+        visionThread = new VisionThread(camera, new DrivePipeline(), pipeline -> {
+            if (!pipeline.filterContoursOutput().isEmpty()) {
+                org.opencv.core.Rect r = Imgproc.boundingRect(pipeline.filterContoursOutput().get(0));
+                synchronized (imgLock) {
+                    centerX = r.x + (r.width / 2);
+                }
+            }
+        });
+        visionThread.start();*/
     }
 
     @Override
@@ -200,11 +259,19 @@ public class PowerUpRobot extends SprocketRobot {
 
     @Override
     public void update(){
+        /*double centerX;
+        synchronized (imgLock) {
+            centerX = this.centerX;
+        }
+        double turn = centerX - (IMG_WIDTH / 2);
 
+        SmartDashboard.putNumber("turn", turn);
+*/
         SmartDashboard.putNumber("Distance", driveTrain.getDistance().getY());
         SmartDashboard.putNumber("Left Encoder", Hardware.leftDriveEncoder.getInches().get());
         SmartDashboard.putNumber("Right Encoder", Hardware.rightDriveEncoder.getInches().get());
         gyroLocking();
+
     }
 
     private void gyroLocking(){

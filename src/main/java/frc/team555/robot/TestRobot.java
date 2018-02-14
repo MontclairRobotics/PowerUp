@@ -14,10 +14,13 @@ import org.montclairrobotics.sprocket.utils.Input;
 
 public class TestRobot extends SprocketRobot{
     Lift lift;
+    CubeIntake intake;
 
     public void robotInit() {
+        intake = new CubeIntake();
+
         this.addAutoMode(new AutoMode("Test lift"));
         this.sendAutoModes();
-        lift = new Lift();
+
     }
 }

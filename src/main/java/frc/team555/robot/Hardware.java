@@ -107,8 +107,14 @@ public class Hardware {
         testMotor2.setInverted(true);
 
 
-        rightDriveEncoder = new SEncoder(new Encoder(3,2),6544.0/143.0);
-        leftDriveEncoder  = new SEncoder(new Encoder(0,1),6544.0/143.0);
+        //double ticksPerInch=6544.0/143.0;`
+        //old/new=17.1859 * 1.25/(6544.0/143.0)
+        //double ticksPerInch=17.1859 * 1.25;
+        //double ticksPerInch=2*80/10.71/3/Math.PI*12;
+        double ticksPerInch=1.0/6/Math.PI*10.71*40;
+
+        rightDriveEncoder = new SEncoder(new Encoder(3,2),ticksPerInch);
+        leftDriveEncoder  = new SEncoder(new Encoder(0,1),ticksPerInch);
 
         liftEncoder = new SEncoder(null, 0);
 //        leftLiftEncoder  = new SEncoder(null, 0);
