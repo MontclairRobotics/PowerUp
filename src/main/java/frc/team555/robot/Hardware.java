@@ -102,9 +102,9 @@ public class Hardware {
         motorLiftR = new WPI_TalonSRX(DeviceID.motorLiftR);
         motorLiftL = new WPI_TalonSRX(DeviceID.motorLiftL);
 
-        testMotor1 = new WPI_TalonSRX(DeviceID.testMotor1);
-        testMotor2 = new WPI_TalonSRX(DeviceID.testMotor2);
-        testMotor2.setInverted(true);
+        //testMotor1 = new WPI_TalonSRX(DeviceID.testMotor1);
+        //testMotor2 = new WPI_TalonSRX(DeviceID.testMotor2);
+        //testMotor2.setInverted(true);
 
 
         //double ticksPerInch=6544.0/143.0;`
@@ -116,7 +116,7 @@ public class Hardware {
         rightDriveEncoder = new SEncoder(new Encoder(3,2),ticksPerInch);
         leftDriveEncoder  = new SEncoder(new Encoder(0,1),ticksPerInch);
 
-        liftEncoder = new SEncoder(null, 0);
+  //      liftEncoder = new SEncoder(null, 0);
 //        leftLiftEncoder  = new SEncoder(null, 0);
 
         navx = new NavXInput(DeviceID.navxPort);
