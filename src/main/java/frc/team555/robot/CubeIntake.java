@@ -5,7 +5,6 @@ import org.montclairrobotics.sprocket.loop.Updatable;
 import org.montclairrobotics.sprocket.loop.Updater;
 import org.montclairrobotics.sprocket.motors.Motor;
 import org.montclairrobotics.sprocket.utils.Input;
-import org.montclairrobotics.sprocket.utils.Togglable;
 
 public class CubeIntake implements Updatable {
 	public final Motor left;
@@ -31,9 +30,9 @@ public class CubeIntake implements Updatable {
 	@Override
 	public void update() {
 		left.set(power.get());
-		//garrett sucks :(
 		right.set(power.get());
 	}
+	
 	public void enable() {
 		left.set(-.5);
 		right.set(-.5);
