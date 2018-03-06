@@ -15,7 +15,7 @@ import java.util.ArrayList;
 
 public class RightAuto implements State {
     CubeIntake intake;
-    Lift lift;
+    IntakeLift intakeLift;
     StateMachine rightAuto;
     ArrayList<State> states = new ArrayList<State>();
     Input<Boolean> crossover;
@@ -23,9 +23,9 @@ public class RightAuto implements State {
     GyroCorrection correction;
 
 
-    public RightAuto(CubeIntake intake, Lift lift){
+    public RightAuto(CubeIntake intake, IntakeLift intakeLift){
         this.intake = intake;
-        this.lift = lift;
+        this.intakeLift = intakeLift;
         correction = new GyroCorrection(Hardware.navx, new PID(1.5, 0, 0.0015), 90, 1);
 
 

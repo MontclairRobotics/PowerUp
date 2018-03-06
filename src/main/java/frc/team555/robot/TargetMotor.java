@@ -81,7 +81,6 @@ public class TargetMotor extends Module implements Updatable{
     public void update() {
         if(mode==Mode.POSITION) {
             super.set(pid.get());
-
         }
     }
 }

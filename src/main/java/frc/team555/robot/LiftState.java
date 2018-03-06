@@ -4,7 +4,7 @@ import org.montclairrobotics.sprocket.auto.AutoState;
 
 public class LiftState extends AutoState {
 
-    Lift lift;
+    IntakeLift intakeLift;
     int position;
 
     public LiftState(int position){
@@ -13,7 +13,7 @@ public class LiftState extends AutoState {
     @Override
     public void stateUpdate() {
 
-        lift.setPosition(position);
+        intakeLift.setPosition(position);
 
         isDone();
 

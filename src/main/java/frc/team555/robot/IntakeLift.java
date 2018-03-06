@@ -13,10 +13,10 @@ import org.montclairrobotics.sprocket.utils.Utils;
 
 
 /**
- * The Lift class manages the motors, positions, and PID for the lift on the PowerUp robot.
+ * The IntakeLift class manages the motors, positions, and PID for the intakeLift on the PowerUp robot.
  */
-public class Lift {
-/*    public final int liftUpPosition = 1000;
+public class IntakeLift {
+/*  public final int liftUpPosition = 1000;
     public final int liftDownPosition = 0;*/
 
     public double MANUAL_POWER=1;
@@ -25,26 +25,26 @@ public class Lift {
     private TargetMotor motors;
     SEncoder encoder;
     /**
-     * Constructor for Lift Class with default position of 0
+     * Constructor for IntakeLift Class with default position of 0
      */
-    public Lift() {
-        motors = new TargetMotor(Hardware.liftEncoder, new PID(0, 0, 0),new Motor(Hardware.motorLiftR), new Motor(Hardware.motorLiftL));
+    public IntakeLift() {
+        motors = new TargetMotor(Hardware.liftEncoder, new PID(0, 0, 0),new Motor(Hardware.motorLiftIntake));
         encoder=Hardware.liftEncoder;
 
         //=================
         //Buttons below!!!!
         //=================
 
-        //Lift up one step
-        Control.liftUpButton.setPressAction(new ButtonAction() {
+        //IntakeLift up one step
+        Control.intakeLiftIncrement.setPressAction(new ButtonAction() {
             @Override
             public void onAction() {
                 liftUp();
             }
         });
 
-        //Lift down one step
-        Control.liftDownButton.setPressAction(new ButtonAction(){
+        //IntakeLift down one step
+        Control.intakeLiftDecrement.setPressAction(new ButtonAction(){
 
             @Override
             public void onAction() {
@@ -52,16 +52,16 @@ public class Lift {
             }
         });
 
-        //Lift to bottom
-        Control.liftBottomButton.setPressAction(new ButtonAction() {
+        //IntakeLift to bottom
+        Control.intakeLiftBottom.setPressAction(new ButtonAction() {
             @Override
             public void onAction() {
                 setPosition(0);
             }
         });
 
-        //Lift to top
-        Control.liftTopButton.setPressAction(new ButtonAction() {
+        //IntakeLift to top
+        Control.intakeLiftTop.setPressAction(new ButtonAction() {
             @Override
             public void onAction() {
                 setPosition(positions.length-1);
@@ -69,26 +69,20 @@ public class Lift {
         });
 
         //Start the motors in manual mode
-        //Lift up (manual backup control)
-        Control.liftManualUp.setHeldAction(new ButtonAction() {
+        //IntakeLift up (manual backup control)
+        Control.intakeLiftManualUp.setHeldAction(new ButtonAction() {
             @Override
             public void onAction() {
                 setPower(MANUAL_POWER);
             }
         });
 
-        //Lift down (manual backup control)
-        Control.liftManualDown.setHeldAction(new ButtonAction() {
+        //IntakeLift down (manual backup control)
+        Control.intakeLiftManualDown.setHeldAction(new ButtonAction() {
             @Override
             public void onAction() {
-                if(Hardware.liftLimitSwitch.get())
-                {
-                    setPower(0.0);
-                    reset();
-                }
-                else{
-                    setPower(-MANUAL_POWER);
-                }
+                setPower(-MANUAL_POWER);
+
             }
         });
 
@@ -99,8 +93,8 @@ public class Lift {
                 setPower(0);
             }
         };
-        Control.liftManualUp.setOffAction(stop);
-        Control.liftManualDown.setOffAction(stop);
+        Control.intakeLiftManualUp.setOffAction(stop);
+        Control.intakeLiftManualDown.setOffAction(stop);
 
     }
 

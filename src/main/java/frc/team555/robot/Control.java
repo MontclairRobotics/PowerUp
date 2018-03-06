@@ -17,12 +17,16 @@ public class Control {
     // Drive Inputs
     public static DTInput driveInput;
     public static Button lock,
-    liftUpButton,
-    liftDownButton,
-    liftTopButton,
-    liftBottomButton,
-    liftManualUp,
-    liftManualDown;
+            intakeLiftIncrement,
+            intakeLiftDecrement,
+            intakeLiftManualUp,
+            intakeLiftManualDown,
+            intakeLiftTop,
+            intakeLiftBottom,
+            mainLiftManualUp,
+            mainLiftManualDown,
+            mainLiftTop,
+            mainLiftBottom;
 
 
     public static int FieldCentricID=2;
@@ -50,14 +54,18 @@ public class Control {
 
         lock = new JoystickButton(driveStick,lockButtonID);
 
-        //Lift Buttons
-        //liftUpButton=new JoystickButton(auxStick,10);
-        //liftDownButton=new JoystickButton(auxStick,10);
-        //liftTopButton=new JoystickButton(auxStick,10);
-        //liftBottomButton=new JoystickButton(auxStick,10);
-        //liftManualUp=new JoystickButton(auxStick,10);
-        //liftManualDown=new JoystickButton(auxStick,10);
+        //IntakeLift Buttons
 
+        intakeLiftIncrement = new JoystickButton(auxStick,5);
+        intakeLiftDecrement = new JoystickButton(auxStick,4);
+        mainLiftTop = new JoystickButton(auxStick,6);
+        mainLiftBottom = new JoystickButton(auxStick,7);
+        mainLiftManualUp = new JoystickButton(auxStick,11);
+        mainLiftManualDown = new JoystickButton(auxStick,10);
+        intakeLiftManualUp = new JoystickButton(auxStick,3);
+        intakeLiftManualDown = new JoystickButton(auxStick,2);
+        intakeLiftTop = new JoystickButton(auxStick, 9);
+        intakeLiftBottom = new JoystickButton(auxStick, 8);
         // Auxiliary Buttons
 
     }

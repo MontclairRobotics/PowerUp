@@ -46,8 +46,9 @@ public class Hardware {
         public static final int testMotor1 = 7;
         public static final int testMotor2 = 8;
 
-        public static final int motorLiftR = 0;
-        public static final int motorLiftL = 0;
+        public static final int motorIntakeLift = 10;
+        public static final int motorMainLiftA = 7;
+        public static final int motorMainLiftB = 8;
 
 	    // Gyroscope ID
 	    public static final SPI.Port navxPort = SPI.Port.kMXP;
@@ -68,9 +69,13 @@ public class Hardware {
     public static WPI_TalonSRX motorIntakeL;
     public static WPI_TalonSRX motorIntakeR;
 
-    // Lift Motor Controllers
-    public static WPI_TalonSRX motorLiftR;
-    public static WPI_TalonSRX motorLiftL;
+    // IntakeLift Motor Controllers
+    public static WPI_TalonSRX motorLiftIntake;
+
+    // MainLift Motor Controllers
+
+    public static WPI_TalonSRX motorLiftMainA;
+    public static WPI_TalonSRX motorLiftMainB;
 
     public static WPI_TalonSRX testMotor1;
     public static WPI_TalonSRX testMotor2;
@@ -99,8 +104,9 @@ public class Hardware {
         motorDriveBR.setInverted(true);
         motorDriveFR.setInverted(true);
 
-        motorLiftR = new WPI_TalonSRX(DeviceID.motorLiftR);
-        motorLiftL = new WPI_TalonSRX(DeviceID.motorLiftL);
+        motorLiftIntake = new WPI_TalonSRX(DeviceID.motorIntakeLift);
+        motorLiftMainA = new WPI_TalonSRX(DeviceID.motorMainLiftA);
+        motorLiftMainB = new WPI_TalonSRX(DeviceID.motorMainLiftB);
 
         testMotor1 = new WPI_TalonSRX(DeviceID.testMotor1);
         testMotor2 = new WPI_TalonSRX(DeviceID.testMotor2);

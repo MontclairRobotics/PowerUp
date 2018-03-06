@@ -1,10 +1,7 @@
 package frc.team555.robot;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.montclairrobotics.sprocket.auto.states.Delay;
-import org.montclairrobotics.sprocket.auto.states.Disable;
 import org.montclairrobotics.sprocket.auto.states.DriveEncoderGyro;
-import org.montclairrobotics.sprocket.auto.states.Enable;
 import org.montclairrobotics.sprocket.auto.states.TurnGyro;
 import org.montclairrobotics.sprocket.drive.steps.GyroCorrection;
 import org.montclairrobotics.sprocket.geometry.Angle;
@@ -18,7 +15,7 @@ import java.util.ArrayList;
 
 public class LeftAuto implements State {
     CubeIntake intake;
-    Lift lift;
+    IntakeLift intakeLift;
     StateMachine rightAuto;
     ArrayList<State> states = new ArrayList<State>();
     Input<Boolean> crossover;
@@ -26,9 +23,9 @@ public class LeftAuto implements State {
     GyroCorrection correction;
 
 
-    public LeftAuto(CubeIntake intake, Lift lift){
+    public LeftAuto(CubeIntake intake, IntakeLift intakeLift){
         this.intake = intake;
-        this.lift = lift;
+        this.intakeLift = intakeLift;
         correction = new GyroCorrection(Hardware.navx, new PID(1.5, 0, 0.0015), 90, 1);
 
 
