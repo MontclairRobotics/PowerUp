@@ -58,21 +58,25 @@ public class PowerUpRobot extends SprocketRobot {
     @Override
     public void robotInit() {
     		/* ================ Joshua: Vision ================ */
-    		CameraServer.getInstance().startAutomaticCapture("Camera 1", 0);
-    		CameraServer.getInstance().startAutomaticCapture("Camera 2", 1);
-    	
+    		UsbCamera c1 = CameraServer.getInstance().startAutomaticCapture("Camera 1", 0);
+    		UsbCamera c2 = CameraServer.getInstance().startAutomaticCapture("Camera 2", 1);
+    		
+    		c1.setFPS(15);
+    		c2.setFPS(15);
+    		
+    		c1.setResolution(IMG_WIDTH, IMG_HEIGHT);
+    		c2.setResolution(IMG_WIDTH, IMG_HEIGHT);
+    		
     		DrivePipeline vPipeline = new DrivePipeline();
     		Listener<DrivePipeline> vListener = new Listener<DrivePipeline>() {
     			@Override
     			public void copyPipelineOutputs(DrivePipeline pipeline) { /* ... */ }
     		};
     		
-    		for (int i = 0; i < VideoSource.enumerateSources().length; i++) {
-    			VideoSource.enumerateSources()[i].setFPS(15);
-    			VideoSource.enumerateSources()[i].setResolution(IMG_WIDTH, IMG_HEIGHT);
-    			
-    			visionThreads[i] = new VisionThread(VideoSource.enumerateSources()[i], vPipeline, vListener);
-    		}
+    		visionThreads = new VisionThread[] {
+    			new VisionThread(c1, vPipeline, null),
+    			new VisionThread(c2, vPipeline, null)
+    		};
     		/* ============================================== */
     		
 		
