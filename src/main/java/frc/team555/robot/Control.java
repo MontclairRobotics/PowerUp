@@ -8,7 +8,6 @@ import org.montclairrobotics.sprocket.drive.DTInput;
 
 
 public class Control {
-
     // Port Configuration
     public static int lockButtonID = 1;
     public static final int driveStickID = 0;
@@ -23,7 +22,6 @@ public class Control {
     liftBottomButton,
     liftManualUp,
     liftManualDown;
-
 
     public static int FieldCentricID=2;
     public static int ResetID=3;

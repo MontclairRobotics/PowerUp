@@ -26,7 +26,6 @@ import org.opencv.objdetect.*;
  * @author GRIP
  */
 public class DrivePipeline implements VisionPipeline {
-
     //Outputs
     private Mat blurOutput = new Mat();
     private Mat rgbThresholdOutput = new Mat();
@@ -113,7 +112,7 @@ public class DrivePipeline implements VisionPipeline {
      * An indication of which type of filter to use for a blur.
      * Choices are BOX, GAUSSIAN, MEDIAN, and BILATERAL
      */
-    enum BlurType{
+    enum BlurType {
         BOX("Box Blur"), GAUSSIAN("Gaussian Blur"), MEDIAN("Median Filter"),
         BILATERAL("Bilateral Filter");
 
@@ -151,8 +150,7 @@ public class DrivePipeline implements VisionPipeline {
      * @param doubleRadius The radius for the blur.
      * @param output The image in which to store the output.
      */
-    private void blur(Mat input, BlurType type, double doubleRadius,
-                      Mat output) {
+    private void blur(Mat input, BlurType type, double doubleRadius, Mat output) {
         int radius = (int)(doubleRadius + 0.5);
         int kernelSize;
         switch(type){
@@ -182,8 +180,7 @@ public class DrivePipeline implements VisionPipeline {
      * @param blue The min and max blue.
      * @param output The image in which to store the output.
      */
-    private void rgbThreshold(Mat input, double[] red, double[] green, double[] blue,
-                              Mat out) {
+    private void rgbThreshold(Mat input, double[] red, double[] green, double[] blue, Mat out) {
         Imgproc.cvtColor(input, out, Imgproc.COLOR_BGR2RGB);
         Core.inRange(out, new Scalar(red[0], green[0], blue[0]),
                 new Scalar(red[1], green[1], blue[1]), out);
@@ -196,8 +193,7 @@ public class DrivePipeline implements VisionPipeline {
      * @param maskSize the size of the mask.
      * @param output The image in which to store the output.
      */
-    private void findContours(Mat input, boolean externalOnly,
-                              List<MatOfPoint> contours) {
+    private void findContours(Mat input, boolean externalOnly, List<MatOfPoint> contours) {
         Mat hierarchy = new Mat();
         contours.clear();
         int mode;
@@ -229,9 +225,9 @@ public class DrivePipeline implements VisionPipeline {
      * @param maxRatio maximum ratio of width to height
      */
     private void filterContours(List<MatOfPoint> inputContours, double minArea,
-                                double minPerimeter, double minWidth, double maxWidth, double minHeight, double
-                                        maxHeight, double[] solidity, double maxVertexCount, double minVertexCount, double
-                                        minRatio, double maxRatio, List<MatOfPoint> output) {
+                                double minPerimeter, double minWidth, double maxWidth, double minHeight,
+                                double maxHeight, double[] solidity, double maxVertexCount, double minVertexCount,
+                                double minRatio, double maxRatio, List<MatOfPoint> output) {
         final MatOfInt hull = new MatOfInt();
         output.clear();
         //operation

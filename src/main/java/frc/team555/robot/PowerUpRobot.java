@@ -2,10 +2,15 @@ package frc.team555.robot;
 
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import edu.wpi.cscore.UsbCamera;
+import edu.wpi.cscore.VideoMode;
+import edu.wpi.cscore.VideoSource;
 import edu.wpi.first.wpilibj.CameraServer;
-import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj.vision.VisionPipeline;
+import edu.wpi.first.wpilibj.vision.VisionRunner;
+import edu.wpi.first.wpilibj.vision.VisionRunner.Listener;
 import edu.wpi.first.wpilibj.vision.VisionThread;
+
 import org.montclairrobotics.sprocket.SprocketRobot;
 import org.montclairrobotics.sprocket.auto.AutoMode;
 import org.montclairrobotics.sprocket.auto.states.*;
@@ -25,6 +30,7 @@ import org.montclairrobotics.sprocket.utils.Debug;
 import org.montclairrobotics.sprocket.utils.Input;
 import org.montclairrobotics.sprocket.utils.PID;
 import org.montclairrobotics.sprocket.utils.Togglable;
+import org.opencv.core.Mat;
 import org.opencv.imgproc.Imgproc;
 
 import java.io.IOException;
@@ -42,19 +48,37 @@ public class PowerUpRobot extends SprocketRobot {
     private static final int IMG_HEIGHT = 240;
 
 
-    private static final double oldOverNew=17.1859 * 1.25/(6544.0/143.0);
+    private static final double oldOverNew = 17.1859 * 1.25/(6544.0/143.0);
 
     //private double centerX = 0.0;
-    //private VisionThread visionThread;
+    private VisionThread[] visionThreads;
 
     //private final Object imgLock = new Object();
 
     @Override
-    public void robotInit(){
-
+    public void robotInit() {
+    		/* ================ Joshua: Vision ================ */
+    		CameraServer.getInstance().startAutomaticCapture("Camera 1", 0);
+    		CameraServer.getInstance().startAutomaticCapture("Camera 2", 1);
+    	
+    		DrivePipeline vPipeline = new DrivePipeline();
+    		Listener<DrivePipeline> vListener = new Listener<DrivePipeline>() {
+    			@Override
+    			public void copyPipelineOutputs(DrivePipeline pipeline) { /* ... */ }
+    		};
+    		
+    		for (int i = 0; i < VideoSource.enumerateSources().length; i++) {
+    			VideoSource.enumerateSources()[i].setFPS(15);
+    			VideoSource.enumerateSources()[i].setResolution(IMG_WIDTH, IMG_HEIGHT);
+    			
+    			visionThreads[i] = new VisionThread(VideoSource.enumerateSources()[i], vPipeline, vListener);
+    		}
+    		/* ============================================== */
+    		
+		
         DriveEncoders.TOLLERANCE=/*45.5363/17.1859*/6;
-        TurnGyro.TURN_SPEED=0.3;
-        TurnGyro.tolerance=new Degrees(3);
+        TurnGyro.TURN_SPEED = 0.3;
+        TurnGyro.tolerance = new Degrees(3);
         //40 ft 5.5 in
         Hardware.init();
         Control.init();
@@ -125,11 +149,11 @@ public class PowerUpRobot extends SprocketRobot {
                 manualLock = false;
             }
         });
-        this.intake =
-        new CubeIntake();
+        
+        this.intake = new CubeIntake();
 
         super.addAutoMode(new AutoMode("Dynamic Auto", new DynamicAutoState()));
-new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
+        new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
 
         Togglable fieldInput = new FieldCentricDriveInput(Control.driveStick,correction);
         new ToggleButton(Control.driveStick,Control.FieldCentricID,fieldInput);
@@ -153,7 +177,6 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
                         Angle.ZERO,
                         true,
                         correction));
-
 
         AutoMode encoder = new AutoMode("encoder",
                 new DriveEncoders(100,.25));
@@ -252,7 +275,7 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
     }
 
     @Override
-    public void userAutonomousSetup(){
+    public void userAutonomousSetup() {
 
     }
 
@@ -274,7 +297,7 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
 
     }
 
-    private void gyroLocking(){
+    private void gyroLocking() {
         boolean autoLock = ((Math.abs(Control.driveInput.getTurn().toDegrees())<10) &&
                 (Math.abs(Control.driveInput.getDir().getY())>0.5));
         if(autoLock || manualLock){
