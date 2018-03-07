@@ -1,9 +1,7 @@
 package frc.team555.robot;
 
 import org.montclairrobotics.sprocket.control.ButtonAction;
-import org.montclairrobotics.sprocket.motors.Module;
 import org.montclairrobotics.sprocket.motors.Motor;
-import org.montclairrobotics.sprocket.motors.SEncoder;
 import org.montclairrobotics.sprocket.utils.PID;
 
 public class MainLift extends TargetMotor{
@@ -14,7 +12,7 @@ public class MainLift extends TargetMotor{
     private int downPosition;
 
     public MainLift(){
-        super(Hardware.liftEncoder, new PID(0, 0, 0), new Motor(Hardware.motorLiftMainA), new Motor(Hardware.motorLiftMainB));
+        super(Hardware.liftEncoder, new PID(0, 0, 0), new Motor(Hardware.motorLiftMainFront), new Motor(Hardware.motorLiftMainBack));
 
         mode = Mode.POWER;
 

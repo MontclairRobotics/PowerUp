@@ -135,7 +135,7 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
 
         //Lift
 
-
+        MainLift lift=new MainLift();
 
 
         //Auto

@@ -35,7 +35,7 @@ public class PowerUpRobot extends SprocketRobot {
     GyroCorrection correction;
     GyroLock lock;
     boolean manualLock;
-    CubeIntake intake;
+    //CubeIntake intake;
 
     //vision stuff
     private static final int IMG_WIDTH = 320;
@@ -125,8 +125,8 @@ public class PowerUpRobot extends SprocketRobot {
                 manualLock = false;
             }
         });
-        this.intake =
-        new CubeIntake();
+        //this.intake =
+        //new CubeIntake();
 
         super.addAutoMode(new AutoMode("Dynamic Auto", new DynamicAutoState()));
 new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
