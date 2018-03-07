@@ -2,8 +2,10 @@ package frc.team555.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import org.montclairrobotics.sprocket.control.Button;
+import org.montclairrobotics.sprocket.control.JoystickButton;
 import org.montclairrobotics.sprocket.control.SquaredDriveInput;
 import org.montclairrobotics.sprocket.drive.DTInput;
+
 
 public class Control {
 
@@ -14,8 +16,21 @@ public class Control {
 
     // Drive Inputs
     public static DTInput driveInput;
-    public static Button lock;
+    public static Button lock,
+            intakeLiftIncrement,
+            intakeLiftDecrement,
+            intakeLiftManualUp,
+            intakeLiftManualDown,
+            intakeLiftTop,
+            intakeLiftBottom,
+            mainLiftManualUp,
+            mainLiftManualDown,
+            mainLiftTop,
+            mainLiftBottom;
 
+
+    public static int FieldCentricID=2;
+    public static int ResetID=3;
     // Joystick Declaration
     public static Joystick driveStick;
     public static Joystick auxStick;
@@ -37,15 +52,20 @@ public class Control {
         // Button Creation
         // ==================
 
-        // Drive Buttons
-        lock = new Button() {
-            @Override
-            public Boolean get() {
-                return driveStick.getRawButton(lockButtonID);
-            }
-        };
+        lock = new JoystickButton(driveStick,lockButtonID);
 
+        //IntakeLift Buttons
 
+        intakeLiftIncrement = new JoystickButton(auxStick,5);
+        intakeLiftDecrement = new JoystickButton(auxStick,4);
+        mainLiftTop = new JoystickButton(auxStick,6);
+        mainLiftBottom = new JoystickButton(auxStick,7);
+        mainLiftManualUp = new JoystickButton(auxStick,11);
+        mainLiftManualDown = new JoystickButton(auxStick,10);
+        intakeLiftManualUp = new JoystickButton(auxStick,3);
+        intakeLiftManualDown = new JoystickButton(auxStick,2);
+        intakeLiftTop = new JoystickButton(auxStick, 9);
+        intakeLiftBottom = new JoystickButton(auxStick, 8);
         // Auxiliary Buttons
 
     }

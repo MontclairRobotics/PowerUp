@@ -1,11 +1,6 @@
 package frc.team555.robot;
 
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import edu.wpi.cscore.UsbCamera;
-import edu.wpi.first.wpilibj.CameraServer;
-import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.vision.VisionThread;
 import org.montclairrobotics.sprocket.SprocketRobot;
 import org.montclairrobotics.sprocket.auto.AutoMode;
 import org.montclairrobotics.sprocket.auto.states.*;
@@ -15,27 +10,23 @@ import org.montclairrobotics.sprocket.drive.steps.Deadzone;
 import org.montclairrobotics.sprocket.drive.steps.GyroCorrection;
 import org.montclairrobotics.sprocket.drive.steps.Sensitivity;
 import org.montclairrobotics.sprocket.drive.utils.GyroLock;
-import org.montclairrobotics.sprocket.geometry.*;
+import org.montclairrobotics.sprocket.geometry.Angle;
+import org.montclairrobotics.sprocket.geometry.Degrees;
+import org.montclairrobotics.sprocket.geometry.XY;
 import org.montclairrobotics.sprocket.motors.Module;
 import org.montclairrobotics.sprocket.motors.Motor;
-import org.montclairrobotics.sprocket.motors.SEncoder;
-import org.montclairrobotics.sprocket.pipeline.Pipeline;
 import org.montclairrobotics.sprocket.pipeline.Step;
-import org.montclairrobotics.sprocket.utils.Debug;
-import org.montclairrobotics.sprocket.utils.Input;
 import org.montclairrobotics.sprocket.utils.PID;
 import org.montclairrobotics.sprocket.utils.Togglable;
-import org.opencv.imgproc.Imgproc;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
-public class PowerUpRobot extends SprocketRobot {
+public class PowerUpRobotWithLift extends SprocketRobot {
     DriveTrain driveTrain;
     GyroCorrection correction;
     GyroLock lock;
     boolean manualLock;
-    //CubeIntake intake;
+    CubeIntake intake;
 
     //vision stuff
     private static final int IMG_WIDTH = 320;
@@ -125,8 +116,8 @@ public class PowerUpRobot extends SprocketRobot {
                 manualLock = false;
             }
         });
-        //this.intake =
-        //new CubeIntake();
+        this.intake =
+        new CubeIntake();
 
         super.addAutoMode(new AutoMode("Dynamic Auto", new DynamicAutoState()));
 new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
@@ -141,6 +132,10 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
                 correction.reset();
             }
         });
+
+        //Lift
+
+        MainLift lift=new MainLift();
 
 
         //Auto
