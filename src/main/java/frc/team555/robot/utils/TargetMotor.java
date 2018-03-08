@@ -1,4 +1,4 @@
-package frc.team555.robot;
+package frc.team555.robot.utils;
 
 import com.sun.org.apache.xpath.internal.operations.Mod;
 import edu.wpi.first.wpilibj.SpeedController;
@@ -22,14 +22,14 @@ public class TargetMotor extends Module implements Updatable{
     /**
      * The encoder attached to the motor
      */
-    SEncoder encoder;
+    public SEncoder encoder;
 
     /**
      * A pid controller that is used to set the position
      */
     public PID pid;
 
-    Mode mode;
+    public Mode mode;
 
 
     /**

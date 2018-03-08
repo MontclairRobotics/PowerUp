@@ -1,4 +1,6 @@
-package frc.team555.robot;
+package frc.team555.robot.test;
+
+import frc.team555.robot.utils.Side;
 
 public class SideTest {
 	public static void main(String[] args) {

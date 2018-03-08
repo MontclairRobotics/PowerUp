@@ -1,8 +1,9 @@
-package frc.team555.robot;
+package frc.team555.robot.core;
 
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.*;
+import frc.team555.robot.utils.NavXInput;
 import org.montclairrobotics.sprocket.motors.SEncoder;
 
 /**

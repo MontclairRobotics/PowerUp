@@ -1,15 +1,12 @@
-package frc.team555.robot;
+package frc.team555.robot.components;
 
-import org.montclairrobotics.sprocket.control.Button;
+import frc.team555.robot.core.Control;
+import frc.team555.robot.core.Hardware;
+import frc.team555.robot.utils.TargetMotor;
 import org.montclairrobotics.sprocket.control.ButtonAction;
-import org.montclairrobotics.sprocket.loop.Priority;
-import org.montclairrobotics.sprocket.loop.Updatable;
-import org.montclairrobotics.sprocket.loop.Updater;
-import org.montclairrobotics.sprocket.motors.Module;
 import org.montclairrobotics.sprocket.motors.Motor;
 import org.montclairrobotics.sprocket.motors.SEncoder;
 import org.montclairrobotics.sprocket.utils.PID;
-import org.montclairrobotics.sprocket.utils.Utils;
 
 
 /**

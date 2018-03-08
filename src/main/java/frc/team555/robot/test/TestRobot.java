@@ -1,5 +1,9 @@
-package frc.team555.robot;
+package frc.team555.robot.test;
 
+import frc.team555.robot.components.CubeIntake;
+import frc.team555.robot.components.IntakeLift;
+import frc.team555.robot.core.Control;
+import frc.team555.robot.core.Hardware;
 import org.montclairrobotics.sprocket.SprocketRobot;
 import org.montclairrobotics.sprocket.auto.AutoMode;
 import org.montclairrobotics.sprocket.control.JoystickYAxis;

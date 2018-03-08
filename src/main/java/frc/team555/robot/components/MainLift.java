@@ -1,10 +1,13 @@
-package frc.team555.robot;
+package frc.team555.robot.components;
 
+import frc.team555.robot.core.Control;
+import frc.team555.robot.core.Hardware;
+import frc.team555.robot.utils.TargetMotor;
 import org.montclairrobotics.sprocket.control.ButtonAction;
 import org.montclairrobotics.sprocket.motors.Motor;
 import org.montclairrobotics.sprocket.utils.PID;
 
-public class MainLift extends TargetMotor{
+public class MainLift extends TargetMotor {
 
     private final double speed = 0.5;
 

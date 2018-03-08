@@ -1,4 +1,4 @@
-package frc.team555.robot;
+package frc.team555.robot.auto;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -32,7 +32,7 @@ public class DynamicAutoState implements State {
                 Debug.msg("Value", "Left");
                 break;
         }*/
-        double selection = SmartDashboard.getNumber("Auto Selection", 0);
+        double selection = SmartDashboard.getNumber("auto Selection", 0);
         if (selection == 1) {
             states.add(new DriveEncoders(100, .25));
         }else if(selection == 2){

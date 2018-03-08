@@ -1,6 +1,10 @@
-package frc.team555.robot;
+package frc.team555.robot.auto;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.team555.robot.components.CubeIntake;
+import frc.team555.robot.components.IntakeLift;
+import frc.team555.robot.utils.Side;
+import frc.team555.robot.core.Hardware;
 import org.montclairrobotics.sprocket.auto.states.*;
 import org.montclairrobotics.sprocket.drive.steps.GyroCorrection;
 import org.montclairrobotics.sprocket.geometry.Angle;
@@ -64,26 +68,26 @@ public class RightAuto implements State {
         	states.add(new DriveEncoderGyro(150, .75, new Degrees(90), false, correction));
         	states.add(new DriveEncoderGyro(68, .75, Angle.ZERO, false, correction));
             states.add(new TurnGyro(new Degrees(-90), correction, false));
-        	//states.add(new Enable(intake));
-            //states.add(new Delay(1));
-            //states.add(new Disable(intake));
+        	states.add(new Enable(intake));
+            states.add(new Delay(1));
+            states.add(new Disable(intake));
         }else if(Side.fromDriverStation()[1] == Side.RIGHT){
             Debug.msg("Target", "RightScale");
         	states.add(new DriveEncoderGyro(300, .75, Angle.ZERO, false, correction));
             states.add(new TurnGyro(new Degrees(90), correction, false));
-        	//states.add(new LiftState(100));
-            //states.add(new Enable(intake));
-            //states.add(new Delay(1));
-            //states.add(new Disable(intake));
+        	states.add(new LiftState(4)); // Todo: make sure right state/position
+            states.add(new Enable(intake));
+            states.add(new Delay(1));
+            states.add(new Disable(intake));
         }else{
         	states.add(new DriveEncoderGyro(100, .75, Angle.ZERO, false, correction));
         	states.add(new DriveEncoderGyro(150, .75, new Degrees(90), false, correction));
         	states.add(new DriveEncoderGyro(200, .75, Angle.ZERO, false, correction));
             states.add(new TurnGyro(new Degrees(-90), correction, false));
-            //states.add(new LiftState(100));
-            //states.add(new Enable(intake));
-            //states.add(new Delay(1));
-            //states.add(new Disable(intake));
+            states.add(new LiftState(4)); // Todo: make sure right state/position
+            states.add(new Enable(intake));
+            states.add(new Delay(1));
+            states.add(new Disable(intake));
         }
         int stateSize = states.size();
         rightAuto = new StateMachine(false, states.toArray(new State[stateSize]));

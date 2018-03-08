@@ -1,4 +1,4 @@
-package frc.team555.robot;
+package frc.team555.robot.core;
 
 import edu.wpi.first.wpilibj.Joystick;
 import org.montclairrobotics.sprocket.control.Button;
