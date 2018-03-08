@@ -16,12 +16,15 @@ import org.montclairrobotics.sprocket.utils.Togglable;
 public class CubeIntake implements Updatable, Togglable{
 	public final Motor left;
 	public final Motor right;
+	public final Motor clamp;
+	public final double tolerance = .01;
 	
 	public final Input<Vector> power;
 	
 	public CubeIntake() {
 		this.left = new Motor(Hardware.motorIntakeL);
 		this.right = new Motor(Hardware.motorIntakeR);
+		this.clamp = new Motor(Hardware.motorIntakeClamp);
 		
 		this.power = new Input<Vector>() {
 			@Override
@@ -35,11 +38,16 @@ public class CubeIntake implements Updatable, Togglable{
 		
 		Updater.add(this, Priority.CALC);
 	}
-	
+
 
 	@Override
 	public void update() {
 		Vector p = power.get();
+		if(p.getMagnitude() < tolerance){
+			openClamp();
+		}else{
+			closeClamp();
+		}
 		left.set(p.getX());
 		right.set(p.getY());
 	}
@@ -54,5 +62,13 @@ public class CubeIntake implements Updatable, Togglable{
 	public void disable() {
 		left.set(0);
 		right.set(0);
+	}
+
+	private void openClamp(){
+
+	}
+
+	private void closeClamp(){
+
 	}
 }

@@ -7,6 +7,7 @@ import org.montclairrobotics.sprocket.control.ButtonAction;
 import org.montclairrobotics.sprocket.motors.Motor;
 import org.montclairrobotics.sprocket.motors.SEncoder;
 import org.montclairrobotics.sprocket.utils.PID;
+import org.montclairrobotics.sprocket.utils.Utils;
 
 
 /**
@@ -16,8 +17,8 @@ public class IntakeLift {
 /*  public final int liftUpPosition = 1000;
     public final int liftDownPosition = 0;*/
 
-    public double MANUAL_POWER=1;
-    public final double[] positions = {0D, 333D, 667D, 1000D};
+    public double MANUAL_POWER=.5;
+    public final double[] positions = {0D, 333D, 667D, 1000D}; // Todo: test values
     private int pos;
     private TargetMotor motors;
     SEncoder encoder;
@@ -25,7 +26,7 @@ public class IntakeLift {
      * Constructor for IntakeLift Class with default position of 0
      */
     public IntakeLift() {
-        motors = new TargetMotor(Hardware.liftEncoder, new PID(0, 0, 0),new Motor(Hardware.motorLiftIntake));
+        motors = new TargetMotor(Hardware.liftEncoder, new PID(0, 0, 0),new Motor(Hardware.motorLiftIntake)); // Todo: Needs Tuninng
         encoder=Hardware.liftEncoder;
 
         //=================
@@ -97,8 +98,7 @@ public class IntakeLift {
 
 
     public void setPosition(int p) {
-        if(p<0)p=0;
-        if(p>positions.length-1)p=positions.length-1;
+        p = (int)Utils.constrain(p, 0, positions.length - 1);
         motors.setTarget(positions[p]);
         pos = p;
     }
