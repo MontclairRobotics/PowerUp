@@ -10,7 +10,7 @@ import org.montclairrobotics.sprocket.control.JoystickYAxis;
 import org.montclairrobotics.sprocket.drive.ControlledMotor;
 import org.montclairrobotics.sprocket.utils.Input;
 
-public class TestRobot extends SprocketRobot{
+public class TestRobot2 extends SprocketRobot{
     IntakeLift intakeLift;
     CubeIntake intake;
 
@@ -47,8 +47,8 @@ public class TestRobot extends SprocketRobot{
         };*/
 
         Input<Double> input=new JoystickYAxis(Control.auxStick);
-        ControlledMotor testMotor1 = new ControlledMotor(Hardware.motorLiftMainFront, input);
-        ControlledMotor testMotor2 = new ControlledMotor(Hardware.motorLiftMainBack, input);
+        ControlledMotor testMotor1 = new ControlledMotor(Hardware.motorLiftMainBack, input);
+        ControlledMotor testMotor2 = new ControlledMotor(Hardware.motorLiftMainFront, input);
 
         super.addAutoMode(new AutoMode("name"));
         super.sendAutoModes();

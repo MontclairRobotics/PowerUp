@@ -43,7 +43,11 @@ public class Hardware {
         public static final int motorMainLiftFront = 4;
         public static final int motorMainLiftBack = 2;
 
-        public static final int motorIntakeClamp = 11;
+        public static final int motorIntakeClamp = 6;
+        //left intake 5
+        //pincer 6
+        //lifter 9
+        //right intake 10
 
         // Gyroscope ID
         public static final SPI.Port navxPort = SPI.Port.kMXP;

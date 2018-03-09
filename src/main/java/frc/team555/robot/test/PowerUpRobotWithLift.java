@@ -4,7 +4,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team555.robot.components.CubeIntake;
 import frc.team555.robot.components.MainLift;
 import frc.team555.robot.auto.DynamicAutoState;
-import frc.team555.robot.auto.RightAuto;
 import frc.team555.robot.core.Control;
 import frc.team555.robot.core.Hardware;
 import org.montclairrobotics.sprocket.SprocketRobot;
@@ -195,7 +194,7 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
                 new DriveEncoderGyro(122, .5, new Degrees(-90), false, correction),
                 new DriveEncoderGyro(80, .5, new Degrees(0), false, correction));
 
-        AutoMode rightAuto = new AutoMode("Right auto", new RightAuto(null, null));
+        //AutoMode rightAuto = new AutoMode("Right auto", new RightAuto(null, null));
 
         AutoMode twentyFeet=new AutoMode("Twenty Feet",
                 new ResetGyro(correction),
@@ -234,7 +233,7 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
         addAutoMode(autoDrive);
         addAutoMode(turn90);
         addAutoMode(square);
-        addAutoMode(rightAuto);
+        //addAutoMode(rightAuto);
         sendAutoModes();
 
         // vision stuff

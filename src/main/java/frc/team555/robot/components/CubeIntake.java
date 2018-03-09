@@ -17,14 +17,14 @@ public class CubeIntake implements Updatable, Togglable{
 	public final Motor left;
 	public final Motor right;
 	public final Motor clamp;
-	public final double tolerance = .01;
+	public final double tolerance = .01; // Todo: Maybe needs to be tuned
 	
 	public final Input<Vector> power;
 	
 	private long clampStart=0;
-	private long clampTime=500;
+	private long clampTime=500; // Todo: needs to be tuned
 	private double clampPower=0.5;
-	private boolean clampOpen=true;//True for open, false for close
+	private boolean clampOpen=true; // True for open, false for close
 	
 	public CubeIntake() {
 		this.left = new Motor(Hardware.motorIntakeL);

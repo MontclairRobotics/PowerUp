@@ -1,5 +1,7 @@
 package frc.team555.robot.auto;
 
+import edu.wpi.first.wpilibj.interfaces.Gyro;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team555.robot.components.CubeIntake;
 import frc.team555.robot.components.IntakeLift;
@@ -20,21 +22,23 @@ import java.util.ArrayList;
 public class SideAuto implements State {
     CubeIntake intake;
     IntakeLift intakeLift;
-    StateMachine rightAuto;
+    StateMachine machine;
     ArrayList<State> states = new ArrayList<State>();
     Input<Boolean> crossover;
     Input<Boolean> prioritizeScale;
     GyroCorrection correction;
 
 
-    public SideAuto(CubeIntake intake, IntakeLift intakeLift){
+    public SideAuto(CubeIntake intake, IntakeLift intakeLift, GyroCorrection gyroCorrection){
         this.intake = intake;
         this.intakeLift = intakeLift;
-        correction = new GyroCorrection(Hardware.navx, new PID(1.5, 0, 0.0015), 90, 1);
+        correction = gyroCorrection;
 
 
         SmartDashboard.putBoolean("Crossover", false);
         SmartDashboard.putBoolean("Prioritize Scale", false);
+
+        //SmartDashboard.putData(new SendableChooser<Side>().addObject().addObject(Side.LEFT););
 
         crossover = new Input<Boolean>() {
             @Override
@@ -90,23 +94,23 @@ public class SideAuto implements State {
             states.add(new Disable(intake));
         }
         int stateSize = states.size();
-        rightAuto = new StateMachine(false, states.toArray(new State[stateSize]));
+        machine = new StateMachine(false, states.toArray(new State[stateSize]));
         states = new ArrayList<State>();
-        rightAuto.start();
+        machine.start();
     }
 
     @Override
     public void stop() {
-        rightAuto.stop();
+        machine.stop();
     }
 
     @Override
     public void stateUpdate() {
-        rightAuto.update();
+        machine.update();
     }
 
     @Override
     public boolean isDone() {
-        return rightAuto.isDone();
+        return machine.isDone();
     }
 }
