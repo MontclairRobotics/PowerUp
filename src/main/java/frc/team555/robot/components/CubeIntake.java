@@ -21,6 +21,11 @@ public class CubeIntake implements Updatable, Togglable{
 	
 	public final Input<Vector> power;
 	
+	private long clampStart=0;
+	private long clampTime=500;
+	private double clampPower=0.5;
+	private boolean clampOpen=true;//True for open, false for close
+	
 	public CubeIntake() {
 		this.left = new Motor(Hardware.motorIntakeL);
 		this.right = new Motor(Hardware.motorIntakeR);
@@ -50,6 +55,7 @@ public class CubeIntake implements Updatable, Togglable{
 		}
 		left.set(p.getX());
 		right.set(p.getY());
+		updateClamp();
 	}
 
 	@Override
@@ -65,10 +71,48 @@ public class CubeIntake implements Updatable, Togglable{
 	}
 
 	private void openClamp(){
-
+		if(!clampOpen)
+		{
+			clampOpen=true;
+			startClamp();
+		}
 	}
 
 	private void closeClamp(){
-
+		if(clampOpen)
+		{
+			clampOpen=false;
+			startClamp();
+		}
+	}
+	
+	private void startClamp()
+	{
+		//Guess how far we have moved, and set our start time correctly
+		//clampStart=System.currentTimeMillis()-(clampTime-(System.currentTimeMillis()-clampStart)));
+		clampStart=System.currentTimeMillis()*2-clampTime-clampStart;
+		if(clampStart>System.currentTimeMillis())
+		{
+			clampStart=System.currentTimeMillis();
+		}
+	}
+	
+	private void updateClamp()
+	{
+		if(System.currentTimeMillis()-clampStart<clampTime)
+		{
+			if(clampOpen)
+			{
+				clamp.set(clampPower);
+			}
+			else
+			{
+				clamp.set(-clampPower);
+			}
+		}
+		else
+		{
+			clamp.set(0);
+		}
 	}
 }
