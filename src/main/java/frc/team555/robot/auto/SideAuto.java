@@ -17,7 +17,7 @@ import org.montclairrobotics.sprocket.utils.PID;
 
 import java.util.ArrayList;
 
-public class RightAuto implements State {
+public class SideAuto implements State {
     CubeIntake intake;
     IntakeLift intakeLift;
     StateMachine rightAuto;
@@ -27,7 +27,7 @@ public class RightAuto implements State {
     GyroCorrection correction;
 
 
-    public RightAuto(CubeIntake intake, IntakeLift intakeLift){
+    public SideAuto(CubeIntake intake, IntakeLift intakeLift){
         this.intake = intake;
         this.intakeLift = intakeLift;
         correction = new GyroCorrection(Hardware.navx, new PID(1.5, 0, 0.0015), 90, 1);
