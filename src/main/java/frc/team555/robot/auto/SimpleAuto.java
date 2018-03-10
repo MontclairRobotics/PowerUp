@@ -8,12 +8,32 @@ import org.montclairrobotics.sprocket.states.State;
 
 import java.util.ArrayList;
 import java.util.TreeMap;
-
+@Deprecated
 public class SimpleAuto extends AutoMode{
 
     TreeMap<String,SendableChooser> choosers;
     public SimpleAuto() {
-        super("Auto Mode", null);
+        super("Auto Mode", new State() {
+            @Override
+            public void start() {
+
+            }
+
+            @Override
+            public void stop() {
+
+            }
+
+            @Override
+            public void stateUpdate() {
+
+            }
+
+            @Override
+            public boolean isDone() {
+                return true;
+            }
+        });
         SendableChooser<Side> mySide=new SendableChooser<Side>();
         mySide.addObject(Side.LEFT.toString(),Side.LEFT);
         mySide.addObject(Side.RIGHT.toString(),Side.RIGHT);

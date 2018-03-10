@@ -6,6 +6,7 @@ import frc.team555.robot.utils.Side;
 import org.montclairrobotics.sprocket.states.State;
 import org.montclairrobotics.sprocket.states.StateMachine;
 
+@Deprecated
 public class SideAuto extends StateMachine {
 
     CubeIntake intake;

@@ -3,6 +3,8 @@ package frc.team555.robot.core;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team555.robot.auto.ConditionalState;
 import frc.team555.robot.auto.DynamicAutoState;
+import frc.team555.robot.auto.SwitchAuto;
+import frc.team555.robot.components.CubeIntake;
 import frc.team555.robot.utils.Side;
 import org.montclairrobotics.sprocket.SprocketRobot;
 import org.montclairrobotics.sprocket.auto.AutoMode;
@@ -28,7 +30,7 @@ public class PowerUpRobot extends SprocketRobot {
     GyroCorrection correction;
     GyroLock lock;
     boolean manualLock;
-    //CubeIntake intake;
+    CubeIntake intake;
 
     //vision stuff
     private static final int IMG_WIDTH = 320;
@@ -51,7 +53,9 @@ public class PowerUpRobot extends SprocketRobot {
         //40 ft 5.5 in
         Hardware.init();
         Control.init();
+        SwitchAuto.init();
         DriveModule[] modules = new DriveModule[2];
+        intake = new CubeIntake();
 
         modules[0] = new DriveModule(new XY(-1, 0),
                 new XY(0, 1),
@@ -121,9 +125,9 @@ public class PowerUpRobot extends SprocketRobot {
         //this.intake =
         //new CubeIntake();
 
-        super.addAutoMode(new AutoMode("Dynamic auto", new DynamicAutoState()));
+        /*super.addAutoMode(new AutoMode("Dynamic auto", new DynamicAutoState()));
 new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
-
+*/
         Togglable fieldInput = new FieldCentricDriveInput(Control.driveStick,correction);
         new ToggleButton(Control.driveStick,Control.FieldCentricID,fieldInput);
 
@@ -219,6 +223,7 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
         addAutoMode(baseLine);
         addAutoMode(centerBaseLineLeft);
         addAutoMode(centerBaseLineRight);
+        addAutoMode(new AutoMode("Switch Auto", new SwitchAuto(correction, intake)));
         sendAutoModes();
 
         // vision stuff
@@ -268,5 +273,10 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
             lock.disable();
         }
         //lock.update();
+    }
+
+    @Override
+    public void userDisabledPeriodic(){
+        SwitchAuto.disabled();
     }
 }

@@ -12,7 +12,7 @@ import org.montclairrobotics.sprocket.utils.Debug;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-
+@Deprecated
 public class DynamicAutoState implements State {
     ArrayList<State> states = new ArrayList<State>();
     StateMachine rightAuto;

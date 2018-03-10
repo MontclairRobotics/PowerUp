@@ -17,7 +17,7 @@ public class SideTurn extends TurnGyro {
 
     @Override
     public Angle getTgt(){
-        if(side == Side.RIGHT){
+        if(side == Side.LEFT){
             return new Degrees(90);
         }else{
             return new Degrees(-90);

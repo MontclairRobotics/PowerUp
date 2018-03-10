@@ -47,7 +47,7 @@ public class TestRobot3 extends SprocketRobot{
         };*/
 
         Input<Double> input=new JoystickYAxis(Control.auxStick);
-        //ControlledMotor testMotor1 = new ControlledMotor(Hardware, input);
+        ControlledMotor testMotor1 = new ControlledMotor(Hardware.motorIntakeClamp, input);
 
         super.addAutoMode(new AutoMode("name"));
         super.sendAutoModes();

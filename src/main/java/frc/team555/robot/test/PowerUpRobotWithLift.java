@@ -124,8 +124,8 @@ public class PowerUpRobotWithLift extends SprocketRobot {
         this.intake =
         new CubeIntake();
 
-        super.addAutoMode(new AutoMode("Dynamic auto", new DynamicAutoState()));
-new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
+        /*super.addAutoMode(new AutoMode("Dynamic auto", new DynamicAutoState()));
+new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);*/
 
         Togglable fieldInput = new FieldCentricDriveInput(Control.driveStick,correction);
         new ToggleButton(Control.driveStick,Control.FieldCentricID,fieldInput);

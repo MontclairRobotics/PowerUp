@@ -2,7 +2,7 @@ package frc.team555.robot.auto;
 
 import frc.team555.robot.components.IntakeLift;
 import org.montclairrobotics.sprocket.auto.AutoState;
-
+@Deprecated
 public class LiftState extends AutoState {
 
     IntakeLift intakeLift;
