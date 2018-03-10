@@ -5,17 +5,17 @@ import frc.team555.robot.core.Hardware;
 import org.montclairrobotics.sprocket.auto.AutoState;
 import org.montclairrobotics.sprocket.states.State;
 
-public class MainLiftUp implements State {
+public class MainLiftMove implements State {
 
-    private MainLift lift;
     private double height;
     private double power;
+    private boolean up;
 
-    public MainLiftUp(MainLift lift, double height,double power)
+    public MainLiftMove(double height, double power,boolean up)
     {
-        this.lift=lift;
         this.height=height;
         this.power=power;
+        this.up=up;
     }
 
 
@@ -28,15 +28,19 @@ public class MainLiftUp implements State {
     public void stop()
     {
 
+        Hardware.motorLiftMainBack.set(0);
+        Hardware.motorLiftMainFront.set(0);
     }
 
     @Override
     public void stateUpdate() {
-        lift.setPower(power);
+        Hardware.motorLiftMainBack.set(power);
+        Hardware.motorLiftMainFront.set(power);
     }
 
     @Override
     public boolean isDone() {
-        return Hardware.liftEncoder.getInches().get()>height;
+        return Hardware.liftEncoder.getInches().get()>height==up;
     }
+
 }

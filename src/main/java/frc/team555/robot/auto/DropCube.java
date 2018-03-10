@@ -11,7 +11,7 @@ public class DropCube extends StateMachine{
     public DropCube(CubeIntake intake, MainLift lift, GyroCorrection correction, Side side){
         super(
                 new SideTurn(correction, false, side),
-                new MainLiftUp(lift,3,.5),
+                new MainLiftMove(12,.5,true),
                 new DriveTime(3,.3),
                 new CubeOuttake(intake, 5)
         );

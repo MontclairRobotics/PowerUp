@@ -80,6 +80,10 @@ public class Hardware {
 
     public static WPI_TalonSRX motorIntakeClamp;
 
+    public static DigitalInput intakeClosedSwitch;
+    public static DigitalInput intakeOpenSwitch;
+
+
     // Encoders
     public static SEncoder rightDriveEncoder;
     public static SEncoder leftDriveEncoder;
@@ -110,6 +114,9 @@ public class Hardware {
         motorLiftMainBack.setInverted(true);
 
         motorIntakeClamp = new WPI_TalonSRX(DeviceID.motorIntakeClamp);
+
+        intakeClosedSwitch = new DigitalInput(9);
+        intakeOpenSwitch = new DigitalInput(8);
 
 
         //double ticksPerInch=6544.0/143.0;`

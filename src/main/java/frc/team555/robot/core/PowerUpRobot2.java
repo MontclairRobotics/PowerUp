@@ -2,6 +2,7 @@ package frc.team555.robot.core;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team555.robot.auto.SwitchAuto;
+import frc.team555.robot.auto.SwitchAuto2;
 import frc.team555.robot.components.CubeIntake;
 import frc.team555.robot.components.MainLift;
 import frc.team555.robot.components.SimpleIntake;
@@ -27,6 +28,9 @@ import org.montclairrobotics.sprocket.utils.Togglable;
 import java.util.ArrayList;
 
 public class PowerUpRobot2 extends SprocketRobot {
+    public static final boolean SWITCHES=false;
+
+
     DriveTrain driveTrain;
     GyroCorrection correction;
     GyroLock lock;
@@ -55,7 +59,7 @@ public class PowerUpRobot2 extends SprocketRobot {
         //40 ft 5.5 in
         Hardware.init();
         Control.init();
-        SwitchAuto.init();
+        SwitchAuto2.init();
         DriveModule[] modules = new DriveModule[2];
         //intake = new SimpleIntake();
         //lift=new MainLift();
@@ -92,18 +96,30 @@ public class PowerUpRobot2 extends SprocketRobot {
         intakeLiftDown.setReleaseAction(stopIntakeLift);
 
         //Clamp
-        Button clampIn=new JoystickButton(Control.auxStick,5);
-        Button clampOut=new JoystickButton(Control.auxStick,4);
-        clampIn.setHeldAction(new ButtonAction() {
-            @Override
-            public void onAction() {
-                Hardware.motorIntakeClamp.set(1);
-            }
-        });
+        Button clampOut=new JoystickButton(Control.auxStick,5);
+        Button clampIn=new JoystickButton(Control.auxStick,4);
         clampOut.setHeldAction(new ButtonAction() {
             @Override
             public void onAction() {
-                Hardware.motorIntakeClamp.set(-1);
+                if(SWITCHES && Hardware.intakeOpenSwitch.get()) {
+                    Hardware.motorIntakeClamp.set(0);
+                }
+                else
+                {
+                    Hardware.motorIntakeClamp.set(1);
+                }
+            }
+        });
+        clampIn.setHeldAction(new ButtonAction() {
+            @Override
+            public void onAction() {
+                if(SWITCHES && Hardware.intakeOpenSwitch.get()) {
+                    Hardware.motorIntakeClamp.set(0);
+                }
+                else
+                {
+                    Hardware.motorIntakeClamp.set(-1);
+                }
             }
         });
         ButtonAction stopClamp=new ButtonAction() {
@@ -112,8 +128,8 @@ public class PowerUpRobot2 extends SprocketRobot {
                 Hardware.motorIntakeClamp.set(0);
             }
         };
-        clampIn.setReleaseAction(stopClamp);
         clampOut.setReleaseAction(stopClamp);
+        clampIn.setReleaseAction(stopClamp);
 
         modules[0] = new DriveModule(new XY(-1, 0),
                 new XY(0, 1),
@@ -249,6 +265,8 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
                 new DriveEncoderGyro(122, .5, new Degrees(-90), false, correction),
                 new DriveEncoderGyro(80, .5, new Degrees(0), false, correction));
 
+        AutoMode switchAuto2=new AutoMode("Switch",new SwitchAuto2(correction));
+
 /*
         AutoMode twentyFeet=new AutoMode("Twenty Feet",
                 new ResetGyro(correction),
@@ -282,6 +300,7 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
         addAutoMode(centerBaseLineLeft);
         addAutoMode(centerBaseLineRight);
         //addAutoMode(new AutoMode("Switch Auto", new SwitchAuto(correction, intake)));
+        addAutoMode(switchAuto2);
         sendAutoModes();
 
         // vision stuff
@@ -319,6 +338,10 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
         SmartDashboard.putNumber("Left Encoder", Hardware.leftDriveEncoder.getInches().get());
         SmartDashboard.putNumber("Right Encoder", Hardware.rightDriveEncoder.getInches().get());
         SmartDashboard.putNumber("Lift",Hardware.liftEncoder.getInches().get());
+        if(SWITCHES) {
+            SmartDashboard.putBoolean("Intake Open", Hardware.intakeOpenSwitch.get());
+            SmartDashboard.putBoolean("Intake Closed", Hardware.intakeClosedSwitch.get());
+        }
         gyroLocking();
 
     }
@@ -336,6 +359,6 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
 
     @Override
     public void userDisabledPeriodic(){
-        SwitchAuto.disabled();
+        SwitchAuto2.disabled();
     }
 }
