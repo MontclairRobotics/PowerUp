@@ -39,7 +39,7 @@ public class Hardware {
         public static final int motorDriveFR = 7;
         public static final int motorDriveFL = 1;
 
-        public static final int motorIntakeLift = 10;
+        public static final int motorIntakeLift = 9;
         public static final int motorMainLiftFront = 4;
         public static final int motorMainLiftBack = 2;
 

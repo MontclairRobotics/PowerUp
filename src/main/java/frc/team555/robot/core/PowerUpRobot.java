@@ -1,7 +1,9 @@
 package frc.team555.robot.core;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.team555.robot.auto.ConditionalState;
 import frc.team555.robot.auto.DynamicAutoState;
+import frc.team555.robot.utils.Side;
 import org.montclairrobotics.sprocket.SprocketRobot;
 import org.montclairrobotics.sprocket.auto.AutoMode;
 import org.montclairrobotics.sprocket.auto.states.*;
@@ -15,6 +17,7 @@ import org.montclairrobotics.sprocket.geometry.*;
 import org.montclairrobotics.sprocket.motors.Module;
 import org.montclairrobotics.sprocket.motors.Motor;
 import org.montclairrobotics.sprocket.pipeline.Step;
+import org.montclairrobotics.sprocket.utils.Input;
 import org.montclairrobotics.sprocket.utils.PID;
 import org.montclairrobotics.sprocket.utils.Togglable;
 
@@ -184,7 +187,6 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
                 new DriveEncoderGyro(122, .5, new Degrees(-90), false, correction),
                 new DriveEncoderGyro(80, .5, new Degrees(0), false, correction));
 
-        //AutoMode rightAuto = new AutoMode("Right auto", new RightAuto(null, null));
 
         AutoMode twentyFeet=new AutoMode("Twenty Feet",
                 new ResetGyro(correction),
@@ -213,17 +215,10 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
         AutoMode backTen = new AutoMode("Back Ten",
                 new ResetGyro(correction),
                 new DriveEncoderGyro(-12*10,.5,new Degrees(0),false,correction));
-        addAutoMode(backTen);
-        addAutoMode(farAuto);
+
         addAutoMode(baseLine);
         addAutoMode(centerBaseLineLeft);
         addAutoMode(centerBaseLineRight);
-        addAutoMode(square2);
-        addAutoMode(encoder);
-        addAutoMode(autoDrive);
-        addAutoMode(turn90);
-        addAutoMode(square);
-        //addAutoMode(rightAuto);
         sendAutoModes();
 
         // vision stuff
