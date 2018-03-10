@@ -9,7 +9,7 @@ import org.montclairrobotics.sprocket.utils.PID;
 
 public class MainLift extends TargetMotor {
 
-    private final double speed = 0.5;
+    private final double speed = 1.0;
 
     private int upPosition;
     private int downPosition;

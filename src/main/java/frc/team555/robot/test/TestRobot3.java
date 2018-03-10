@@ -1,5 +1,6 @@
 package frc.team555.robot.test;
 
+import frc.team555.robot.auto.ConditionalState;
 import frc.team555.robot.components.CubeIntake;
 import frc.team555.robot.components.IntakeLift;
 import frc.team555.robot.core.Control;
@@ -8,6 +9,7 @@ import org.montclairrobotics.sprocket.SprocketRobot;
 import org.montclairrobotics.sprocket.auto.AutoMode;
 import org.montclairrobotics.sprocket.control.JoystickYAxis;
 import org.montclairrobotics.sprocket.drive.ControlledMotor;
+import org.montclairrobotics.sprocket.utils.Debug;
 import org.montclairrobotics.sprocket.utils.Input;
 
 public class TestRobot3 extends SprocketRobot{
@@ -48,6 +50,13 @@ public class TestRobot3 extends SprocketRobot{
 
         Input<Double> input=new JoystickYAxis(Control.auxStick);
         ControlledMotor testMotor1 = new ControlledMotor(Hardware.motorIntakeClamp, input);
+
+
+        input=new JoystickYAxis(Control.driveStick);
+        ControlledMotor testMotor2 = new ControlledMotor(Hardware.motorLiftMainBack, input);
+        ControlledMotor testMotor3 = new ControlledMotor(Hardware.motorLiftMainFront, input);
+
+        //Debug.msg("Lift Ticks",Hardware.liftEncoder.getInches().get());
 
         super.addAutoMode(new AutoMode("name"));
         super.sendAutoModes();

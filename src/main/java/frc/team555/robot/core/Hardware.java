@@ -49,6 +49,8 @@ public class Hardware {
         //lifter 9
         //right intake 10
 
+        //lift encoder 4 5
+
         // Gyroscope ID
         public static final SPI.Port navxPort = SPI.Port.kMXP;
     }
@@ -119,8 +121,8 @@ public class Hardware {
         rightDriveEncoder = new SEncoder(new Encoder(3,2),ticksPerInch);
         leftDriveEncoder  = new SEncoder(new Encoder(0,1),ticksPerInch);
 
-        liftEncoder       = new SEncoder(null, 0); // todo: REALLY NEED TO BE SET
-        intakeLiftEncoder = new SEncoder(null, 0); // todo: REALLY NEED TO BE SET
+        liftEncoder       = new SEncoder(new Encoder(4,5), 0); // todo: REALLY NEED TO BE SET
+        intakeLiftEncoder = new SEncoder(new Encoder(6,7), 1); // todo: REALLY NEED TO BE SET
 
 
 

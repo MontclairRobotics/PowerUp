@@ -1,11 +1,10 @@
 package frc.team555.robot.core;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.team555.robot.auto.ConditionalState;
-import frc.team555.robot.auto.DynamicAutoState;
 import frc.team555.robot.auto.SwitchAuto;
 import frc.team555.robot.components.CubeIntake;
-import frc.team555.robot.utils.Side;
+import frc.team555.robot.components.MainLift;
+import frc.team555.robot.components.SimpleIntake;
 import org.montclairrobotics.sprocket.SprocketRobot;
 import org.montclairrobotics.sprocket.auto.AutoMode;
 import org.montclairrobotics.sprocket.auto.states.*;
@@ -15,7 +14,9 @@ import org.montclairrobotics.sprocket.drive.steps.Deadzone;
 import org.montclairrobotics.sprocket.drive.steps.GyroCorrection;
 import org.montclairrobotics.sprocket.drive.steps.Sensitivity;
 import org.montclairrobotics.sprocket.drive.utils.GyroLock;
-import org.montclairrobotics.sprocket.geometry.*;
+import org.montclairrobotics.sprocket.geometry.Angle;
+import org.montclairrobotics.sprocket.geometry.Degrees;
+import org.montclairrobotics.sprocket.geometry.XY;
 import org.montclairrobotics.sprocket.motors.Module;
 import org.montclairrobotics.sprocket.motors.Motor;
 import org.montclairrobotics.sprocket.pipeline.Step;
@@ -25,12 +26,13 @@ import org.montclairrobotics.sprocket.utils.Togglable;
 
 import java.util.ArrayList;
 
-public class PowerUpRobot extends SprocketRobot {
+public class PowerUpRobot2 extends SprocketRobot {
     DriveTrain driveTrain;
     GyroCorrection correction;
     GyroLock lock;
     boolean manualLock;
-    CubeIntake intake;
+    //SimpleIntake intake;
+    //MainLift lift;
 
     //vision stuff
     private static final int IMG_WIDTH = 320;
@@ -55,7 +57,63 @@ public class PowerUpRobot extends SprocketRobot {
         Control.init();
         SwitchAuto.init();
         DriveModule[] modules = new DriveModule[2];
-        intake = new CubeIntake();
+        //intake = new SimpleIntake();
+        //lift=new MainLift();
+
+
+        //Temp Controls
+        //Lift
+        Input<Double> liftInput=new JoystickYAxis(Control.auxStick);
+        ControlledMotor testMotor2 = new ControlledMotor(Hardware.motorLiftMainBack, liftInput);
+        ControlledMotor testMotor3 = new ControlledMotor(Hardware.motorLiftMainFront, liftInput);
+
+        //Intake
+        Button intakeLiftUp=new JoystickButton(Control.auxStick,3);
+        Button intakeLiftDown=new JoystickButton(Control.auxStick,2);
+        intakeLiftUp.setHeldAction(new ButtonAction() {
+            @Override
+            public void onAction() {
+                Hardware.motorLiftIntake.set(1);
+            }
+        });
+        intakeLiftDown.setHeldAction(new ButtonAction() {
+            @Override
+            public void onAction() {
+                Hardware.motorLiftIntake.set(-1);
+            }
+        });
+        ButtonAction stopIntakeLift=new ButtonAction() {
+            @Override
+            public void onAction() {
+                Hardware.motorLiftIntake.set(0);
+            }
+        };
+        intakeLiftUp.setReleaseAction(stopIntakeLift);
+        intakeLiftDown.setReleaseAction(stopIntakeLift);
+
+        //Clamp
+        Button clampIn=new JoystickButton(Control.auxStick,5);
+        Button clampOut=new JoystickButton(Control.auxStick,4);
+        clampIn.setHeldAction(new ButtonAction() {
+            @Override
+            public void onAction() {
+                Hardware.motorIntakeClamp.set(1);
+            }
+        });
+        clampOut.setHeldAction(new ButtonAction() {
+            @Override
+            public void onAction() {
+                Hardware.motorIntakeClamp.set(-1);
+            }
+        });
+        ButtonAction stopClamp=new ButtonAction() {
+            @Override
+            public void onAction() {
+                Hardware.motorIntakeClamp.set(0);
+            }
+        };
+        clampIn.setReleaseAction(stopClamp);
+        clampOut.setReleaseAction(stopClamp);
 
         modules[0] = new DriveModule(new XY(-1, 0),
                 new XY(0, 1),
@@ -144,7 +202,7 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
         final double driveSpeed = 0.4;
         final int maxEncAccel = 10;
         final int maxTicksPerSec = 10;
-        AutoMode autoDrive = new AutoMode("auto Drive",
+        /*AutoMode autoDrive = new AutoMode("auto Drive",
                 new DriveEncoderGyro(120,
                         0.25,
                         Angle.ZERO,
@@ -176,10 +234,10 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
                 new DriveEncoderGyro(4*12,0.25,new Degrees(180),false,correction),
                 new DriveEncoderGyro(4*12,0.25,new Degrees(270),false,correction));
 
-
+*/
         AutoMode baseLine = new AutoMode("Base Line",
                 new ResetGyro(correction),
-                new DriveEncoderGyro(140, .5 , new Degrees(0), false, correction));
+                new DriveEncoderGyro(150, .5 , new Degrees(0), false, correction));
         AutoMode centerBaseLineRight = new AutoMode("Center Base Line Right",
                 new ResetGyro(correction),
                 new DriveEncoderGyro(60, .5, new Degrees(0), false, correction),
@@ -191,7 +249,7 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
                 new DriveEncoderGyro(122, .5, new Degrees(-90), false, correction),
                 new DriveEncoderGyro(80, .5, new Degrees(0), false, correction));
 
-
+/*
         AutoMode twentyFeet=new AutoMode("Twenty Feet",
                 new ResetGyro(correction),
                 new DriveEncoderGyro(12*20,.5,new Degrees(0),false,correction));
@@ -219,7 +277,7 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
         AutoMode backTen = new AutoMode("Back Ten",
                 new ResetGyro(correction),
                 new DriveEncoderGyro(-12*10,.5,new Degrees(0),false,correction));
-
+*/
         addAutoMode(baseLine);
         addAutoMode(centerBaseLineLeft);
         addAutoMode(centerBaseLineRight);
@@ -260,6 +318,7 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
         SmartDashboard.putNumber("Distance", driveTrain.getDistance().getY());
         SmartDashboard.putNumber("Left Encoder", Hardware.leftDriveEncoder.getInches().get());
         SmartDashboard.putNumber("Right Encoder", Hardware.rightDriveEncoder.getInches().get());
+        SmartDashboard.putNumber("Lift",Hardware.liftEncoder.getInches().get());
         gyroLocking();
 
     }

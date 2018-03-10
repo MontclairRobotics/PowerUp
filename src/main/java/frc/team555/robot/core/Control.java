@@ -26,7 +26,9 @@ public class Control {
             mainLiftManualUp,
             mainLiftManualDown,
             mainLiftTop,
-            mainLiftBottom;
+            mainLiftBottom,
+    openButton,
+    closeButton;
 
 
     public static int FieldCentricID=2;
@@ -56,16 +58,19 @@ public class Control {
 
         //IntakeLift Buttons
 
-        intakeLiftIncrement = new JoystickButton(auxStick,5);
-        intakeLiftDecrement = new JoystickButton(auxStick,4);
-        mainLiftTop = new JoystickButton(auxStick,6);
-        mainLiftBottom = new JoystickButton(auxStick,7);
+        intakeLiftIncrement = new JoystickButton(auxStick,12);
+        intakeLiftDecrement = new JoystickButton(auxStick,12);
+        mainLiftTop = new JoystickButton(auxStick,12);
+        mainLiftBottom = new JoystickButton(auxStick,12);
         mainLiftManualUp = new JoystickButton(auxStick,11);
         mainLiftManualDown = new JoystickButton(auxStick,10);
-        intakeLiftManualUp = new JoystickButton(auxStick,3);
-        intakeLiftManualDown = new JoystickButton(auxStick,2);
-        intakeLiftTop = new JoystickButton(auxStick, 9);
-        intakeLiftBottom = new JoystickButton(auxStick, 8);
+        intakeLiftManualUp = new JoystickButton(auxStick,6);
+        intakeLiftManualDown = new JoystickButton(auxStick,7);
+        intakeLiftTop = new JoystickButton(auxStick, 12);
+        intakeLiftBottom = new JoystickButton(auxStick, 12);
+
+         openButton=new JoystickButton(Control.auxStick,8);
+         closeButton=new JoystickButton(Control.auxStick,9);
         // Auxiliary Buttons
 
     }
