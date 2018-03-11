@@ -1,5 +1,6 @@
 package frc.team555.robot.core;
 
+import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team555.robot.auto.SwitchAuto;
 import frc.team555.robot.auto.SwitchAuto2;
@@ -11,6 +12,7 @@ import org.montclairrobotics.sprocket.auto.AutoMode;
 import org.montclairrobotics.sprocket.auto.states.*;
 import org.montclairrobotics.sprocket.control.*;
 import org.montclairrobotics.sprocket.drive.*;
+import org.montclairrobotics.sprocket.drive.steps.AccelLimit;
 import org.montclairrobotics.sprocket.drive.steps.Deadzone;
 import org.montclairrobotics.sprocket.drive.steps.GyroCorrection;
 import org.montclairrobotics.sprocket.drive.steps.Sensitivity;
@@ -38,6 +40,12 @@ public class PowerUpRobot2 extends SprocketRobot {
     boolean manualLock;
     //SimpleIntake intake;
     //MainLift lift;
+    Sensitivity sensitivity;
+
+    private double dir=1.0;
+    private AccelLimit limit;
+
+    public static final double sD=1,sT=.7;//sensitivity Direction and Turn
 
     //vision stuff
     private static final int IMG_WIDTH = 320;
@@ -54,6 +62,9 @@ public class PowerUpRobot2 extends SprocketRobot {
     @Override
     public void robotInit(){
 
+
+
+
         DriveEncoders.TOLLERANCE=/*45.5363/17.1859*/6;
         TurnGyro.TURN_SPEED=0.3;
         TurnGyro.tolerance=new Degrees(3);
@@ -64,6 +75,7 @@ public class PowerUpRobot2 extends SprocketRobot {
         DriveModule[] modules = new DriveModule[2];
         //intake = new SimpleIntake();
         //lift=new MainLift();
+        limit=new AccelLimit(3,5);
 
 
         //Temp Controls
@@ -133,7 +145,7 @@ public class PowerUpRobot2 extends SprocketRobot {
         clampIn.setReleaseAction(stopClamp);
 
 
-
+        //Auto lift
         JoystickButton autoLift=new JoystickButton(Control.auxStick,1);
         autoLift.setHeldAction(new ButtonAction() {
             @Override
@@ -162,6 +174,63 @@ public class PowerUpRobot2 extends SprocketRobot {
                 testMotor3.enable();
             }
         });
+
+
+        //Half Speed
+        Button halfSpeedButton=new JoystickButton(Control.auxStick,4);
+        halfSpeedButton.setPressAction(new ButtonAction() {
+            @Override
+            public void onAction() {
+                sensitivity.set(sD*0.5*dir, sT*0.5);
+            }
+        });
+
+        halfSpeedButton.setReleaseAction(new ButtonAction() {
+            @Override
+            public void onAction() {
+                sensitivity.set(sD*dir, sT);
+            }
+        });
+
+        //Backwards Button
+        Button backwardsButton=new JoystickButton(Control.driveStick,12);
+        backwardsButton.setPressAction(new ButtonAction() {
+            @Override
+            public void onAction() {
+                dir=-1;
+            }
+        });
+
+        //Forwards Button
+        Button forwardsButton=new JoystickButton(Control.driveStick,11);
+        backwardsButton.setPressAction(new ButtonAction() {
+            @Override
+            public void onAction() {
+                dir=1;
+            }
+        });
+
+        //Limiter Off
+        Button accelLimitOff=new JoystickButton(Control.driveStick,7);
+        accelLimitOff.setPressAction(new ButtonAction() {
+            @Override
+            public void onAction() {
+                limit.disable();
+            }
+        });
+
+        //Limiter Off
+        Button accelLimitOn=new JoystickButton(Control.driveStick,7);
+        accelLimitOn.setPressAction(new ButtonAction() {
+            @Override
+            public void onAction() {
+                limit.enable();
+            }
+        });
+        Motor mBL=new Motor(Hardware.motorDriveBL, false);
+        Motor mBR=new Motor(Hardware.motorDriveBR, false);
+        Motor mFL=new Motor(Hardware.motorDriveFL, false);
+        Motor mFR=new Motor(Hardware.motorDriveFR, false);
 
 
         modules[0] = new DriveModule(new XY(-1, 0),
@@ -209,8 +278,10 @@ public class PowerUpRobot2 extends SprocketRobot {
 
         correction = new GyroCorrection(Hardware.navx, new PID(1.5, 0, 0.0015), 90, 1);
         lock = new GyroLock(correction);
+        sensitivity=new Sensitivity(sD*dir,sT);
         steps.add(new Deadzone());
-        steps.add(new Sensitivity(1, .7));
+        steps.add(limit);
+        steps.add(sensitivity);
         steps.add(correction);
         driveTrain.setPipeline(new DTPipeline(steps));
 
@@ -339,6 +410,9 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
         addAutoMode(new AutoMode("Drive Time",new DriveTime(4,.5)));
         sendAutoModes();
 
+            CameraServer.getInstance().startAutomaticCapture();
+
+
         // vision stuff
         /*UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
         camera.setResolution(IMG_WIDTH, IMG_HEIGHT);
@@ -354,7 +428,7 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
         visionThread.start();*/
 
 
-
+/*
         AutoMode driveBack20Mode=new AutoMode("DriveBack20",new DriveEncoderGyro(-23,0.5,Angle.ZERO,true,correction));
 
         JoystickButton driveBack20=new JoystickButton(Control.driveStick,4);
@@ -370,7 +444,7 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
                 driveBack20Mode.stop();
             }
         });
-
+*/
     }
 
     @Override
