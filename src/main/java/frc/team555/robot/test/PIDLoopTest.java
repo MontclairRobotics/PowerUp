@@ -31,7 +31,7 @@ import org.montclairrobotics.sprocket.utils.Togglable;
 import java.awt.image.renderable.ContextualRenderedImageFactory;
 import java.util.ArrayList;
 
-public class PowerUpRobot2 extends SprocketRobot {
+public class PIDLoopTest extends SprocketRobot {
     public static final boolean SWITCHES=false;
 
 
@@ -66,7 +66,7 @@ public class PowerUpRobot2 extends SprocketRobot {
 
 
 
-        DriveEncoders.TOLLERANCE=/*45.5363/17.1859*/12;
+        DriveEncoders.TOLLERANCE=/*45.5363/17.1859*/6;
         TurnGyro.TURN_SPEED=0.3;
         TurnGyro.tolerance=new Degrees(3);
         //40 ft 5.5 in
@@ -402,9 +402,7 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
         AutoMode backTen = new AutoMode("Back Ten",
                 new ResetGyro(correction),
                 new DriveEncoderGyro(-12*10,.5,new Degrees(0),false,correction));
-        */
-        addAutoMode(new AutoMode("Drive 3 Feet",new DriveEncoderGyro(3*12,.3,Angle.ZERO,true,correction)));
-        addAutoMode(new AutoMode("nothing", new Delay(1)));
+*/      addAutoMode(new AutoMode("nothing", new Delay(1)));
         addAutoMode(baseLine);
         addAutoMode(centerBaseLineLeft);
         addAutoMode(centerBaseLineRight);
@@ -413,7 +411,7 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
         addAutoMode(new AutoMode("Drive Time",new DriveTime(4,.5)));
         sendAutoModes();
 
-            CameraServer.getInstance().startAutomaticCapture();
+        CameraServer.getInstance().startAutomaticCapture();
 
 
         // vision stuff
