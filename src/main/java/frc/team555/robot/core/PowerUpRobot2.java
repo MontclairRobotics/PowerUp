@@ -25,6 +25,7 @@ import org.montclairrobotics.sprocket.utils.Input;
 import org.montclairrobotics.sprocket.utils.PID;
 import org.montclairrobotics.sprocket.utils.Togglable;
 
+import java.awt.image.renderable.ContextualRenderedImageFactory;
 import java.util.ArrayList;
 
 public class PowerUpRobot2 extends SprocketRobot {
@@ -131,6 +132,38 @@ public class PowerUpRobot2 extends SprocketRobot {
         clampOut.setReleaseAction(stopClamp);
         clampIn.setReleaseAction(stopClamp);
 
+
+
+        JoystickButton autoLift=new JoystickButton(Control.auxStick,1);
+        autoLift.setHeldAction(new ButtonAction() {
+            @Override
+            public void onAction() {
+                if(Hardware.liftEncoder.getInches().get()<31600)
+                {
+                    Hardware.motorLiftMainFront.set(1);
+                    Hardware.motorLiftMainBack.set(1);
+                }
+                else
+                {
+                    Hardware.motorLiftMainFront.set(0);
+                    Hardware.motorLiftMainBack.set(0);
+                }
+                testMotor2.disable();
+                testMotor3.disable();
+            }
+        });
+        autoLift.setReleaseAction(new ButtonAction() {
+            @Override
+            public void onAction() {
+                Hardware.motorLiftMainFront.set(0);
+                Hardware.motorLiftMainBack.set(0);
+
+                testMotor2.enable();
+                testMotor3.enable();
+            }
+        });
+
+
         modules[0] = new DriveModule(new XY(-1, 0),
                 new XY(0, 1),
                 Hardware.leftDriveEncoder,
@@ -177,7 +210,7 @@ public class PowerUpRobot2 extends SprocketRobot {
         correction = new GyroCorrection(Hardware.navx, new PID(1.5, 0, 0.0015), 90, 1);
         lock = new GyroLock(correction);
         steps.add(new Deadzone());
-        steps.add(new Sensitivity(1));
+        steps.add(new Sensitivity(1, .7));
         steps.add(correction);
         driveTrain.setPipeline(new DTPipeline(steps));
 
@@ -198,6 +231,8 @@ public class PowerUpRobot2 extends SprocketRobot {
         });
         //this.intake =
         //new CubeIntake();
+
+
 
         /*super.addAutoMode(new AutoMode("Dynamic auto", new DynamicAutoState()));
 new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
@@ -295,19 +330,20 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
         AutoMode backTen = new AutoMode("Back Ten",
                 new ResetGyro(correction),
                 new DriveEncoderGyro(-12*10,.5,new Degrees(0),false,correction));
-*/
+*/      addAutoMode(new AutoMode("nothing", new Delay(1)));
         addAutoMode(baseLine);
         addAutoMode(centerBaseLineLeft);
         addAutoMode(centerBaseLineRight);
         //addAutoMode(new AutoMode("Switch Auto", new SwitchAuto(correction, intake)));
         addAutoMode(switchAuto2);
+        addAutoMode(new AutoMode("Drive Time",new DriveTime(4,.5)));
         sendAutoModes();
 
         // vision stuff
         /*UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
         camera.setResolution(IMG_WIDTH, IMG_HEIGHT);
 
-        visionThread = new VisionThread(camera, new DrivePipeline(), pipeline -> {
+6gtyj              visionThread = new VisionThread(camera, new DrivePipeline(), pipeline -> {
             if (!pipeline.filterContoursOutput().isEmpty()) {
                 org.opencv.core.Rect r = Imgproc.boundingRect(pipeline.filterContoursOutput().get(0));
                 synchronized (imgLock) {
@@ -316,6 +352,25 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
             }
         });
         visionThread.start();*/
+
+
+
+        AutoMode driveBack20Mode=new AutoMode("DriveBack20",new DriveEncoderGyro(-23,0.5,Angle.ZERO,true,correction));
+
+        JoystickButton driveBack20=new JoystickButton(Control.driveStick,4);
+        driveBack20.setPressAction(new ButtonAction() {
+            @Override
+            public void onAction() {
+                driveBack20Mode.start();
+            }
+        });
+        driveBack20.setReleaseAction(new ButtonAction() {
+            @Override
+            public void onAction() {
+                driveBack20Mode.stop();
+            }
+        });
+
     }
 
     @Override
@@ -337,6 +392,7 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
         SmartDashboard.putNumber("Distance", driveTrain.getDistance().getY());
         SmartDashboard.putNumber("Left Encoder", Hardware.leftDriveEncoder.getInches().get());
         SmartDashboard.putNumber("Right Encoder", Hardware.rightDriveEncoder.getInches().get());
+        SmartDashboard.putNumber("Intake Lift Encoder", Hardware.intakeLiftEncoder.getInches().get());
         SmartDashboard.putNumber("Lift",Hardware.liftEncoder.getInches().get());
         if(SWITCHES) {
             SmartDashboard.putBoolean("Intake Open", Hardware.intakeOpenSwitch.get());

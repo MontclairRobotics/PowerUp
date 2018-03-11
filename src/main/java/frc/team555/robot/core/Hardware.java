@@ -106,7 +106,7 @@ public class Hardware {
         motorDriveFL = new WPI_TalonSRX(DeviceID.motorDriveFL);
         motorDriveBR.setInverted(true);
         motorDriveFR.setInverted(true);
-
+        
         motorLiftIntake = new WPI_TalonSRX(DeviceID.motorIntakeLift);
         motorLiftMainFront = new WPI_TalonSRX(DeviceID.motorMainLiftFront);
         motorLiftMainBack = new WPI_TalonSRX(DeviceID.motorMainLiftBack);
@@ -128,7 +128,7 @@ public class Hardware {
         rightDriveEncoder = new SEncoder(new Encoder(3,2),ticksPerInch);
         leftDriveEncoder  = new SEncoder(new Encoder(0,1),ticksPerInch);
 
-        liftEncoder       = new SEncoder(new Encoder(4,5), 0); // todo: REALLY NEED TO BE SET
+        liftEncoder       = new SEncoder(new Encoder(4,5), 1); // todo: REALLY NEED TO BE SET
         intakeLiftEncoder = new SEncoder(new Encoder(6,7), 1); // todo: REALLY NEED TO BE SET
 
 
