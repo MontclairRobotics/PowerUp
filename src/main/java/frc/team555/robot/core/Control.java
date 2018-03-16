@@ -29,9 +29,10 @@ public class Control {
             mainLiftBottom,
             openButton,
             closeButton,
-    intakeRotationUp,
-    intakeRotationDown,
-    intakeRotationMiddle;
+            intakeRotationUp,
+            intakeRotationDown,
+            intakeRotationMiddle,
+            intakeSubroutine;
 
 
     public static int FieldCentricID=2;
@@ -70,7 +71,9 @@ public class Control {
         intakeLiftManualUp = new JoystickButton(auxStick,6);
         intakeLiftManualDown = new JoystickButton(auxStick,7);
         intakeLiftTop = new JoystickButton(auxStick, 12);
-        intakeLiftBottom = new JoystickButton(auxStick, 12);
+        intakeLiftBottom = new JoystickButton(auxStick, 13);
+        intakeSubroutine = new JoystickButton(auxStick, 14);
+
 
          openButton=new JoystickButton(Control.auxStick,8);
          closeButton=new JoystickButton(Control.auxStick,9);

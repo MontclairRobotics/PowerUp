@@ -1,9 +1,7 @@
 package frc.team555.robot.core;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.team555.robot.auto.ConditionalState;
-import frc.team555.robot.auto.DynamicAutoState;
-import frc.team555.robot.auto.SwitchAuto;
+import frc.team555.robot.auto.*;
 import frc.team555.robot.components.CubeIntake;
 import frc.team555.robot.utils.Side;
 import org.montclairrobotics.sprocket.SprocketRobot;
@@ -19,6 +17,7 @@ import org.montclairrobotics.sprocket.geometry.*;
 import org.montclairrobotics.sprocket.motors.Module;
 import org.montclairrobotics.sprocket.motors.Motor;
 import org.montclairrobotics.sprocket.pipeline.Step;
+import org.montclairrobotics.sprocket.states.StateMachine;
 import org.montclairrobotics.sprocket.utils.Input;
 import org.montclairrobotics.sprocket.utils.PID;
 import org.montclairrobotics.sprocket.utils.Togglable;
@@ -225,6 +224,33 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
         addAutoMode(centerBaseLineRight);
         //addAutoMode(new AutoMode("Switch Auto", new SwitchAuto(correction, intake)));
         sendAutoModes();
+
+        StateMachine shootCube = new StateMachine(false, new SetIntakeRotation(intake, intake.middlePos), new CubeOuttake(intake, 1), new SetIntakeRotation(intake, intake.downPos));
+
+        Control.intakeSubroutine.setHeldAction(new ButtonAction() {
+            @Override
+            public void onAction() {
+                shootCube.start();
+            }
+        });
+
+
+        Control.intakeSubroutine.setHeldAction(new ButtonAction() {
+            @Override
+            public void onAction() {
+                shootCube.stateUpdate();
+            }
+        });
+
+        Control.intakeSubroutine.setReleaseAction(new ButtonAction() {
+            @Override
+            public void onAction() {
+                shootCube.stop();
+                intake.disable();
+                intake.roationalMotor.set(intake.downPos);
+            }
+        });
+
 
         // vision stuff
         /*UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
