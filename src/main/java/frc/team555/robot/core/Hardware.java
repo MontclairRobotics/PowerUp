@@ -57,6 +57,8 @@ public class Hardware {
         public static final int motorMainLiftBack = 2;
 
         public static final int motorIntakeClamp = 6;
+
+        public static final int motorRotational = 10;
         //left intake 5
         //pincer 6
         //lifter 9
@@ -93,6 +95,8 @@ public class Hardware {
 
     public static WPI_TalonSRX motorIntakeClamp;
 
+    public static WPI_TalonSRX motorRotational;
+
     public static DigitalInput intakeClosedSwitch;
     public static DigitalInput intakeOpenSwitch;
 
@@ -103,6 +107,7 @@ public class Hardware {
 
     public static SEncoder liftEncoder;
     public static SEncoder intakeLiftEncoder;
+    public static SEncoder intakeRotationEncoder;
 
 
     // Gyroscope
@@ -124,6 +129,7 @@ public class Hardware {
         motorLiftIntake = new WPI_TalonSRX(DeviceID.motorIntakeLift);
         motorLiftMainFront = new WPI_TalonSRX(DeviceID.motorMainLiftFront);
         motorLiftMainBack = new WPI_TalonSRX(DeviceID.motorMainLiftBack);
+        motorRotational = new WPI_TalonSRX(DeviceID.motorRotational);
 
         motorLiftMainBack.setInverted(true);
 
@@ -157,7 +163,7 @@ public class Hardware {
 //15.5 to 49.5
         liftEncoder       = new SEncoder(new Encoder(4,5), 31600/(82 - 54)); // todo: REALLY NEED TO BE SET
         intakeLiftEncoder = new TalonEncoder(motorLiftIntake, 1333600/(49.5 - 15.5));
-
+        intakeRotationEncoder = new SEncoder(new Encoder(0, 0), 1); // todo, needs to be set
 
 
         navx = new NavXInput(DeviceID.navxPort);

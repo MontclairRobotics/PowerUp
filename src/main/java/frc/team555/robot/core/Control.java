@@ -27,8 +27,11 @@ public class Control {
             mainLiftManualDown,
             mainLiftTop,
             mainLiftBottom,
-    openButton,
-    closeButton;
+            openButton,
+            closeButton,
+    intakeRotationUp,
+    intakeRotationDown,
+    intakeRotationMiddle;
 
 
     public static int FieldCentricID=2;

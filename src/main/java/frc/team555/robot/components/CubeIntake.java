@@ -2,13 +2,17 @@ package frc.team555.robot.components;
 
 import frc.team555.robot.core.Control;
 import frc.team555.robot.core.Hardware;
+import frc.team555.robot.utils.TargetMotor;
+import org.montclairrobotics.sprocket.control.ButtonAction;
 import org.montclairrobotics.sprocket.geometry.Vector;
 import org.montclairrobotics.sprocket.geometry.XY;
 import org.montclairrobotics.sprocket.loop.Priority;
 import org.montclairrobotics.sprocket.loop.Updatable;
 import org.montclairrobotics.sprocket.loop.Updater;
 import org.montclairrobotics.sprocket.motors.Motor;
+import org.montclairrobotics.sprocket.motors.SEncoder;
 import org.montclairrobotics.sprocket.utils.Input;
+import org.montclairrobotics.sprocket.utils.PID;
 import org.montclairrobotics.sprocket.utils.Togglable;
 
 
@@ -17,8 +21,14 @@ public class CubeIntake implements Updatable, Togglable{
 	public final Motor left;
 	public final Motor right;
 	public final Motor clamp;
+	public final TargetMotor roationalMotor;
 	public final double tolerance = .01; // Todo: Maybe needs to be tuned
-	
+
+	public final int upPos = 0;
+	public final int downPos = 2;
+	public final int middlePos = 1;
+
+
 	public final Input<Vector> power;
 	
 	private long clampStart=0;
@@ -30,6 +40,7 @@ public class CubeIntake implements Updatable, Togglable{
 		this.left = new Motor(Hardware.motorIntakeL);
 		this.right = new Motor(Hardware.motorIntakeR);
 		this.clamp = new Motor(Hardware.motorIntakeClamp);
+		this.roationalMotor = new TargetMotor(Hardware.intakeRotationEncoder, new PID(), new Motor(Hardware.motorRotational)); // Todo: needs to be implemented
 		
 		this.power = new Input<Vector>() {
 			@Override
@@ -40,6 +51,30 @@ public class CubeIntake implements Updatable, Togglable{
 				);
 			}
 		};
+
+
+		Control.intakeRotationDown.setPressAction(new ButtonAction() {
+			@Override
+			public void onAction() {
+				roationalMotor.set(downPos);
+			}
+		});
+
+		Control.intakeRotationUp.setPressAction(new ButtonAction() {
+			@Override
+			public void onAction() {
+				roationalMotor.set(upPos);
+			}
+		});
+		Control.intakeRotationMiddle.setPressAction(new ButtonAction() {
+			@Override
+			public void onAction() {
+				roationalMotor.set(middlePos);
+			}
+		});
+
+
+
 		
 		Updater.add(this, Priority.CALC);
 	}
