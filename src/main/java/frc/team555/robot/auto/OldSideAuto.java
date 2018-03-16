@@ -60,6 +60,7 @@ public class OldSideAuto implements State {
     @Override
     public void start() {
         states.add(new ResetGyro(correction));
+        states.add(new SetIntakeRotation(intake, intake.downPos));
 
         if(Side.fromDriverStation()[0] == Side.RIGHT){
             states.add(new DriveEncoderGyro(168, .75, Angle.ZERO, false, correction));
