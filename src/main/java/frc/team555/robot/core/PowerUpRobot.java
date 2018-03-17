@@ -3,6 +3,7 @@ package frc.team555.robot.core;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team555.robot.auto.*;
 import frc.team555.robot.components.CubeIntake;
+import frc.team555.robot.utils.MotorMonitor;
 import frc.team555.robot.utils.Side;
 import org.montclairrobotics.sprocket.SprocketRobot;
 import org.montclairrobotics.sprocket.auto.AutoMode;
@@ -14,10 +15,12 @@ import org.montclairrobotics.sprocket.drive.steps.GyroCorrection;
 import org.montclairrobotics.sprocket.drive.steps.Sensitivity;
 import org.montclairrobotics.sprocket.drive.utils.GyroLock;
 import org.montclairrobotics.sprocket.geometry.*;
+import org.montclairrobotics.sprocket.motors.CurrentMonitor;
 import org.montclairrobotics.sprocket.motors.Module;
 import org.montclairrobotics.sprocket.motors.Motor;
 import org.montclairrobotics.sprocket.pipeline.Step;
 import org.montclairrobotics.sprocket.states.StateMachine;
+import org.montclairrobotics.sprocket.utils.Debug;
 import org.montclairrobotics.sprocket.utils.Input;
 import org.montclairrobotics.sprocket.utils.PID;
 import org.montclairrobotics.sprocket.utils.Togglable;
@@ -72,7 +75,12 @@ public class PowerUpRobot extends SprocketRobot {
                 new Motor(Hardware.motorDriveBR),
                 new Motor(Hardware.motorDriveFR));
 
-
+        new MotorMonitor("Front Right Drive Motor", new Input<Boolean>() {
+            @Override
+            public Boolean get() {
+                return Control.driveStick.getMagnitude() > .1;
+            }
+        }, Hardware.motorDriveBR);
 
         DriveTrainBuilder dtBuilder = new DriveTrainBuilder();
         dtBuilder.addDriveModule(modules[0]).addDriveModule(modules[1]);
@@ -149,6 +157,9 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
                         Angle.ZERO,
                         true,
                         correction));
+
+
+
 
 
         AutoMode encoder = new AutoMode("encoder",
@@ -304,5 +315,6 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
     @Override
     public void userDisabledPeriodic(){
         SwitchAuto.disabled();
+        Debug.msg("Intake Rotation", Hardware.intakeRotationEncoder.get());
     }
 }
