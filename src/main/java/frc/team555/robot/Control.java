@@ -15,13 +15,13 @@ public class Control {
 
     // Drive Inputs
     public static DTInput driveInput;
-    public static Button lock,
-    liftUpButton,
-    liftDownButton,
-    liftTopButton,
-    liftBottomButton,
-    liftManualUp,
-    liftManualDown;
+    public static Button 	lock,
+						    liftUpButton,
+						    liftDownButton,
+						    liftTopButton,
+						    liftBottomButton,
+						    liftManualUp,
+						    liftManualDown;
 
     public static int FieldCentricID=2;
     public static int ResetID=3;
@@ -49,8 +49,8 @@ public class Control {
         lock = new JoystickButton(driveStick,lockButtonID);
 
         //Lift Buttons
-        //liftUpButton=new JoystickButton(auxStick,10);
-        //liftDownButton=new JoystickButton(auxStick,10);
+        //liftUpButton = new JoystickButton(auxStick,10);
+        //liftDownButton = new JoystickButton(auxStick,10);
         //liftTopButton=new JoystickButton(auxStick,10);
         //liftBottomButton=new JoystickButton(auxStick,10);
         //liftManualUp=new JoystickButton(auxStick,10);
