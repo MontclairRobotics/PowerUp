@@ -4,8 +4,10 @@ import frc.team555.robot.core.Control;
 import frc.team555.robot.core.Hardware;
 import frc.team555.robot.utils.TargetMotor;
 import org.montclairrobotics.sprocket.control.ButtonAction;
+import org.montclairrobotics.sprocket.motors.CurrentMonitor;
 import org.montclairrobotics.sprocket.motors.Motor;
 import org.montclairrobotics.sprocket.motors.SEncoder;
+import org.montclairrobotics.sprocket.utils.Input;
 import org.montclairrobotics.sprocket.utils.PID;
 import org.montclairrobotics.sprocket.utils.Utils;
 
@@ -27,7 +29,7 @@ public class IntakeLift {
      */
     public IntakeLift() {
         motors = new TargetMotor(Hardware.liftEncoder, new PID(0, 0, 0),new Motor(Hardware.motorLiftIntake)); // Todo: Needs Tuninng
-        encoder=Hardware.liftEncoder;
+        encoder=Hardware.intakeLiftEncoder;
 
         //=================
         //Buttons below!!!!
@@ -93,6 +95,13 @@ public class IntakeLift {
         };
         Control.intakeLiftManualUp.setOffAction(stop);
         Control.intakeLiftManualDown.setOffAction(stop);
+
+        new CurrentMonitor("Intake Lift Encoder", Hardware.motorLiftIntake, new Input<Boolean>() {
+            @Override
+            public Boolean get() {
+                return Control.intakeLiftManualUp.get() || Control.intakeLiftManualUp.get() || Math.abs(motors.getTarget() - motors.getDistance().get()) > 20;
+            }
+        }).setEncoder(Hardware.intakeLiftEncoder);
 
     }
 

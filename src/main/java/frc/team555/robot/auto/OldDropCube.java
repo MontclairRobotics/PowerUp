@@ -7,8 +7,10 @@ import org.montclairrobotics.sprocket.auto.states.DriveTime;
 import org.montclairrobotics.sprocket.drive.steps.GyroCorrection;
 import org.montclairrobotics.sprocket.states.StateMachine;
 
-public class DropCube extends StateMachine{
-    public DropCube(CubeIntake intake, MainLift lift, GyroCorrection correction, Side side){
+
+@Deprecated
+public class OldDropCube extends StateMachine{
+    public OldDropCube(CubeIntake intake, MainLift lift, GyroCorrection correction, Side side){
         super(
                 new SideTurn(correction, false, side),
                 new MainLiftMove(12,.5,true),

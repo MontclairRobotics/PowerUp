@@ -2,9 +2,12 @@ package frc.team555.robot.components;
 
 import frc.team555.robot.core.Control;
 import frc.team555.robot.core.Hardware;
+import frc.team555.robot.utils.MotorMonitor;
 import frc.team555.robot.utils.TargetMotor;
 import org.montclairrobotics.sprocket.control.ButtonAction;
+import org.montclairrobotics.sprocket.motors.CurrentMonitor;
 import org.montclairrobotics.sprocket.motors.Motor;
+import org.montclairrobotics.sprocket.utils.Input;
 import org.montclairrobotics.sprocket.utils.PID;
 
 public class MainLift extends TargetMotor {
@@ -60,6 +63,20 @@ public class MainLift extends TargetMotor {
                 }
             }
         });
+
+        new CurrentMonitor("Main Lift Front", Hardware.motorLiftMainFront, new Input<Boolean>() {
+            @Override
+            public Boolean get() {
+                return Math.abs(getTarget() - getDistance().get()) > 20 || speed != 0;
+            }
+        }).setEncoder(Hardware.liftEncoder);
+
+        new CurrentMonitor("Main Lift Back", Hardware.motorLiftMainBack, new Input<Boolean>() {
+            @Override
+            public Boolean get() {
+                return Math.abs(getTarget() - getDistance().get()) > 20 || speed != 0;
+            }
+        }).setEncoder(Hardware.liftEncoder);
 
 
         // Lift Bottom

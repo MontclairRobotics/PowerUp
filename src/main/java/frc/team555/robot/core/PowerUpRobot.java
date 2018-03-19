@@ -1,5 +1,6 @@
 package frc.team555.robot.core;
 
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team555.robot.auto.*;
 import frc.team555.robot.components.CubeIntake;
@@ -33,6 +34,9 @@ public class PowerUpRobot extends SprocketRobot {
     GyroLock lock;
     boolean manualLock;
     CubeIntake intake;
+
+    public static SendableChooser<Side> startSidesChooser;
+
 
     //vision stuff
     private static final int IMG_WIDTH = 320;
@@ -75,12 +79,34 @@ public class PowerUpRobot extends SprocketRobot {
                 new Motor(Hardware.motorDriveBR),
                 new Motor(Hardware.motorDriveFR));
 
-        new MotorMonitor("Front Right Drive Motor", new Input<Boolean>() {
+        new CurrentMonitor("Front Right Drive Motor", Hardware.motorDriveFR,  new Input<Boolean>() {
             @Override
             public Boolean get() {
                 return Control.driveStick.getMagnitude() > .1;
             }
-        }, Hardware.motorDriveBR);
+        }).setEncoder(Hardware.rightDriveEncoder);
+
+        new CurrentMonitor("Back Right Drive Motor", Hardware.motorDriveBR,  new Input<Boolean>() {
+            @Override
+            public Boolean get() {
+                return Control.driveStick.getMagnitude() > .1;
+            }
+        }).setEncoder(Hardware.rightDriveEncoder);
+
+        new CurrentMonitor("Front Left Drive Motor", Hardware.motorDriveFL,  new Input<Boolean>() {
+            @Override
+            public Boolean get() {
+                return Control.driveStick.getMagnitude() > .1;
+            }
+        }).setEncoder(Hardware.leftDriveEncoder);
+
+        new CurrentMonitor("Back Left Drive Motor", Hardware.motorDriveBL,  new Input<Boolean>() {
+            @Override
+            public Boolean get() {
+                return Control.driveStick.getMagnitude() > .1;
+            }
+        }).setEncoder(Hardware.leftDriveEncoder);
+
 
         DriveTrainBuilder dtBuilder = new DriveTrainBuilder();
         dtBuilder.addDriveModule(modules[0]).addDriveModule(modules[1]);
@@ -276,6 +302,13 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
             }
         });
         visionThread.start();*/
+
+        startSidesChooser = new SendableChooser<>();
+        for(Side side :  Side.values()){
+            startSidesChooser.addObject(side.toString(), side);
+        }
+        SmartDashboard.putData(startSidesChooser);
+
     }
 
     @Override
@@ -297,6 +330,8 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
         SmartDashboard.putNumber("Distance", driveTrain.getDistance().getY());
         SmartDashboard.putNumber("Left Encoder", Hardware.leftDriveEncoder.getInches().get());
         SmartDashboard.putNumber("Right Encoder", Hardware.rightDriveEncoder.getInches().get());
+        Debug.msg("Intake Rotation", Hardware.intakeRotationEncoder.get());
+
         gyroLocking();
 
     }
@@ -314,7 +349,6 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
 
     @Override
     public void userDisabledPeriodic(){
-        SwitchAuto.disabled();
-        Debug.msg("Intake Rotation", Hardware.intakeRotationEncoder.get());
+        SmartDashboard.putData(startSidesChooser) ;
     }
 }

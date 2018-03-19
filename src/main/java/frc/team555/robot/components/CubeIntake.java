@@ -9,6 +9,7 @@ import org.montclairrobotics.sprocket.geometry.XY;
 import org.montclairrobotics.sprocket.loop.Priority;
 import org.montclairrobotics.sprocket.loop.Updatable;
 import org.montclairrobotics.sprocket.loop.Updater;
+import org.montclairrobotics.sprocket.motors.CurrentMonitor;
 import org.montclairrobotics.sprocket.motors.Motor;
 import org.montclairrobotics.sprocket.motors.SEncoder;
 import org.montclairrobotics.sprocket.utils.Input;
@@ -75,7 +76,27 @@ public class CubeIntake implements Updatable, Togglable{
 
 
 
-		
+		new CurrentMonitor("Intake Right Motor", Hardware.motorIntakeR, new Input<Boolean>() {
+			@Override
+			public Boolean get() {
+				return power.get().getMagnitude() > .1;
+			}
+		});
+
+		new CurrentMonitor("Intake Left Motor", Hardware.motorIntakeL, new Input<Boolean>() {
+			@Override
+			public Boolean get() {
+				return power.get().getMagnitude() > .1;
+			}
+		});
+
+		new CurrentMonitor("Intake Rotational Motor", Hardware.motorRotational, new Input<Boolean>() {
+			@Override
+			public Boolean get() {
+				return Math.abs(roationalMotor.getTarget() - roationalMotor.getDistance().get()) > 20;
+			}
+		}).setEncoder(Hardware.intakeRotationEncoder);
+
 		Updater.add(this, Priority.CALC);
 	}
 
