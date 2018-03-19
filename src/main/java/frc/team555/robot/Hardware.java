@@ -46,6 +46,10 @@ public class Hardware {
         public static final int testMotor1 = 7;
         public static final int testMotor2 = 8;
 
+        public static final int motorIntakeRotate = 9;
+        public static final int motorIntakeL = 10;
+        public static final int motorIntakeR = 11;
+        
         public static final int motorLiftR = 0;
         public static final int motorLiftL = 0;
 
@@ -65,6 +69,7 @@ public class Hardware {
     public static WPI_TalonSRX motorDriveFL;
 
     // Power Cube Intake Motor Controllers
+    public static WPI_TalonSRX motorIntakeRotate;
     public static WPI_TalonSRX motorIntakeL;
     public static WPI_TalonSRX motorIntakeR;
 
@@ -81,6 +86,8 @@ public class Hardware {
     public static SEncoder leftDriveEncoder;
 
     public static SEncoder liftEncoder;
+    
+    public static SEncoder rotateEncoder;
 //    public static SEncoder leftLiftEncoder;
 
     // Gyroscope
@@ -89,7 +96,7 @@ public class Hardware {
     public static DigitalInput liftLimitSwitch;
 
 
-    public static void init(){
+    public static void init() {
         // Instantiate drive train motors using motor ID's
 
         motorDriveBR = new WPI_TalonSRX(DeviceID.motorDriveBR);
@@ -102,6 +109,10 @@ public class Hardware {
         motorLiftR = new WPI_TalonSRX(DeviceID.motorLiftR);
         motorLiftL = new WPI_TalonSRX(DeviceID.motorLiftL);
 
+        motorIntakeRotate =  new WPI_TalonSRX(DeviceID.motorIntakeRotate);
+        motorIntakeL =  new WPI_TalonSRX(DeviceID.motorIntakeL);
+        motorIntakeR =  new WPI_TalonSRX(DeviceID.motorIntakeR);
+        
         testMotor1 = new WPI_TalonSRX(DeviceID.testMotor1);
         testMotor2 = new WPI_TalonSRX(DeviceID.testMotor2);
         testMotor2.setInverted(true);

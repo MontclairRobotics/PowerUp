@@ -23,6 +23,9 @@ public class Control {
     liftBottomButton,
     liftManualUp,
     liftManualDown;
+    
+    public static Button	intakeRotateUp,
+    						intakeRotateDown;
 
 
     public static int FieldCentricID=2;

@@ -81,39 +81,36 @@ public class Lift {
         Control.liftManualDown.setHeldAction(new ButtonAction() {
             @Override
             public void onAction() {
-                if(Hardware.liftLimitSwitch.get())
-                {
+                if(Hardware.liftLimitSwitch.get()) {
                     setPower(0.0);
                     reset();
-                }
-                else{
+                } else {
                     setPower(-MANUAL_POWER);
                 }
             }
         });
 
         //Stop the motors in manual mode
-        ButtonAction stop=new ButtonAction() {
+        ButtonAction stop = new ButtonAction() {
             @Override
             public void onAction() {
                 setPower(0);
             }
         };
+        
         Control.liftManualUp.setOffAction(stop);
         Control.liftManualDown.setOffAction(stop);
-
     }
 
 
     public void setPosition(int p) {
-        if(p<0)p=0;
-        if(p>positions.length-1)p=positions.length-1;
+        if (p < 0) p = 0;
+        if (p > positions.length - 1) p = positions.length - 1;
         motors.setTarget(positions[p]);
         pos = p;
     }
 
-    public void setPositionRaw(double p)
-    {
+    public void setPositionRaw(double p) {
         motors.setTarget(p);
     }
 
@@ -132,8 +129,7 @@ public class Lift {
         setPosition(pos);
     }
 
-    public void reset()
-    {
+    public void reset() {
         encoder.reset();
     }
 
