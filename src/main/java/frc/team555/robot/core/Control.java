@@ -32,7 +32,9 @@ public class Control {
             intakeRotationUp,
             intakeRotationDown,
             intakeRotationMiddle,
-            intakeSubroutine;
+            intakeSubroutine,
+            intakeRotationManualUp,
+            intakeRotationManualDown;
 
 
     public static int FieldCentricID=2;
@@ -62,18 +64,20 @@ public class Control {
 
         //IntakeLift Buttons
 
-        intakeLiftIncrement = new JoystickButton(auxStick,12);
-        intakeLiftDecrement = new JoystickButton(auxStick,12);
-        mainLiftTop = new JoystickButton(auxStick,12);
-        mainLiftBottom = new JoystickButton(auxStick,12);
+        // intakeLiftIncrement = new JoystickButton(auxStick,12);
+        // intakeLiftDecrement = new JoystickButton(auxStick,12);
+        // mainLiftTop = new JoystickButton(auxStick,12);
+        // mainLiftBottom = new JoystickButton(auxStick,12);
         mainLiftManualUp = new JoystickButton(auxStick,11);
         mainLiftManualDown = new JoystickButton(auxStick,10);
-        intakeLiftManualUp = new JoystickButton(auxStick,6);
-        intakeLiftManualDown = new JoystickButton(auxStick,7);
-        intakeLiftTop = new JoystickButton(auxStick, 12);
-        intakeLiftBottom = new JoystickButton(auxStick, 13);
+        intakeLiftManualUp = new JoystickButton(auxStick,3);
+        intakeLiftManualDown = new JoystickButton(auxStick,2);
+        intakeLiftTop = new JoystickButton(auxStick, 6);
+        intakeLiftBottom = new JoystickButton(auxStick, 7);
         intakeSubroutine = new JoystickButton(auxStick, 14);
-
+        intakeRotationUp = new JoystickButton(auxStick,8);
+        intakeRotationManualUp = new JoystickButton(auxStick, 9);
+        intakeRotationManualDown = new JoystickButton(auxStick, 8);
 
          openButton=new JoystickButton(Control.auxStick,8);
          closeButton=new JoystickButton(Control.auxStick,9);

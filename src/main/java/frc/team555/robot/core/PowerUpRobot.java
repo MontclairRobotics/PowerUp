@@ -284,7 +284,7 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
             public void onAction() {
                 shootCube.stop();
                 intake.disable();
-                intake.roationalMotor.set(intake.downPos);
+                intake.rotationalMotor.set(intake.downPos);
             }
         });
 

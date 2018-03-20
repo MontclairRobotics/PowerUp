@@ -1,5 +1,6 @@
 package frc.team555.robot.components;
 
+import edu.wpi.first.wpilibj.DigitalInput;
 import frc.team555.robot.core.Control;
 import frc.team555.robot.core.Hardware;
 import frc.team555.robot.utils.MotorMonitor;
@@ -16,9 +17,10 @@ public class MainLift extends TargetMotor {
 
     private int upPosition;
     private int downPosition;
+    private DigitalInput bottomLimitSwitch;
 
     public MainLift(){
-        super(Hardware.liftEncoder, new PID(0, 0, 0), new Motor(Hardware.motorLiftMainFront), new Motor(Hardware.motorLiftMainBack));
+        super(Hardware.liftEncoder, new PID(.1, 0, 0), new Motor(Hardware.motorLiftMainFront), new Motor(Hardware.motorLiftMainBack));
 
         mode = Mode.POWER;
 
@@ -41,15 +43,22 @@ public class MainLift extends TargetMotor {
         Control.mainLiftManualDown.setPressAction(new ButtonAction() {
             @Override
             public void onAction() {
-                MainLift.super.set(-speed);
+                if(!bottomLimitSwitch.get()) {
+                    MainLift.super.set(-speed);
+                }else{
+                    MainLift.super.set(0);
+                    Hardware.liftEncoder.reset();
+                }
             }
         });
+
+
 
         Control.mainLiftManualDown.setReleaseAction(new ButtonAction() {
             @Override
             public void onAction() {
                 if(encoder != null) {
-                    MainLift.super.setTarget(upPosition);
+                    MainLift.super.set(0);
                 }
             }
         });
@@ -63,6 +72,8 @@ public class MainLift extends TargetMotor {
                 }
             }
         });
+
+
 
         new CurrentMonitor("Main Lift Front", Hardware.motorLiftMainFront, new Input<Boolean>() {
             @Override

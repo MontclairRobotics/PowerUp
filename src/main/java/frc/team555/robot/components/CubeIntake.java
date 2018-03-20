@@ -22,7 +22,7 @@ public class CubeIntake implements Updatable, Togglable{
 	public final Motor left;
 	public final Motor right;
 	public final Motor clamp;
-	public final TargetMotor roationalMotor;
+	public final TargetMotor rotationalMotor;
 	public final double tolerance = .01; // Todo: Maybe needs to be tuned
 
 	public final int upPos = 0;
@@ -36,12 +36,14 @@ public class CubeIntake implements Updatable, Togglable{
 	private long clampTime=500; // Todo: needs to be tuned
 	private double clampPower=0.5;
 	private boolean clampOpen=true; // True for open, false for close
-	
+    private double rotationalMotorPower = 0;
+	private final double roatatePower = .5;
+
 	public CubeIntake() {
 		this.left = new Motor(Hardware.motorIntakeL);
 		this.right = new Motor(Hardware.motorIntakeR);
 		this.clamp = new Motor(Hardware.motorIntakeClamp);
-		this.roationalMotor = new TargetMotor(Hardware.intakeRotationEncoder, new PID(), new Motor(Hardware.motorRotational)); // Todo: needs to be implemented
+		this.rotationalMotor = new TargetMotor(Hardware.intakeRotationEncoder, new PID(.1, 0, 0), new Motor(Hardware.motorRotational)); // Todo: needs to be implemented
 		
 		this.power = new Input<Vector>() {
 			@Override
@@ -52,28 +54,38 @@ public class CubeIntake implements Updatable, Togglable{
 				);
 			}
 		};
-
-
 		Control.intakeRotationDown.setPressAction(new ButtonAction() {
 			@Override
 			public void onAction() {
-				roationalMotor.set(downPos);
+				rotationalMotor.set(downPos);
 			}
 		});
-
 		Control.intakeRotationUp.setPressAction(new ButtonAction() {
 			@Override
 			public void onAction() {
-				roationalMotor.set(upPos);
+				rotationalMotor.set(upPos);
 			}
 		});
 		Control.intakeRotationMiddle.setPressAction(new ButtonAction() {
 			@Override
 			public void onAction() {
-				roationalMotor.set(middlePos);
+				rotationalMotor.set(middlePos);
 			}
 		});
 
+        Control.intakeLiftManualUp.setPressAction(new ButtonAction() {
+            @Override
+            public void onAction() {
+                rotationalMotor.set(rotationalMotorPower);
+            }
+        });
+
+        Control.intakeLiftManualUp.setReleaseAction(new ButtonAction() {
+            @Override
+            public void onAction() {
+                rotationalMotor.set(rotationalMotorPower);
+            }
+        });
 
 
 		new CurrentMonitor("Intake Right Motor", Hardware.motorIntakeR, new Input<Boolean>() {
@@ -93,7 +105,7 @@ public class CubeIntake implements Updatable, Togglable{
 		new CurrentMonitor("Intake Rotational Motor", Hardware.motorRotational, new Input<Boolean>() {
 			@Override
 			public Boolean get() {
-				return Math.abs(roationalMotor.getTarget() - roationalMotor.getDistance().get()) > 20;
+				return Math.abs(rotationalMotor.getTarget() - rotationalMotor.getDistance().get()) > 20;
 			}
 		}).setEncoder(Hardware.intakeRotationEncoder);
 
@@ -104,14 +116,15 @@ public class CubeIntake implements Updatable, Togglable{
 	@Override
 	public void update() {
 		Vector p = power.get();
-		if(p.getMagnitude() < tolerance){
-			openClamp();
-		}else{
-			closeClamp();
-		}
+		// if(p.getMagnitude() < tolerance){
+		// 		openClamp();
+		// }else{
+		// 		closeClamp();
+		// }
 		left.set(p.getX());
 		right.set(p.getY());
-		updateClamp();
+
+		// updateClamp();
 	}
 
 	@Override
