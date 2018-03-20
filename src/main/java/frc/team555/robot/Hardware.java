@@ -46,9 +46,9 @@ public class Hardware {
         public static final int testMotor1 = 7;
         public static final int testMotor2 = 8;
 
-        public static final int motorIntakeRotate = 9;
-        public static final int motorIntakeL = 10;
-        public static final int motorIntakeR = 11;
+        public static final int motorIntakeL = 9;
+        public static final int motorIntakeR = 10;
+        public static final int motorIntakeRotate = 11;
         
         public static final int motorLiftR = 0;
         public static final int motorLiftL = 0;
@@ -69,9 +69,9 @@ public class Hardware {
     public static WPI_TalonSRX motorDriveFL;
 
     // Power Cube Intake Motor Controllers
-    public static WPI_TalonSRX motorIntakeRotate;
     public static WPI_TalonSRX motorIntakeL;
     public static WPI_TalonSRX motorIntakeR;
+    public static WPI_TalonSRX motorIntakeRotate;
 
     // Lift Motor Controllers
     public static WPI_TalonSRX motorLiftR;
@@ -87,7 +87,7 @@ public class Hardware {
 
     public static SEncoder liftEncoder;
     
-    public static SEncoder rotateEncoder;
+    public static SEncoder encoderIntakeRotate;
 //    public static SEncoder leftLiftEncoder;
 
     // Gyroscope
@@ -109,9 +109,9 @@ public class Hardware {
         motorLiftR = new WPI_TalonSRX(DeviceID.motorLiftR);
         motorLiftL = new WPI_TalonSRX(DeviceID.motorLiftL);
 
-        motorIntakeRotate =  new WPI_TalonSRX(DeviceID.motorIntakeRotate);
         motorIntakeL =  new WPI_TalonSRX(DeviceID.motorIntakeL);
         motorIntakeR =  new WPI_TalonSRX(DeviceID.motorIntakeR);
+        motorIntakeRotate =  new WPI_TalonSRX(DeviceID.motorIntakeRotate);
         
         testMotor1 = new WPI_TalonSRX(DeviceID.testMotor1);
         testMotor2 = new WPI_TalonSRX(DeviceID.testMotor2);
@@ -126,6 +126,8 @@ public class Hardware {
 
         rightDriveEncoder = new SEncoder(new Encoder(3,2),ticksPerInch);
         leftDriveEncoder  = new SEncoder(new Encoder(0,1),ticksPerInch);
+
+        encoderIntakeRotate = new SEncoder(new Encoder(5, 4), ticksPerInch);
 
         liftEncoder = new SEncoder(null, 0);
 //        leftLiftEncoder  = new SEncoder(null, 0);

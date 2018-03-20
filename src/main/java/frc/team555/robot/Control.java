@@ -16,13 +16,14 @@ public class Control {
 
     // Drive Inputs
     public static DTInput driveInput;
-    public static Button lock,
-    liftUpButton,
-    liftDownButton,
-    liftTopButton,
-    liftBottomButton,
-    liftManualUp,
-    liftManualDown;
+    public static Button    lock;
+
+    public static Button    liftUpButton,
+                            liftDownButton,
+                            liftTopButton,
+                            liftBottomButton,
+                            liftManualUp,
+                            liftManualDown;
     
     public static Button	intakeRotateUp,
     						intakeRotateDown;
