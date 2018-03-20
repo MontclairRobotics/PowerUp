@@ -19,7 +19,7 @@ public class CubeIntake implements Updatable {
 	public final SEncoder rotateEnc;
 	
 	public final Motor rotate;
-	private PID rotatePID = new PID(0, 0, 0);;
+	private PID rotatePID;
 	
 	public final Input<Double> power;
 	
@@ -29,7 +29,8 @@ public class CubeIntake implements Updatable {
 		this.rotate = new Motor(Hardware.motorIntakeRotate);
 		
 		this.rotateEnc = Hardware.encoderIntakeRotate;
-		
+
+		this.rotatePID = new PID(0, 0, 0);
 		rotatePID.setMinMax(-90.0, 90.0, -1.0, +1.0);
 		rotatePID.setTarget(rotateEnc.get());
 		rotatePID.setInput(new Input<Double>() {

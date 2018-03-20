@@ -62,6 +62,10 @@ public class Control {
         //liftManualUp=new JoystickButton(auxStick,10);
         //liftManualDown=new JoystickButton(auxStick,10);
 
+        //Intake Buttons
+        intakeRotateUp = new JoystickButton(auxStick, 5);
+        intakeRotateDown = new JoystickButton(auxStick, 6);
+
         // Auxiliary Buttons
 
     }
