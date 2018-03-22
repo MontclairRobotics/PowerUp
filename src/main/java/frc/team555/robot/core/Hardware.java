@@ -59,6 +59,10 @@ public class Hardware {
         public static final int motorIntakeClamp = 6;
 
         public static final int motorIntakeRotate = 10;
+
+        public static final int motorIntakeL = 11;
+        public static final int motorIntakeR = 12;
+
         //left intake 5
         //pincer 6
         //lifter 9
@@ -131,6 +135,9 @@ public class Hardware {
         motorLiftMainBack = new WPI_TalonSRX(DeviceID.motorMainLiftBack);
         motorIntakeRotate = new WPI_TalonSRX(DeviceID.motorIntakeRotate);
 
+        motorIntakeR = new WPI_TalonSRX(DeviceID.motorIntakeR);
+        motorIntakeL = new WPI_TalonSRX(DeviceID.motorIntakeL);
+
         motorLiftMainBack.setInverted(true);
 
         //motorIntakeClamp = new WPI_TalonSRX(DeviceID.motorIntakeClamp);
@@ -163,11 +170,11 @@ public class Hardware {
 //15.5 to 49.5
         liftEncoder       = new SEncoder(new Encoder(4,5), 31600/(82 - 54)); // todo: REALLY NEED TO BE SET
         intakeLiftEncoder = new TalonEncoder(motorLiftIntake, 1333600/(49.5 - 15.5));
-        intakeRotationEncoder = new SEncoder(new Encoder(0, 0), 1); // todo, needs to be set
+        intakeRotationEncoder = new TalonEncoder(motorIntakeRotate, 1); // todo, needs to be set
 
 
         navx = new NavXInput(DeviceID.navxPort);
 
-        liftLimitSwitch = new DigitalInput(10);
+        liftLimitSwitch = new DigitalInput(6);
     }
 }
