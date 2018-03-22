@@ -56,12 +56,12 @@ public class Hardware {
         public static final int motorMainLiftFront = 4;
         public static final int motorMainLiftBack = 2;
 
-        public static final int motorIntakeClamp = 6;
+        //public static final int motorIntakeClamp = 6;
 
-        public static final int motorIntakeRotate = 10;
+        public static final int motorIntakeRotate = 6;
 
-        public static final int motorIntakeL = 11;
-        public static final int motorIntakeR = 12;
+        public static final int motorIntakeL = 10;
+        public static final int motorIntakeR = 5;
 
         //left intake 5
         //pincer 6
