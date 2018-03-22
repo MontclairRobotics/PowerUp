@@ -227,7 +227,7 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
 
         StateMachine shootCube = new StateMachine(false, new SetIntakeRotation(intake, intake.middlePos), new CubeOuttake(intake, 1), new SetIntakeRotation(intake, intake.downPos));
 
-        Control.intakeSubroutine.setHeldAction(new ButtonAction() {
+        /*Control.intakeSubroutine.setHeldAction(new ButtonAction() {
             @Override
             public void onAction() {
                 shootCube.start();
@@ -250,7 +250,7 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
                 intake.roationalMotor.set(intake.downPos);
             }
         });
-
+*/
 
         // vision stuff
         /*UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();

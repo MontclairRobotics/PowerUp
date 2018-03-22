@@ -58,7 +58,7 @@ public class Hardware {
 
         public static final int motorIntakeClamp = 6;
 
-        public static final int motorRotational = 10;
+        public static final int motorIntakeRotate = 10;
         //left intake 5
         //pincer 6
         //lifter 9
@@ -93,9 +93,9 @@ public class Hardware {
     public static WPI_TalonSRX motorLiftMainFront;
     public static WPI_TalonSRX motorLiftMainBack;
 
-    public static WPI_TalonSRX motorIntakeClamp;
+    //public static WPI_TalonSRX motorIntakeClamp;
 
-    public static WPI_TalonSRX motorRotational;
+    public static WPI_TalonSRX motorIntakeRotate;
 
     public static DigitalInput intakeClosedSwitch;
     public static DigitalInput intakeOpenSwitch;
@@ -129,11 +129,11 @@ public class Hardware {
         motorLiftIntake = new WPI_TalonSRX(DeviceID.motorIntakeLift);
         motorLiftMainFront = new WPI_TalonSRX(DeviceID.motorMainLiftFront);
         motorLiftMainBack = new WPI_TalonSRX(DeviceID.motorMainLiftBack);
-        motorRotational = new WPI_TalonSRX(DeviceID.motorRotational);
+        motorIntakeRotate = new WPI_TalonSRX(DeviceID.motorIntakeRotate);
 
         motorLiftMainBack.setInverted(true);
 
-        motorIntakeClamp = new WPI_TalonSRX(DeviceID.motorIntakeClamp);
+        //motorIntakeClamp = new WPI_TalonSRX(DeviceID.motorIntakeClamp);
 
         intakeClosedSwitch = new DigitalInput(9);
         intakeOpenSwitch = new DigitalInput(8);

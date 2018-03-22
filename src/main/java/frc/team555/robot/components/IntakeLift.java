@@ -34,7 +34,7 @@ public class IntakeLift {
         //=================
 
         //IntakeLift up one step
-        Control.intakeLiftIncrement.setPressAction(new ButtonAction() {
+        /*Control.intakeLiftIncrement.setPressAction(new ButtonAction() {
             @Override
             public void onAction() {
                 liftUp();
@@ -65,7 +65,7 @@ public class IntakeLift {
                 setPosition(positions.length-1);
             }
         });
-
+*/
         //Start the motors in manual mode
         //IntakeLift up (manual backup control)
         Control.intakeLiftManualUp.setHeldAction(new ButtonAction() {

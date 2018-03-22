@@ -2,6 +2,7 @@ package frc.team555.robot.components;
 
 import frc.team555.robot.core.Control;
 import frc.team555.robot.core.Hardware;
+import frc.team555.robot.utils.BangBang;
 import frc.team555.robot.utils.TargetMotor;
 import org.montclairrobotics.sprocket.control.ButtonAction;
 import org.montclairrobotics.sprocket.geometry.Vector;
@@ -10,7 +11,6 @@ import org.montclairrobotics.sprocket.loop.Priority;
 import org.montclairrobotics.sprocket.loop.Updatable;
 import org.montclairrobotics.sprocket.loop.Updater;
 import org.montclairrobotics.sprocket.motors.Motor;
-import org.montclairrobotics.sprocket.motors.SEncoder;
 import org.montclairrobotics.sprocket.utils.Input;
 import org.montclairrobotics.sprocket.utils.PID;
 import org.montclairrobotics.sprocket.utils.Togglable;
@@ -18,11 +18,13 @@ import org.montclairrobotics.sprocket.utils.Togglable;
 
 
 public class CubeIntake implements Updatable, Togglable{
+	private double rotatePower=0.5;
+
+
 	public final Motor left;
 	public final Motor right;
-	public final Motor clamp;
 	public final TargetMotor roationalMotor;
-	public final double tolerance = .01; // Todo: Maybe needs to be tuned
+	public final double tolerance = 1; // Todo: Maybe needs to be tuned
 
 	public final int upPos = 0;
 	public final int downPos = 2;
@@ -31,17 +33,12 @@ public class CubeIntake implements Updatable, Togglable{
 
 	public final Input<Vector> power;
 	
-	private long clampStart=0;
-	private long clampTime=500; // Todo: needs to be tuned
-	private double clampPower=0.5;
-	private boolean clampOpen=true; // True for open, false for close
-	
 	public CubeIntake() {
 		this.left = new Motor(Hardware.motorIntakeL);
 		this.right = new Motor(Hardware.motorIntakeR);
-		this.clamp = new Motor(Hardware.motorIntakeClamp);
-		this.roationalMotor = new TargetMotor(Hardware.intakeRotationEncoder, new PID(), new Motor(Hardware.motorRotational)); // Todo: needs to be implemented
-		
+		//this.clamp = new Motor(Hardware.motorIntakeClamp);
+		this.roationalMotor = new TargetMotor(Hardware.intakeRotationEncoder, new BangBang(tolerance,rotatePower), new Motor(Hardware.motorIntakeRotate)); // Todo: needs to be implemented
+
 		this.power = new Input<Vector>() {
 			@Override
 			public Vector get() {
@@ -53,20 +50,20 @@ public class CubeIntake implements Updatable, Togglable{
 		};
 
 
-		Control.intakeRotationDown.setPressAction(new ButtonAction() {
+		Control.intakeRotateDown.setPressAction(new ButtonAction() {
 			@Override
 			public void onAction() {
 				roationalMotor.set(downPos);
 			}
 		});
 
-		Control.intakeRotationUp.setPressAction(new ButtonAction() {
+		Control.intakeRotateUp.setPressAction(new ButtonAction() {
 			@Override
 			public void onAction() {
 				roationalMotor.set(upPos);
 			}
 		});
-		Control.intakeRotationMiddle.setPressAction(new ButtonAction() {
+		Control.intakeRotateMiddle.setPressAction(new ButtonAction() {
 			@Override
 			public void onAction() {
 				roationalMotor.set(middlePos);
@@ -74,7 +71,19 @@ public class CubeIntake implements Updatable, Togglable{
 		});
 
 
+		Control.intakeRotateUpManual.setPressAction(new ButtonAction() {
+			@Override
+			public void onAction() {
+				roationalMotor.setPower(rotatePower);
+			}
+		});
 
+		Control.intakeRotateUpManual.setPressAction(new ButtonAction() {
+			@Override
+			public void onAction() {
+				roationalMotor.setPower(-rotatePower);
+			}
+		});
 		
 		Updater.add(this, Priority.CALC);
 	}
@@ -83,14 +92,9 @@ public class CubeIntake implements Updatable, Togglable{
 	@Override
 	public void update() {
 		Vector p = power.get();
-		if(p.getMagnitude() < tolerance){
-			openClamp();
-		}else{
-			closeClamp();
-		}
+
 		left.set(p.getX());
 		right.set(p.getY());
-		updateClamp();
 	}
 
 	@Override
@@ -105,49 +109,4 @@ public class CubeIntake implements Updatable, Togglable{
 		right.set(0);
 	}
 
-	private void openClamp(){
-		if(!clampOpen)
-		{
-			clampOpen=true;
-			startClamp();
-		}
-	}
-
-	private void closeClamp(){
-		if(clampOpen)
-		{
-			clampOpen=false;
-			startClamp();
-		}
-	}
-	
-	private void startClamp()
-	{
-		//Guess how far we have moved, and set our start time correctly
-		//clampStart=System.currentTimeMillis()-(clampTime-(System.currentTimeMillis()-clampStart)));
-		clampStart=System.currentTimeMillis()*2-clampTime-clampStart;
-		if(clampStart>System.currentTimeMillis())
-		{
-			clampStart=System.currentTimeMillis();
-		}
-	}
-	
-	private void updateClamp()
-	{
-		if(System.currentTimeMillis()-clampStart<clampTime)
-		{
-			if(clampOpen)
-			{
-				clamp.set(clampPower);
-			}
-			else
-			{
-				clamp.set(-clampPower);
-			}
-		}
-		else
-		{
-			clamp.set(0);
-		}
-	}
 }
