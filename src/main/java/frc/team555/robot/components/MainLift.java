@@ -2,10 +2,13 @@ package frc.team555.robot.components;
 
 import frc.team555.robot.core.Control;
 import frc.team555.robot.core.Hardware;
+import frc.team555.robot.utils.BangBang;
 import frc.team555.robot.utils.TargetMotor;
 import org.montclairrobotics.sprocket.control.ButtonAction;
 import org.montclairrobotics.sprocket.motors.Motor;
 import org.montclairrobotics.sprocket.utils.PID;
+
+import java.nio.channels.Pipe;
 
 public class MainLift extends TargetMotor {
 
@@ -15,7 +18,7 @@ public class MainLift extends TargetMotor {
     private int downPosition;
 
     public MainLift(){
-        super(Hardware.liftEncoder, new PID(0, 0, 0), new Motor(Hardware.motorLiftMainFront), new Motor(Hardware.motorLiftMainBack));
+        super(Hardware.liftEncoder, new BangBang(1,1), new Motor(Hardware.motorLiftMainFront), new Motor(Hardware.motorLiftMainBack));
 
         mode = Mode.POWER;
 
@@ -23,31 +26,34 @@ public class MainLift extends TargetMotor {
         Control.mainLiftManualUp.setPressAction(new ButtonAction() {
             @Override
             public void onAction() {
-                MainLift.super.set(speed);
+                set(speed);
             }
         });
 
         Control.mainLiftManualUp.setReleaseAction(new ButtonAction() {
             @Override
             public void onAction() {
-                MainLift.super.set(0);
+                set(0);
             }
         });
 
         // Manual Down
-        Control.mainLiftManualDown.setPressAction(new ButtonAction() {
+        Control.mainLiftManualDown.setHeldAction(new ButtonAction() {
             @Override
             public void onAction() {
-                MainLift.super.set(-speed);
+                if(!Hardware.liftLimitSwitch.get()) {
+                    set(-speed);
+                }else{
+                    set(0);
+                    encoder.reset();
+                }
             }
         });
 
         Control.mainLiftManualDown.setReleaseAction(new ButtonAction() {
             @Override
             public void onAction() {
-                if(encoder != null) {
-                    MainLift.super.setTarget(upPosition);
-                }
+                set(0);
             }
         });
 
@@ -60,8 +66,7 @@ public class MainLift extends TargetMotor {
                 }
             }
         });
-
-
+        setPower(0);
         // Lift Bottom
 
 

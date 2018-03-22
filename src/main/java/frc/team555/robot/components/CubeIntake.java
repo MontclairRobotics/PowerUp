@@ -18,8 +18,9 @@ import org.montclairrobotics.sprocket.utils.Togglable;
 
 
 public class CubeIntake implements Updatable, Togglable{
-	private double rotatePower=0.5;
+	private double rotatePower=1;
 
+	private boolean auto;
 
 	public final Motor left;
 	public final Motor right;
@@ -36,15 +37,17 @@ public class CubeIntake implements Updatable, Togglable{
 	public CubeIntake() {
 		this.left = new Motor(Hardware.motorIntakeL);
 		this.right = new Motor(Hardware.motorIntakeR);
+		right.setInverted(true);
 		//this.clamp = new Motor(Hardware.motorIntakeClamp);
-		this.roationalMotor = new TargetMotor(Hardware.intakeRotationEncoder, new BangBang(tolerance,rotatePower), new Motor(Hardware.motorIntakeRotate)); // Todo: needs to be implemented
+		Motor rotateMotor=new Motor(Hardware.motorIntakeRotate);
+		this.roationalMotor = new TargetMotor(Hardware.intakeRotationEncoder, new BangBang(tolerance,rotatePower), rotateMotor); // Todo: needs to be implemented
 
 		this.power = new Input<Vector>() {
 			@Override
 			public Vector get() {
 				return new XY(
-						-Control.auxStick.getY() + Control.auxStick.getX(),
-						-Control.auxStick.getY() - Control.auxStick.getX()
+						-Control.auxStick.getX(), // + Control.auxStick.getX(),
+						-Control.auxStick.getY()// - Control.auxStick.getX()
 				);
 			}
 		};
@@ -77,14 +80,27 @@ public class CubeIntake implements Updatable, Togglable{
 				roationalMotor.setPower(rotatePower);
 			}
 		});
+		Control.intakeRotateUpManual.setReleaseAction(new ButtonAction() {
+			@Override
+			public void onAction() {
+				roationalMotor.setPower(0);
+			}
+		});
 
-		Control.intakeRotateUpManual.setPressAction(new ButtonAction() {
+		Control.intakeRotateDownManual.setPressAction(new ButtonAction() {
 			@Override
 			public void onAction() {
 				roationalMotor.setPower(-rotatePower);
 			}
 		});
-		
+		Control.intakeRotateDownManual.setReleaseAction(new ButtonAction() {
+			@Override
+			public void onAction() {
+				roationalMotor.setPower(0);
+			}
+		});
+
+		roationalMotor.setPower(0);
 		Updater.add(this, Priority.CALC);
 	}
 
@@ -93,10 +109,19 @@ public class CubeIntake implements Updatable, Togglable{
 	public void update() {
 		Vector p = power.get();
 
-		left.set(p.getX());
-		right.set(p.getY());
+		if(!auto) {
+			left.set(p.getY() - p.getX());
+			right.set(p.getY() + p.getX());
+		}
+		auto=false;
 	}
 
+
+	public void auto()
+	{
+		auto=true;
+		enable();
+	}
 	@Override
 	public void enable() {
 		left.set(-.5);

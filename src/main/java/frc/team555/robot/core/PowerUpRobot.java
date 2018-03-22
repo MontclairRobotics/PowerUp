@@ -3,6 +3,8 @@ package frc.team555.robot.core;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team555.robot.auto.*;
 import frc.team555.robot.components.CubeIntake;
+import frc.team555.robot.components.IntakeLift;
+import frc.team555.robot.components.MainLift;
 import frc.team555.robot.utils.Side;
 import org.montclairrobotics.sprocket.SprocketRobot;
 import org.montclairrobotics.sprocket.auto.AutoMode;
@@ -30,6 +32,8 @@ public class PowerUpRobot extends SprocketRobot {
     GyroLock lock;
     boolean manualLock;
     CubeIntake intake;
+    MainLift mainLift;
+    IntakeLift intakeLift;
 
     //vision stuff
     private static final int IMG_WIDTH = 320;
@@ -55,6 +59,8 @@ public class PowerUpRobot extends SprocketRobot {
         SwitchAuto.init();
         DriveModule[] modules = new DriveModule[2];
         intake = new CubeIntake();
+        mainLift=new MainLift();
+        intakeLift=new IntakeLift();
 
         modules[0] = new DriveModule(new XY(-1, 0),
                 new XY(0, 1),
@@ -222,6 +228,7 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
         addAutoMode(baseLine);
         addAutoMode(centerBaseLineLeft);
         addAutoMode(centerBaseLineRight);
+        addAutoMode(new AutoMode("switch", new SwitchAuto(correction, intake, intakeLift)));
         //addAutoMode(new AutoMode("Switch Auto", new SwitchAuto(correction, intake)));
         sendAutoModes();
 
@@ -265,6 +272,7 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
             }
         });
         visionThread.start();*/
+        intakeLift.setPower(0);
     }
 
     @Override
@@ -286,8 +294,9 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
         SmartDashboard.putNumber("Distance", driveTrain.getDistance().getY());
         SmartDashboard.putNumber("Left Encoder", Hardware.leftDriveEncoder.getInches().get());
         SmartDashboard.putNumber("Right Encoder", Hardware.rightDriveEncoder.getInches().get());
+        SmartDashboard.putBoolean("Lift Limit Switch", Hardware.liftLimitSwitch.get());
         gyroLocking();
-
+        SwitchAuto.loop();
     }
 
     private void gyroLocking(){

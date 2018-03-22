@@ -2,6 +2,7 @@ package frc.team555.robot.components;
 
 import frc.team555.robot.core.Control;
 import frc.team555.robot.core.Hardware;
+import frc.team555.robot.utils.BangBang;
 import frc.team555.robot.utils.TargetMotor;
 import org.montclairrobotics.sprocket.control.ButtonAction;
 import org.montclairrobotics.sprocket.motors.Motor;
@@ -18,7 +19,7 @@ public class IntakeLift {
     public final int liftDownPosition = 0;*/
 
     public double MANUAL_POWER=.5;
-    public final double[] positions = {0D, 333D, 667D, 1000D}; // Todo: test values
+    public final double[] positions = {0D, 49-15}; // Todo: test values
     private int pos;
     private TargetMotor motors;
     SEncoder encoder;
@@ -26,7 +27,7 @@ public class IntakeLift {
      * Constructor for IntakeLift Class with default position of 0
      */
     public IntakeLift() {
-        motors = new TargetMotor(Hardware.liftEncoder, new PID(0, 0, 0),new Motor(Hardware.motorLiftIntake)); // Todo: Needs Tuninng
+        motors = new TargetMotor(Hardware.liftEncoder, new BangBang(1,1),new Motor(Hardware.motorLiftIntake)); // Todo: Needs Tuninng
         encoder=Hardware.liftEncoder;
 
         //=================
@@ -68,18 +69,18 @@ public class IntakeLift {
 */
         //Start the motors in manual mode
         //IntakeLift up (manual backup control)
-        Control.intakeLiftManualUp.setHeldAction(new ButtonAction() {
+        Control.intakeLiftManualUp.setPressAction(new ButtonAction() {
             @Override
             public void onAction() {
-                setPower(MANUAL_POWER);
+                motors.setPower(MANUAL_POWER);
             }
         });
 
         //IntakeLift down (manual backup control)
-        Control.intakeLiftManualDown.setHeldAction(new ButtonAction() {
+        Control.intakeLiftManualDown.setPressAction(new ButtonAction() {
             @Override
             public void onAction() {
-                setPower(-MANUAL_POWER);
+                motors.setPower(-MANUAL_POWER);
 
             }
         });
@@ -88,24 +89,24 @@ public class IntakeLift {
         ButtonAction stop=new ButtonAction() {
             @Override
             public void onAction() {
-                setPower(0);
+                motors.setPower(0);
             }
         };
-        Control.intakeLiftManualUp.setOffAction(stop);
-        Control.intakeLiftManualDown.setOffAction(stop);
-
+        Control.intakeLiftManualUp.setReleaseAction(stop);
+        Control.intakeLiftManualDown.setReleaseAction(stop);
+        motors.setPower(0);
     }
 
 
     public void setPosition(int p) {
         p = (int)Utils.constrain(p, 0, positions.length - 1);
-        motors.setTarget(positions[p]);
+        //motors.setTarget(positions[p]);
         pos = p;
     }
 
     public void setPositionRaw(double p)
     {
-        motors.setTarget(p);
+        //motors.setTarget(p);
     }
 
 

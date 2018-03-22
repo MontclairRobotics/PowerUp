@@ -68,10 +68,10 @@ public class Control {
         //intakeLiftDecrement = new JoystickButton(auxStick,12);
         mainLiftTop = new JoystickButton(auxStick,9);
         mainLiftBottom = new JoystickButton(auxStick,8);
-        mainLiftManualUp = new JoystickButton(auxStick,10);
-        mainLiftManualDown = new JoystickButton(auxStick,11);
-        intakeLiftManualUp = new JoystickButton(auxStick,6);
-        intakeLiftManualDown = new JoystickButton(auxStick,7);
+        mainLiftManualUp = new JoystickButton(auxStick,11);
+        mainLiftManualDown = new JoystickButton(auxStick,10);
+        intakeLiftManualUp = new JoystickButton(auxStick,7);
+        intakeLiftManualDown = new JoystickButton(auxStick,6);
         //intakeLiftTop = new JoystickButton(auxStick, 12);
         //intakeLiftBottom = new JoystickButton(auxStick, 13);
         //intakeSubroutine = new JoystickButton(auxStick, 14);
