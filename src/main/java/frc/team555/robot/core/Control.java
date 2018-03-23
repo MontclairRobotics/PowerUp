@@ -23,17 +23,18 @@ public class Control {
             intakeLiftManualDown,
             //intakeLiftTop,
             //intakeLiftBottom,
+            mainLiftAutoUp,
             mainLiftManualUp,
-            mainLiftManualDown,
-            mainLiftTop,
-            mainLiftBottom,
+            mainLiftManualDown;
+            // mainLiftTop,
+            // mainLiftBottom,
             //openButton,
             //closeButton,
-            intakeRotateUp,
-            intakeRotateDown,
-            intakeRotateMiddle,
-            intakeRotateUpManual,
-            intakeRotateDownManual;
+            //intakeRotateUp,
+            //intakeRotateDown,
+            //intakeRotateMiddle,
+            //intakeRotateUpManual,
+            //intakeRotateDownManual;
             //intakeSubroutine;
 
 
@@ -64,28 +65,29 @@ public class Control {
 
         //IntakeLift Buttons
 
-        //intakeLiftIncrement = new JoystickButton(auxStick,12);
-        //intakeLiftDecrement = new JoystickButton(auxStick,12);
-        mainLiftTop = new JoystickButton(auxStick,9);
-        mainLiftBottom = new JoystickButton(auxStick,8);
-        mainLiftManualUp = new JoystickButton(auxStick,11);
-        mainLiftManualDown = new JoystickButton(auxStick,10);
-        intakeLiftManualUp = new JoystickButton(auxStick,7);
-        intakeLiftManualDown = new JoystickButton(auxStick,6);
-        //intakeLiftTop = new JoystickButton(auxStick, 12);
-        //intakeLiftBottom = new JoystickButton(auxStick, 13);
-        //intakeSubroutine = new JoystickButton(auxStick, 14);
+        // intakeLiftIncrement = new JoystickButton(auxStick,12);
+        // intakeLiftDecrement = new JoystickButton(auxStick,12);
+        // mainLiftTop = new JoystickButton(auxStick,9);
+        // mainLiftBottom = new JoystickButton(auxStick,8);
+        mainLiftManualUp = new JoystickButton(auxStick,3);
+        mainLiftManualDown = new JoystickButton(auxStick,2);
+        intakeLiftManualUp = new JoystickButton(auxStick,5);
+        intakeLiftManualDown = new JoystickButton(auxStick,4);
+        mainLiftAutoUp = new JoystickButton(auxStick, 1);
+        // intakeLiftTop = new JoystickButton(auxStick, 12);
+        // intakeLiftBottom = new JoystickButton(auxStick, 13);
+        // intakeSubroutine = new JoystickButton(auxStick, 14);
 
 
-         //openButton=new JoystickButton(Control.auxStick,8);
-         //closeButton=new JoystickButton(Control.auxStick,9);
+        // openButton=new JoystickButton(Control.auxStick,8);
+        // closeButton=new JoystickButton(Control.auxStick,9);
 
         //Intake Buttons
-        intakeRotateUp = new JoystickButton(auxStick, 12);
-        intakeRotateDown = new JoystickButton(auxStick, 4);
-        intakeRotateMiddle=new JoystickButton(auxStick,5);
-        intakeRotateUpManual = new JoystickButton(auxStick, 3);
-        intakeRotateDownManual = new JoystickButton(auxStick, 2);
+        // intakeRotateUp = new JoystickButton(auxStick, 12);
+        // intakeRotateDown = new JoystickButton(auxStick, 4);
+        // intakeRotateMiddle=new JoystickButton(auxStick,5);
+        // intakeRotateUpManual = new JoystickButton(auxStick, 3);
+        // intakeRotateDownManual = new JoystickButton(auxStick, 2);
 
                 // Auxiliary Buttons
 
