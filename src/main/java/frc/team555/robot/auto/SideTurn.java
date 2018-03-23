@@ -17,6 +17,7 @@ public class SideTurn extends TurnGyro {
     public SideTurn( GyroCorrection gyro, boolean relative, Side side) {
         super(Angle.ZERO, gyro, relative);
         this.side = side;
+        this.gyro=gyro;
     }
     public void userStart() {
         super.userStart();
