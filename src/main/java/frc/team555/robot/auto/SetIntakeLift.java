@@ -4,6 +4,7 @@ import frc.team555.robot.components.IntakeLift;
 import frc.team555.robot.core.Hardware;
 import org.montclairrobotics.sprocket.states.State;
 
+@Deprecated
 public class SetIntakeLift implements State {
 
     static final double power = .5;

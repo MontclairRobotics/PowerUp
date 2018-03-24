@@ -14,21 +14,24 @@ import org.montclairrobotics.sprocket.utils.Utils;
 /**
  * The IntakeLift class manages the motors, positions, and PID for the intakeLift on the PowerUp robot.
  */
-public class IntakeLift {
+public class IntakeLift implements Lift{
 /*  public final int liftUpPosition = 1000;
     public final int liftDownPosition = 0;*/
+
+    private boolean auto=false;
+
 
     public double MANUAL_POWER=.5;
     public final double[] positions = {0D, 49-15}; // Todo: test values
     private int pos;
     private TargetMotor motors;
-    SEncoder encoder;
+    public SEncoder encoder;
     /**
      * Constructor for IntakeLift Class with default position of 0
      */
     public IntakeLift() {
-        motors = new TargetMotor(Hardware.liftEncoder, new BangBang(1,1),new Motor(Hardware.motorLiftIntake)); // Todo: Needs Tuninng
-        encoder=Hardware.liftEncoder;
+        motors = new TargetMotor(Hardware.intakeLiftEncoder, new BangBang(1,1),new Motor(Hardware.motorLiftIntake)); // Todo: Needs Tuninng
+        encoder=Hardware.intakeLiftEncoder;
 
         //=================
         //Buttons below!!!!
@@ -109,6 +112,17 @@ public class IntakeLift {
         //motors.setTarget(p);
     }
 
+
+    @Override
+    public SEncoder getEncoder() {
+        return encoder;
+    }
+
+    @Override
+    public void setAuto(double power) {
+        auto=true;
+        setPower(power);
+    }
 
     public void setPower(double power){
         motors.set(power);

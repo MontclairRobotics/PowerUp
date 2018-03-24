@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team555.robot.components.CubeIntake;
 import frc.team555.robot.components.IntakeLift;
+import frc.team555.robot.components.MainLift;
 import frc.team555.robot.utils.Side;
 import org.montclairrobotics.sprocket.auto.states.Delay;
 import org.montclairrobotics.sprocket.auto.states.DriveEncoderGyro;
@@ -41,8 +42,9 @@ public class SwitchAuto extends StateMachine{
         SmartDashboard.putBoolean("Correct Side", startSide.get());
     }
 
-    public SwitchAuto(GyroCorrection correction, CubeIntake intake, IntakeLift lift){
+    public SwitchAuto(MainLift mainLift, GyroCorrection correction, CubeIntake intake, IntakeLift lift){
         super(new ResetGyro(correction),
+                new MoveLift(mainLift,MainLift.TOP*0.6,1,true),
                 new DriveEncoderGyro(150, .75, Angle.ZERO, false, correction),
                 new ConditionalState(new DropCube(intake, correction, startSidesChooser.getSelected()), startSide)
         );

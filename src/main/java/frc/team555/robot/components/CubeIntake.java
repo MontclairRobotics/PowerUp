@@ -45,15 +45,22 @@ public class CubeIntake implements Updatable, Togglable{
 		this.power = new Input<Vector>() {
 			@Override
 			public Vector get() {
-				return new XY(
-						-Control.auxStick.getX(), // + Control.auxStick.getX(),
-						-Control.auxStick.getY()// - Control.auxStick.getX()
-				);
+				double x=-Control.auxStick.getX();
+				if(Math.abs(x)<0.2)
+				{
+					x=0;
+				}
+				double y=-Control.auxStick.getY();
+				if(Math.abs(y)<0.2)
+				{
+					y=0;
+				}
+				return new XY(x,y);
 			}
 		};
 
 
-		Control.intakeRotateDown.setPressAction(new ButtonAction() {
+		/*Control.intakeRotateDown.setPressAction(new ButtonAction() {
 			@Override
 			public void onAction() {
 				roationalMotor.set(downPos);
@@ -99,7 +106,7 @@ public class CubeIntake implements Updatable, Togglable{
 				roationalMotor.setPower(0);
 			}
 		});
-
+*/
 		roationalMotor.setPower(0);
 		Updater.add(this, Priority.CALC);
 	}
@@ -124,8 +131,8 @@ public class CubeIntake implements Updatable, Togglable{
 	}
 	@Override
 	public void enable() {
-		left.set(-.5);
-		right.set(-.5);
+		left.set(1);
+		right.set(1);
 	}
 
 	@Override

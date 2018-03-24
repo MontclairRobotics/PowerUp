@@ -20,6 +20,7 @@ import org.montclairrobotics.sprocket.motors.Module;
 import org.montclairrobotics.sprocket.motors.Motor;
 import org.montclairrobotics.sprocket.pipeline.Step;
 import org.montclairrobotics.sprocket.states.StateMachine;
+import org.montclairrobotics.sprocket.utils.Debug;
 import org.montclairrobotics.sprocket.utils.Input;
 import org.montclairrobotics.sprocket.utils.PID;
 import org.montclairrobotics.sprocket.utils.Togglable;
@@ -61,6 +62,7 @@ public class PowerUpRobot extends SprocketRobot {
         intake = new CubeIntake();
         mainLift=new MainLift();
         intakeLift=new IntakeLift();
+        SetIntakeLift.setLift(intakeLift);
 
         modules[0] = new DriveModule(new XY(-1, 0),
                 new XY(0, 1),
@@ -135,7 +137,7 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
 */
         Togglable fieldInput = new FieldCentricDriveInput(Control.driveStick,correction);
         new ToggleButton(Control.driveStick,Control.FieldCentricID,fieldInput);
-        
+
         Button resetButton=new JoystickButton(Control.driveStick,Control.ResetID);
         resetButton.setPressAction(new ButtonAction() {
             @Override
@@ -143,6 +145,9 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
                 correction.reset();
             }
         });
+
+
+
 
 
         //auto
@@ -225,10 +230,16 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
                 new ResetGyro(correction),
                 new DriveEncoderGyro(-12*10,.5,new Degrees(0),false,correction));
 
+
+        AutoMode mainLiftUp= new AutoMode("Main Lift Up",new MoveLift(mainLift,MainLift.TOP*0.5,1,true));
+        AutoMode turnQuarter=new AutoMode("Turn Quarter",new TurnGyro(Angle.QUARTER,correction,true));
+
         addAutoMode(baseLine);
         addAutoMode(centerBaseLineLeft);
         addAutoMode(centerBaseLineRight);
-        addAutoMode(new AutoMode("switch", new SwitchAuto(correction, intake, intakeLift)));
+        addAutoMode(new AutoMode("switch", new SwitchAuto(mainLift,correction, intake, intakeLift)));
+        addAutoMode(mainLiftUp);
+        addAutoMode(turnQuarter);
         //addAutoMode(new AutoMode("Switch Auto", new SwitchAuto(correction, intake)));
         sendAutoModes();
 
@@ -295,6 +306,8 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
         SmartDashboard.putNumber("Left Encoder", Hardware.leftDriveEncoder.getInches().get());
         SmartDashboard.putNumber("Right Encoder", Hardware.rightDriveEncoder.getInches().get());
         SmartDashboard.putBoolean("Lift Limit Switch", Hardware.liftLimitSwitch.get());
+        Debug.msg("Main Lift Encoder",mainLift.encoder.getInches().get());
+        Debug.msg("Intake Lift Encoder",intakeLift.encoder.getInches().get());
         gyroLocking();
         SwitchAuto.loop();
     }

@@ -6,13 +6,18 @@ import frc.team555.robot.utils.BangBang;
 import frc.team555.robot.utils.TargetMotor;
 import org.montclairrobotics.sprocket.control.ButtonAction;
 import org.montclairrobotics.sprocket.motors.Motor;
+import org.montclairrobotics.sprocket.motors.SEncoder;
 import org.montclairrobotics.sprocket.utils.PID;
 
 import java.nio.channels.Pipe;
 
-public class MainLift extends TargetMotor {
+public class MainLift extends TargetMotor implements Lift {
 
     private final double speed = 1.0;
+    public static final double TOP= 31600;
+
+
+    private boolean auto=false;
 
     private int upPosition;
     private int downPosition;
@@ -58,12 +63,34 @@ public class MainLift extends TargetMotor {
         });
 
         // Lift Top
-        Control.mainLiftTop.setPressAction(new ButtonAction() {
+        /* Control.mainLiftTop.setPressAction(new ButtonAction() {
             @Override
             public void onAction() {
                 if(encoder != null){
                     MainLift.super.setTarget(downPosition);
                 }
+            }
+        });*/
+        Control.mainLiftAutoUp.setHeldAction(new ButtonAction() {
+            @Override
+            public void onAction() {
+                if(Hardware.liftEncoder.getInches().get()<TOP)
+                {
+                    Hardware.motorLiftMainFront.set(1);
+                    Hardware.motorLiftMainBack.set(1);
+                }
+                else
+                {
+                    Hardware.motorLiftMainFront.set(0);
+                    Hardware.motorLiftMainBack.set(0);
+                }
+            }
+        });
+        Control.mainLiftAutoUp.setReleaseAction(new ButtonAction() {
+            @Override
+            public void onAction() {
+                Hardware.motorLiftMainFront.set(0);
+                Hardware.motorLiftMainBack.set(0);
             }
         });
         setPower(0);
@@ -74,5 +101,14 @@ public class MainLift extends TargetMotor {
     }
 
 
+    @Override
+    public SEncoder getEncoder() {
+        return encoder;
+    }
 
+    @Override
+    public void setAuto(double power) {
+        setPower(power);
+        auto=true;
+    }
 }

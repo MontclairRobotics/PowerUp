@@ -36,5 +36,11 @@ public class SideTurn extends TurnGyro {
         }
     }
 
+    @Override
+    public boolean isDone()
+    {
+        return super.isDone()||super.timeInState()>5;
+    }
+
 
 }
