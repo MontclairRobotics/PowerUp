@@ -45,7 +45,7 @@ public class SwitchAuto extends StateMachine{
     public SwitchAuto(MainLift mainLift, GyroCorrection correction, CubeIntake intake, IntakeLift lift){
         super(new ResetGyro(correction),
                 new MoveLift(mainLift,MainLift.TOP*0.6,1,true),
-                new DriveEncoderGyro(150, .75, Angle.ZERO, false, correction),
+                new DriveEncoderGyro(150, .25, Angle.ZERO, false, correction),
                 new ConditionalState(new DropCube(intake, correction, startSidesChooser.getSelected()), startSide)
         );
     }

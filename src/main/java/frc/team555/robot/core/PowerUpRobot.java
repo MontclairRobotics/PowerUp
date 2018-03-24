@@ -62,7 +62,7 @@ public class PowerUpRobot extends SprocketRobot {
         intake = new CubeIntake();
         mainLift=new MainLift();
         intakeLift=new IntakeLift();
-        SetIntakeLift.setLift(intakeLift);
+        //SetIntakeLift.setLift(intakeLift);
 
         modules[0] = new DriveModule(new XY(-1, 0),
                 new XY(0, 1),
@@ -237,9 +237,10 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
         addAutoMode(baseLine);
         addAutoMode(centerBaseLineLeft);
         addAutoMode(centerBaseLineRight);
-        addAutoMode(new AutoMode("switch", new SwitchAuto(mainLift,correction, intake, intakeLift)));
+        addAutoMode(new AutoMode("Switch Using Intake", new SwitchAuto(mainLift,correction, intake, intakeLift)));
         addAutoMode(mainLiftUp);
         addAutoMode(turnQuarter);
+        addAutoMode(new AutoMode("Switch Using Lift", new TopCubeAuto(mainLift, intake, correction)));
         //addAutoMode(new AutoMode("Switch Auto", new SwitchAuto(correction, intake)));
         sendAutoModes();
 
@@ -306,8 +307,8 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
         SmartDashboard.putNumber("Left Encoder", Hardware.leftDriveEncoder.getInches().get());
         SmartDashboard.putNumber("Right Encoder", Hardware.rightDriveEncoder.getInches().get());
         SmartDashboard.putBoolean("Lift Limit Switch", Hardware.liftLimitSwitch.get());
-        Debug.msg("Main Lift Encoder",mainLift.encoder.getInches().get());
-        Debug.msg("Intake Lift Encoder",intakeLift.encoder.getInches().get());
+        SmartDashboard.putNumber("Main Lift Encoder",Hardware.liftEncoder.getInches().get());
+        //SmartDashboard.putNumber("Intake Lift Encoder",in.getInches().get());
         gyroLocking();
         SwitchAuto.loop();
     }

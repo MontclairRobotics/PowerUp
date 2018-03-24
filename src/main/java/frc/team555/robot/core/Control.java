@@ -1,6 +1,7 @@
 package frc.team555.robot.core;
 
 import edu.wpi.first.wpilibj.Joystick;
+import org.montclairrobotics.sprocket.control.ArcadeDriveInput;
 import org.montclairrobotics.sprocket.control.Button;
 import org.montclairrobotics.sprocket.control.JoystickButton;
 import org.montclairrobotics.sprocket.control.SquaredDriveInput;
@@ -55,7 +56,8 @@ public class Control {
         auxStick   = new Joystick(auxStickID);
 
         // Drive Input creation
-        driveInput = new SquaredDriveInput(driveStick);
+        //driveInput = new SquaredDriveInput(driveStick);
+        driveInput=new ArcadeDriveInput(driveStick);
 
         // ==================
         // Button Creation
@@ -69,11 +71,24 @@ public class Control {
         // intakeLiftDecrement = new JoystickButton(auxStick,12);
         // mainLiftTop = new JoystickButton(auxStick,9);
         // mainLiftBottom = new JoystickButton(auxStick,8);
+
+
+
+        /*
+        OLD
         mainLiftManualUp = new JoystickButton(auxStick,3);
         mainLiftManualDown = new JoystickButton(auxStick,2);
         intakeLiftManualUp = new JoystickButton(auxStick,5);
         intakeLiftManualDown = new JoystickButton(auxStick,4);
         mainLiftAutoUp = new JoystickButton(auxStick, 1);
+        */
+        mainLiftManualUp = new JoystickButton(auxStick,6);
+        mainLiftManualDown = new JoystickButton(auxStick,4);
+        intakeLiftManualUp = new JoystickButton(auxStick,5);
+        intakeLiftManualDown = new JoystickButton(auxStick,3);
+        mainLiftAutoUp = new JoystickButton(auxStick, 1);
+
+
         // intakeLiftTop = new JoystickButton(auxStick, 12);
         // intakeLiftBottom = new JoystickButton(auxStick, 13);
         // intakeSubroutine = new JoystickButton(auxStick, 14);
