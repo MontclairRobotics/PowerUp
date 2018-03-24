@@ -6,6 +6,7 @@ import frc.team555.robot.auto.*;
 import frc.team555.robot.components.CubeIntake;
 import frc.team555.robot.components.IntakeLift;
 import frc.team555.robot.components.MainLift;
+import frc.team555.robot.utils.CoastMotor;
 import frc.team555.robot.utils.Side;
 import org.montclairrobotics.sprocket.SprocketRobot;
 import org.montclairrobotics.sprocket.auto.AutoMode;
@@ -31,6 +32,7 @@ import java.util.ArrayList;
 public class PowerUpRobot extends SprocketRobot {
     DriveTrain driveTrain;
     GyroCorrection correction;
+    Sensitivity sensitivity;
     GyroLock lock;
     boolean manualLock;
     CubeIntake intake;
@@ -70,16 +72,16 @@ public class PowerUpRobot extends SprocketRobot {
                 Hardware.leftDriveEncoder,
                 new PID(0.5,0,0),
                 Module.MotorInputType.PERCENT,
-                new Motor(Hardware.motorDriveBL),
-                new Motor(Hardware.motorDriveFL));
+                new CoastMotor(Hardware.motorDriveBL,false),
+                new CoastMotor(Hardware.motorDriveFL,false));
 
         modules[1] = new DriveModule(new XY(1, 0),
                 new XY(0, 1),
                 Hardware.rightDriveEncoder,
                 new PID(0.5,0,0),
                 Module.MotorInputType.PERCENT,
-                new Motor(Hardware.motorDriveBR),
-                new Motor(Hardware.motorDriveFR));
+                new CoastMotor(Hardware.motorDriveBR,false),
+                new CoastMotor(Hardware.motorDriveFR,false));
 
 
 
@@ -109,9 +111,10 @@ public class PowerUpRobot extends SprocketRobot {
         ArrayList<Step<DTTarget>> steps = new ArrayList<>();
 
         correction = new GyroCorrection(Hardware.navx, new PID(1.5, 0, 0.0015), 90, 1);
+        sensitivity=new Sensitivity(1,0.6);
         lock = new GyroLock(correction);
         steps.add(new Deadzone());
-        steps.add(new Sensitivity(1));
+        steps.add(sensitivity);
         steps.add(correction);
         driveTrain.setPipeline(new DTPipeline(steps));
 
@@ -136,14 +139,28 @@ public class PowerUpRobot extends SprocketRobot {
         /*super.addAutoMode(new AutoMode("Dynamic auto", new DynamicAutoState()));
 new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
 */
-        Togglable fieldInput = new FieldCentricDriveInput(Control.driveStick,correction);
-        new ToggleButton(Control.driveStick,Control.FieldCentricID,fieldInput);
+        //Togglable fieldInput = new FieldCentricDriveInput(Control.driveStick,correction);
+        //new ToggleButton(Control.driveStick,Control.FieldCentricID,fieldInput);
 
-        Button resetButton=new JoystickButton(Control.driveStick,Control.ResetID);
-        resetButton.setPressAction(new ButtonAction() {
+        //Button resetButton=new JoystickButton(Control.driveStick,Control.ResetID);
+        /*resetButton.setPressAction(new ButtonAction() {
             @Override
             public void onAction() {
                 correction.reset();
+            }
+        });*/
+
+        Control.halfSpeed.setPressAction(new ButtonAction() {
+            @Override
+            public void onAction() {
+                sensitivity.set(0.5,0.3);
+            }
+        });
+
+        Control.halfSpeed.setReleaseAction(new ButtonAction() {
+            @Override
+            public void onAction() {
+                sensitivity.set(1,0.6);
             }
         });
 

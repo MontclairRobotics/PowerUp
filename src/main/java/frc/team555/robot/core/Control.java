@@ -18,6 +18,7 @@ public class Control {
     // Drive Inputs
     public static DTInput driveInput;
     public static Button lock,
+            halfSpeed,
             //intakeLiftIncrement,
             //intakeLiftDecrement,
             intakeLiftManualUp,
@@ -39,8 +40,8 @@ public class Control {
             //intakeSubroutine;
 
 
-    public static int FieldCentricID=2;
-    public static int ResetID=3;
+    //public static int FieldCentricID=2;
+    //public static int ResetID=3;
     // Joystick Declaration
     public static Joystick driveStick;
     public static Joystick auxStick;
@@ -87,6 +88,7 @@ public class Control {
         intakeLiftManualUp = new JoystickButton(auxStick,6);
         intakeLiftManualDown = new JoystickButton(auxStick,5);
         mainLiftAutoUp = new JoystickButton(auxStick, 1);
+        halfSpeed=new JoystickButton(driveStick,2);
 
 
         // intakeLiftTop = new JoystickButton(auxStick, 12);
