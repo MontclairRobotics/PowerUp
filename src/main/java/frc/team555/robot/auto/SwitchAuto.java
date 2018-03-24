@@ -44,14 +44,17 @@ public class SwitchAuto extends StateMachine{
 
     public SwitchAuto(MainLift mainLift, GyroCorrection correction, CubeIntake intake, IntakeLift lift){
         super(new ResetGyro(correction),
-                new MoveLift(mainLift,MainLift.TOP*0.6,1,true),
-                new DriveEncoderGyro(150, .25, Angle.ZERO, false, correction),
-                new ConditionalState(new DropCube(intake, correction, new Input<Side>(){
+                new ConditionalState(new DropCube(mainLift,intake, correction, new Input<Side>(){
                     @Override
                     public Side get() {
-                        return startSidesChooser.getSelected();
+                        return SwitchAuto.startSidesChooser.getSelected();
                     }
-                }), startSide)
-        );
+                }), SwitchAuto.startSide),
+                new ConditionalState(new DriveEncoderGyro(180,0.5,Angle.ZERO,false,correction),new Input<Boolean>(){
+                    @Override
+                    public Boolean get() {
+                        return !SwitchAuto.startSide.get();
+                    }
+                }));
     }
 }
