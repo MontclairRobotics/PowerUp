@@ -1,5 +1,6 @@
 package frc.team555.robot.core;
 
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team555.robot.auto.*;
 import frc.team555.robot.components.CubeIntake;
@@ -307,10 +308,17 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
         SmartDashboard.putNumber("Left Encoder", Hardware.leftDriveEncoder.getInches().get());
         SmartDashboard.putNumber("Right Encoder", Hardware.rightDriveEncoder.getInches().get());
         SmartDashboard.putBoolean("Lift Limit Switch", Hardware.liftLimitSwitch.get());
+        debugCurrent("Main Lift Front",Hardware.motorLiftMainFront);
+        debugCurrent("Main Lift Back",Hardware.motorLiftMainBack);
+        debugCurrent("Intake Lift",Hardware.motorLiftIntake);
         SmartDashboard.putNumber("Main Lift Encoder Value",Hardware.liftEncoder.getInches().get());
         //SmartDashboard.putNumber("Intake Lift Encoder",in.getInches().get());
         gyroLocking();
         SwitchAuto.loop();
+    }
+
+    private void debugCurrent(String name,WPI_TalonSRX motor) {
+        SmartDashboard.putNumber(name + " Current", motor.getOutputCurrent());
     }
 
     private void gyroLocking(){

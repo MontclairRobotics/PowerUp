@@ -16,12 +16,18 @@ public class TopCubeAuto extends StateMachine {
     public TopCubeAuto(MainLift mainLift, CubeIntake intake, GyroCorrection correction) {
         super(new ResetGyro(correction),
                 //new MoveLift(mainLift, MainLift.TOP*0.6,1,true),
-                new DriveEncoderGyro(140, .5, Angle.ZERO, false, correction),
+
                 new ConditionalState(new DropCubeTop(intake, correction, new Input<Side>(){
                     @Override
                     public Side get() {
                         return SwitchAuto.startSidesChooser.getSelected();
                     }
-                }), SwitchAuto.startSide));
+                }), SwitchAuto.startSide),
+                new ConditionalState(new DriveEncoderGyro(180,0.5,Angle.ZERO,false,correction),new Input<Boolean>(){
+                    @Override
+                    public Boolean get() {
+                        return !SwitchAuto.startSide.get();
+                    }
+                }));
     }
 }
