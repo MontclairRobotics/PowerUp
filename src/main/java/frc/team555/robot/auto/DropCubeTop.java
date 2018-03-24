@@ -6,13 +6,14 @@ import org.montclairrobotics.sprocket.auto.AutoState;
 import org.montclairrobotics.sprocket.auto.states.DriveTime;
 import org.montclairrobotics.sprocket.drive.steps.GyroCorrection;
 import org.montclairrobotics.sprocket.states.StateMachine;
+import org.montclairrobotics.sprocket.utils.Input;
 
 public class DropCubeTop extends StateMachine {
-    public DropCubeTop(CubeIntake intake, GyroCorrection correction, Side side){
+    public DropCubeTop(CubeIntake intake, GyroCorrection correction, Input<Side> side){
         super(
                 new SideTurn(correction, false, side),
                 // new MainLiftMove(12,.5,true),
-                new DriveTime(3, .9)
+                new DriveTime(2, .75)
         );
     }
 }

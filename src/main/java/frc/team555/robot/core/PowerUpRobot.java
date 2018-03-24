@@ -307,7 +307,7 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
         SmartDashboard.putNumber("Left Encoder", Hardware.leftDriveEncoder.getInches().get());
         SmartDashboard.putNumber("Right Encoder", Hardware.rightDriveEncoder.getInches().get());
         SmartDashboard.putBoolean("Lift Limit Switch", Hardware.liftLimitSwitch.get());
-        SmartDashboard.putNumber("Main Lift Encoder",Hardware.liftEncoder.getInches().get());
+        SmartDashboard.putNumber("Main Lift Encoder Value",Hardware.liftEncoder.getInches().get());
         //SmartDashboard.putNumber("Intake Lift Encoder",in.getInches().get());
         gyroLocking();
         SwitchAuto.loop();
