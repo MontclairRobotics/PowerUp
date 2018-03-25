@@ -142,7 +142,7 @@ public class Hardware {
 
         //motorIntakeClamp = new WPI_TalonSRX(DeviceID.motorIntakeClamp);
 
-        intakeClosedSwitch = new DigitalInput(9);
+        intakeClosedSwitch = new DigitalInput(6);
         intakeOpenSwitch = new DigitalInput(8);
 
 
@@ -175,6 +175,6 @@ public class Hardware {
 
         navx = new NavXInput(DeviceID.navxPort);
 
-        liftLimitSwitch = new DigitalInput(6);
+        liftLimitSwitch = new DigitalInput(9);
     }
 }
