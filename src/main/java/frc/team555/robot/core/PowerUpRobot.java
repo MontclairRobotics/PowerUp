@@ -41,6 +41,7 @@ public class PowerUpRobot extends SprocketRobot {
     CubeIntake intake;
     MainLift mainLift;
     IntakeLift intakeLift;
+    StateMachine autoClimb;
 
     //vision stuff
     private static final int IMG_WIDTH = 320;
@@ -69,6 +70,8 @@ public class PowerUpRobot extends SprocketRobot {
         intake = new CubeIntake();
         mainLift=new MainLift();
         intakeLift=new IntakeLift();
+        correction = new GyroCorrection(Hardware.navx, new PID(1.5, 0, 0.0015), 90, 1);
+        autoClimb = new AutoClimbSequence(mainLift);
         //SetIntakeLift.setLift(intakeLift);
 
         modules[0] = new DriveModule(new XY(-1, 0),
@@ -113,8 +116,6 @@ public class PowerUpRobot extends SprocketRobot {
         new DashboardInput("auto Selection");
 
         ArrayList<Step<DTTarget>> steps = new ArrayList<>();
-
-        correction = new GyroCorrection(Hardware.navx, new PID(1.5, 0, 0.0015), 90, 1);
         sensitivity=new Sensitivity(1,0.6);
         lock = new GyroLock(correction);
         steps.add(new Deadzone());
@@ -294,6 +295,27 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
             }
         });
 */
+
+        Control.autoClimb.setPressAction(new ButtonAction() {
+            @Override
+            public void onAction() {
+                autoClimb.start();
+            }
+        });
+
+        Control.autoClimb.setHeldAction(new ButtonAction() {
+            @Override
+            public void onAction() {
+                //autoClimb.stateUpdate();
+            }
+        });
+
+        Control.autoClimb.setReleaseAction(new ButtonAction() {
+            @Override
+            public void onAction() {
+                autoClimb.stop();
+            }
+        });
 
         // vision stuff
 //        CameraServer.getInstance().startAutomaticCapture();

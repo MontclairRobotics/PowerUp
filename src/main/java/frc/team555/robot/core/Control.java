@@ -90,6 +90,7 @@ public class Control {
         intakeLiftManualDown = new JoystickButton(auxStick,5);
         mainLiftAutoUp = new JoystickButton(auxStick, 1);
         halfSpeed=new JoystickButton(driveStick,2);
+        autoClimb = new JoystickButton(auxStick, 2);
 
 
         // intakeLiftTop = new JoystickButton(auxStick, 12);

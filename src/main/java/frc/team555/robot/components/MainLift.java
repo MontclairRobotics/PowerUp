@@ -55,7 +55,7 @@ public class MainLift extends TargetMotor implements Lift {
             @Override
             public void onAction() {
                 if(!Hardware.liftLimitSwitch.get()) {
-                    if(encoder.getInches().get()>TOP*0.2||Control.auxStick.getRawButton(11)) {
+                    if(encoder.getInches().get()>TOP*0.2||Control.auxStick.getRawButton(7)) {
                         set(-speed);
                     }
                     else {
