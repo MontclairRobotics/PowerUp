@@ -1,12 +1,20 @@
 package frc.team555.robot.components;
 
+import frc.team555.robot.auto.MoveLift;
 import frc.team555.robot.core.Control;
 import frc.team555.robot.core.Hardware;
+import frc.team555.robot.core.PowerUpRobot;
 import frc.team555.robot.utils.BangBang;
 import frc.team555.robot.utils.TargetMotor;
+import org.montclairrobotics.sprocket.auto.AutoMode;
+import org.montclairrobotics.sprocket.auto.states.DriveEncoderGyro;
+import org.montclairrobotics.sprocket.auto.states.DriveTime;
 import org.montclairrobotics.sprocket.control.ButtonAction;
+import org.montclairrobotics.sprocket.geometry.Angle;
 import org.montclairrobotics.sprocket.motors.Motor;
 import org.montclairrobotics.sprocket.motors.SEncoder;
+import org.montclairrobotics.sprocket.states.State;
+import org.montclairrobotics.sprocket.states.StateMachine;
 import org.montclairrobotics.sprocket.utils.PID;
 
 import java.nio.channels.Pipe;
@@ -14,7 +22,7 @@ import java.nio.channels.Pipe;
 public class MainLift extends TargetMotor implements Lift {
 
     private final double speed = 1.0;
-    public static final double TOP= 31600;
+    public static final double TOP= 30834.0;
 
 
     private boolean auto=false;
@@ -31,7 +39,7 @@ public class MainLift extends TargetMotor implements Lift {
         Control.mainLiftManualUp.setPressAction(new ButtonAction() {
             @Override
             public void onAction() {
-                set(speed);
+                 set(speed);
             }
         });
 

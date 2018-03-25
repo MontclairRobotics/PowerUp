@@ -1,6 +1,8 @@
 package frc.team555.robot.core;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import edu.wpi.cscore.UsbCamera;
+import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team555.robot.auto.*;
 import frc.team555.robot.components.CubeIntake;
@@ -8,6 +10,7 @@ import frc.team555.robot.components.IntakeLift;
 import frc.team555.robot.components.MainLift;
 import frc.team555.robot.utils.CoastMotor;
 import frc.team555.robot.utils.Side;
+import javafx.scene.Camera;
 import org.montclairrobotics.sprocket.SprocketRobot;
 import org.montclairrobotics.sprocket.auto.AutoMode;
 import org.montclairrobotics.sprocket.auto.states.*;
@@ -31,7 +34,7 @@ import java.util.ArrayList;
 
 public class PowerUpRobot extends SprocketRobot {
     DriveTrain driveTrain;
-    GyroCorrection correction;
+    public static GyroCorrection correction;
     Sensitivity sensitivity;
     GyroLock lock;
     boolean manualLock;
@@ -44,6 +47,7 @@ public class PowerUpRobot extends SprocketRobot {
     private static final int IMG_HEIGHT = 240;
 
 
+
     private static final double oldOverNew=17.1859 * 1.25/(6544.0/143.0);
 
     //private double centerX = 0.0;
@@ -53,7 +57,7 @@ public class PowerUpRobot extends SprocketRobot {
 
     @Override
     public void robotInit(){
-
+        CameraServer.getInstance().startAutomaticCapture();
         DriveEncoders.TOLLERANCE=/*45.5363/17.1859*/6;
         TurnGyro.TURN_SPEED=0.3;
         TurnGyro.tolerance=new Degrees(3);
@@ -150,7 +154,7 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
             }
         });*/
 
-        Control.halfSpeed.setPressAction(new ButtonAction() {
+        /*Control.halfSpeed.setPressAction(new ButtonAction() {
             @Override
             public void onAction() {
                 sensitivity.set(0.5,0.3);
@@ -163,7 +167,7 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
                 sensitivity.set(1,0.6);
             }
         });
-
+*/
 
 
 
@@ -252,6 +256,8 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
         AutoMode mainLiftUp= new AutoMode("Main Lift Up",new MoveLift(mainLift,MainLift.TOP*0.5,1,true));
         AutoMode turnQuarter=new AutoMode("Turn Quarter",new TurnGyro(Angle.QUARTER,correction,true));
 
+        // addAutoMode(new AutoClimbSequence(mainLift));
+        addAutoMode(autoDrive);
         addAutoMode(baseLine);
         addAutoMode(centerBaseLineLeft);
         addAutoMode(centerBaseLineRight);
@@ -290,6 +296,7 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
 */
 
         // vision stuff
+//        CameraServer.getInstance().startAutomaticCapture();
         /*UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
         camera.setResolution(IMG_WIDTH, IMG_HEIGHT);
 
@@ -347,6 +354,14 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
             lock.disable();
         }
         //lock.update();
+        if(Hardware.liftEncoder.getInches().get()>MainLift.TOP*0.5&&!Control.driveStick.getRawButton(3)||Control.driveStick.getRawButton(2))
+        {
+            sensitivity.set(0.4,0.3);
+        }
+        else
+        {
+            sensitivity.set(1,0.6);
+        }
     }
 
     @Override

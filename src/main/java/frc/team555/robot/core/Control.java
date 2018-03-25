@@ -27,7 +27,7 @@ public class Control {
             //intakeLiftBottom,
             mainLiftAutoUp,
             mainLiftManualUp,
-            mainLiftManualDown;
+            mainLiftManualDown,
             // mainLiftTop,
             // mainLiftBottom,
             //openButton,
@@ -38,6 +38,7 @@ public class Control {
             //intakeRotateUpManual,
             //intakeRotateDownManual;
             //intakeSubroutine;
+            autoClimb;
 
 
     //public static int FieldCentricID=2;
