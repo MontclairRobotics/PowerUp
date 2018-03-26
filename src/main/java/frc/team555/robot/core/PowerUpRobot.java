@@ -10,7 +10,6 @@ import frc.team555.robot.components.IntakeLift;
 import frc.team555.robot.components.MainLift;
 import frc.team555.robot.utils.CoastMotor;
 import frc.team555.robot.utils.Side;
-import javafx.scene.Camera;
 import org.montclairrobotics.sprocket.SprocketRobot;
 import org.montclairrobotics.sprocket.auto.AutoMode;
 import org.montclairrobotics.sprocket.auto.states.*;
