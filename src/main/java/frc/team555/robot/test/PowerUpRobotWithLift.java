@@ -1,6 +1,11 @@
-package frc.team555.robot;
+package frc.team555.robot.test;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.team555.robot.components.CubeIntake;
+import frc.team555.robot.components.MainLift;
+import frc.team555.robot.auto.DynamicAutoState;
+import frc.team555.robot.core.Control;
+import frc.team555.robot.core.Hardware;
 import org.montclairrobotics.sprocket.SprocketRobot;
 import org.montclairrobotics.sprocket.auto.AutoMode;
 import org.montclairrobotics.sprocket.auto.states.*;
@@ -90,7 +95,7 @@ public class PowerUpRobotWithLift extends SprocketRobot {
         /* Drive Train Pipeline: GyroCorrection, Deadzone */
 
 
-        new DashboardInput("Auto Selection");
+        new DashboardInput("auto Selection");
 
         ArrayList<Step<DTTarget>> steps = new ArrayList<>();
 
@@ -119,30 +124,30 @@ public class PowerUpRobotWithLift extends SprocketRobot {
         this.intake =
         new CubeIntake();
 
-        super.addAutoMode(new AutoMode("Dynamic Auto", new DynamicAutoState()));
-new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
+        /*super.addAutoMode(new AutoMode("Dynamic auto", new DynamicAutoState()));
+new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);*/
 
-        Togglable fieldInput = new FieldCentricDriveInput(Control.driveStick,correction);
-        new ToggleButton(Control.driveStick,Control.FieldCentricID,fieldInput);
+        //Togglable fieldInput = new FieldCentricDriveInput(Control.driveStick,correction);
+        //new ToggleButton(Control.driveStick,Control.FieldCentricID,fieldInput);
 
-        Button resetButton=new JoystickButton(Control.driveStick,Control.ResetID);
-        resetButton.setPressAction(new ButtonAction() {
+        //Button resetButton=new JoystickButton(Control.driveStick,Control.ResetID);
+        /*resetButton.setPressAction(new ButtonAction() {
             @Override
             public void onAction() {
                 correction.reset();
             }
-        });
+        });*/
 
         //Lift
 
         MainLift lift=new MainLift();
 
 
-        //Auto
+        //auto
         final double driveSpeed = 0.4;
         final int maxEncAccel = 10;
         final int maxTicksPerSec = 10;
-        AutoMode autoDrive = new AutoMode("Auto Drive",
+        AutoMode autoDrive = new AutoMode("auto Drive",
                 new DriveEncoderGyro(120,
                         0.25,
                         Angle.ZERO,
@@ -189,7 +194,7 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
                 new DriveEncoderGyro(122, .5, new Degrees(-90), false, correction),
                 new DriveEncoderGyro(80, .5, new Degrees(0), false, correction));
 
-        AutoMode rightAuto = new AutoMode("Right Auto", new RightAuto(null, null));
+        //AutoMode rightAuto = new AutoMode("Right auto", new RightAuto(null, null));
 
         AutoMode twentyFeet=new AutoMode("Twenty Feet",
                 new ResetGyro(correction),
@@ -228,7 +233,7 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
         addAutoMode(autoDrive);
         addAutoMode(turn90);
         addAutoMode(square);
-        addAutoMode(rightAuto);
+        //addAutoMode(rightAuto);
         sendAutoModes();
 
         // vision stuff

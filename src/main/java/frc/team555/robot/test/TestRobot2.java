@@ -1,12 +1,16 @@
-package frc.team555.robot;
+package frc.team555.robot.test;
 
+import frc.team555.robot.components.CubeIntake;
+import frc.team555.robot.components.IntakeLift;
+import frc.team555.robot.core.Control;
+import frc.team555.robot.core.Hardware;
 import org.montclairrobotics.sprocket.SprocketRobot;
 import org.montclairrobotics.sprocket.auto.AutoMode;
 import org.montclairrobotics.sprocket.control.JoystickYAxis;
 import org.montclairrobotics.sprocket.drive.ControlledMotor;
 import org.montclairrobotics.sprocket.utils.Input;
 
-public class TestRobot extends SprocketRobot{
+public class TestRobot2 extends SprocketRobot{
     IntakeLift intakeLift;
     CubeIntake intake;
 
@@ -43,8 +47,8 @@ public class TestRobot extends SprocketRobot{
         };*/
 
         Input<Double> input=new JoystickYAxis(Control.auxStick);
-        ControlledMotor testMotor1 = new ControlledMotor(Hardware.motorLiftMainFront, input);
-        ControlledMotor testMotor2 = new ControlledMotor(Hardware.motorLiftMainBack, input);
+        ControlledMotor testMotor1 = new ControlledMotor(Hardware.motorIntakeR, input);
+        ControlledMotor testMotor2 = new ControlledMotor(Hardware.motorIntakeL, input);
 
         super.addAutoMode(new AutoMode("name"));
         super.sendAutoModes();

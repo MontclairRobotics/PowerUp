@@ -1,7 +1,8 @@
-package frc.team555.robot;
+package frc.team555.robot.auto;
 
+import frc.team555.robot.components.IntakeLift;
 import org.montclairrobotics.sprocket.auto.AutoState;
-
+@Deprecated
 public class LiftState extends AutoState {
 
     IntakeLift intakeLift;
@@ -12,9 +13,7 @@ public class LiftState extends AutoState {
     }
     @Override
     public void stateUpdate() {
-
         intakeLift.setPosition(position);
-
         isDone();
 
     }

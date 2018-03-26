@@ -1,8 +1,22 @@
-package frc.team555.robot;
+package frc.team555.robot.core;
 
+
+//2280,2219
+//Distances for 4 feet
+
+//Intake Lift Top: 1333600
+//Main Lift Top: 31600
+
+//Main Lift Travel 54 to 82
+
+//Intake Lift Travel
+
+//15.5 to 49.5
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.*;
+import frc.team555.robot.utils.NavXInput;
+import frc.team555.robot.utils.TalonEncoder;
 import org.montclairrobotics.sprocket.motors.SEncoder;
 
 /**
@@ -31,45 +45,30 @@ import org.montclairrobotics.sprocket.motors.SEncoder;
  */
 public class Hardware {
 
-	private static class DeviceID_REAL_ROBOT {
-		// Drive Train Motor IDS
-	    /*public static final int motorDriveBR = 4;
-	    public static final int motorDriveBL = 3;
-	    public static final int motorDriveFR = 2;
-	    public static final int motorDriveFL = 1;*/
-        public static final int motorDriveBR = 4;
-        public static final int motorDriveBL = 3;
-        public static final int motorDriveFR = 2;
-        public static final int motorDriveFL = 1;
-
-        public static final int testMotor1 = 7;
-        public static final int testMotor2 = 8;
-
-        public static final int motorIntakeLift = 10;
-        public static final int motorMainLiftA = 7;
-        public static final int motorMainLiftB = 8;
-
-	    // Gyroscope ID
-	    public static final SPI.Port navxPort = SPI.Port.kMXP;
-	}
-
     private static class DeviceID {
         // Drive Train Motor IDS
-	    /*public static final int motorDriveBR = 4;
-	    public static final int motorDriveBL = 3;
-	    public static final int motorDriveFR = 2;
-	    public static final int motorDriveFL = 1;*/
         public static final int motorDriveBR = 8;
         public static final int motorDriveBL = 3;
         public static final int motorDriveFR = 7;
         public static final int motorDriveFL = 1;
 
-        //public static final int testMotor1 = 7;
-        //public static final int testMotor2 = 8;
-
-        public static final int motorIntakeLift = 10;
+        public static final int motorIntakeLift = 9;
         public static final int motorMainLiftFront = 4;
         public static final int motorMainLiftBack = 2;
+
+        //public static final int motorIntakeClamp = 6;
+
+        public static final int motorIntakeRotate = 6;
+
+        public static final int motorIntakeL = 10;
+        public static final int motorIntakeR = 5;
+
+        //left intake 5
+        //pincer 6
+        //lifter 9
+        //right intake 10
+
+        //lift encoder 4 5
 
         // Gyroscope ID
         public static final SPI.Port navxPort = SPI.Port.kMXP;
@@ -98,8 +97,12 @@ public class Hardware {
     public static WPI_TalonSRX motorLiftMainFront;
     public static WPI_TalonSRX motorLiftMainBack;
 
-    //public static WPI_TalonSRX testMotor1;
-    //public static WPI_TalonSRX testMotor2;
+    //public static WPI_TalonSRX motorIntakeClamp;
+
+    public static WPI_TalonSRX motorIntakeRotate;
+
+    public static DigitalInput intakeClosedSwitch;
+    public static DigitalInput intakeOpenSwitch;
 
 
     // Encoders
@@ -107,7 +110,9 @@ public class Hardware {
     public static SEncoder leftDriveEncoder;
 
     public static SEncoder liftEncoder;
-//    public static SEncoder leftLiftEncoder;
+    public static SEncoder intakeLiftEncoder;
+    public static SEncoder intakeRotationEncoder;
+
 
     // Gyroscope
     public static NavXInput navx;
@@ -128,28 +133,48 @@ public class Hardware {
         motorLiftIntake = new WPI_TalonSRX(DeviceID.motorIntakeLift);
         motorLiftMainFront = new WPI_TalonSRX(DeviceID.motorMainLiftFront);
         motorLiftMainBack = new WPI_TalonSRX(DeviceID.motorMainLiftBack);
+        motorIntakeRotate = new WPI_TalonSRX(DeviceID.motorIntakeRotate);
+
+        motorIntakeR = new WPI_TalonSRX(DeviceID.motorIntakeR);
+        motorIntakeL = new WPI_TalonSRX(DeviceID.motorIntakeL);
 
         motorLiftMainBack.setInverted(true);
 
-        //testMotor1 = new WPI_TalonSRX(DeviceID.testMotor1);
-        //testMotor2 = new WPI_TalonSRX(DeviceID.testMotor2);
-        //testMotor2.setInverted(true);
+        //motorIntakeClamp = new WPI_TalonSRX(DeviceID.motorIntakeClamp);
+
+        intakeClosedSwitch = new DigitalInput(6);
+        intakeOpenSwitch = new DigitalInput(8);
 
 
         //double ticksPerInch=6544.0/143.0;`
         //old/new=17.1859 * 1.25/(6544.0/143.0)
         //double ticksPerInch=17.1859 * 1.25;
         //double ticksPerInch=2*80/10.71/3/Math.PI*12;
-        double ticksPerInch=1.0/6/Math.PI*10.71*40;
+        //double ticksPerInch=1.0/6/Math.PI*10.71*40;
+        //double ticksPerInch=1.0;
+        double ticksPerInch=(2280.0+2219.0)/2.0/4.0/12.0;
+
+
 
         rightDriveEncoder = new SEncoder(new Encoder(3,2),ticksPerInch);
-        leftDriveEncoder  = new SEncoder(new Encoder(0,1),ticksPerInch);
+        leftDriveEncoder  = new SEncoder(new Encoder(1,0),ticksPerInch);
 
-        liftEncoder = new SEncoder(null, 0);
-//        leftLiftEncoder  = new SEncoder(null, 0);
+
+        //Intake Lift Top: 1333600
+//Main Lift Top: 31600
+
+//Main Lift Travel 54 to 82
+
+//Intake Lift Travel
+
+//15.5 to 49.5
+        liftEncoder       = new SEncoder(new Encoder(4,5), 1/*31600/(82 - 54)*/); // todo: REALLY NEED TO BE SET
+        intakeLiftEncoder = new TalonEncoder(motorLiftIntake, 1 /*1333600/(49.5 - 15.5)*/);
+        intakeRotationEncoder = new TalonEncoder(motorIntakeRotate, 1); // todo, needs to be set
+
 
         navx = new NavXInput(DeviceID.navxPort);
 
-        liftLimitSwitch=new DigitalInput(10);
+        liftLimitSwitch = new DigitalInput(9);
     }
 }

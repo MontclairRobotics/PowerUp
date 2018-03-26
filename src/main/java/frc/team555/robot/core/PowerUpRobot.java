@@ -1,11 +1,15 @@
-package frc.team555.robot;
+package frc.team555.robot.core;
 
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
-import edu.wpi.first.wpilibj.interfaces.Gyro;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj.vision.VisionThread;
+import frc.team555.robot.auto.*;
+import frc.team555.robot.components.CubeIntake;
+import frc.team555.robot.components.IntakeLift;
+import frc.team555.robot.components.MainLift;
+import frc.team555.robot.utils.CoastMotor;
+import frc.team555.robot.utils.Side;
 import org.montclairrobotics.sprocket.SprocketRobot;
 import org.montclairrobotics.sprocket.auto.AutoMode;
 import org.montclairrobotics.sprocket.auto.states.*;
@@ -18,28 +22,30 @@ import org.montclairrobotics.sprocket.drive.utils.GyroLock;
 import org.montclairrobotics.sprocket.geometry.*;
 import org.montclairrobotics.sprocket.motors.Module;
 import org.montclairrobotics.sprocket.motors.Motor;
-import org.montclairrobotics.sprocket.motors.SEncoder;
-import org.montclairrobotics.sprocket.pipeline.Pipeline;
 import org.montclairrobotics.sprocket.pipeline.Step;
+import org.montclairrobotics.sprocket.states.StateMachine;
 import org.montclairrobotics.sprocket.utils.Debug;
 import org.montclairrobotics.sprocket.utils.Input;
 import org.montclairrobotics.sprocket.utils.PID;
 import org.montclairrobotics.sprocket.utils.Togglable;
-import org.opencv.imgproc.Imgproc;
 
-import java.io.IOException;
 import java.util.ArrayList;
 
 public class PowerUpRobot extends SprocketRobot {
     DriveTrain driveTrain;
-    GyroCorrection correction;
+    public static GyroCorrection correction;
+    Sensitivity sensitivity;
     GyroLock lock;
     boolean manualLock;
-    //CubeIntake intake;
+    CubeIntake intake;
+    MainLift mainLift;
+    IntakeLift intakeLift;
+    StateMachine autoClimb;
 
     //vision stuff
     private static final int IMG_WIDTH = 320;
     private static final int IMG_HEIGHT = 240;
+
 
 
     private static final double oldOverNew=17.1859 * 1.25/(6544.0/143.0);
@@ -51,30 +57,37 @@ public class PowerUpRobot extends SprocketRobot {
 
     @Override
     public void robotInit(){
-
+        CameraServer.getInstance().startAutomaticCapture();
         DriveEncoders.TOLLERANCE=/*45.5363/17.1859*/6;
         TurnGyro.TURN_SPEED=0.3;
         TurnGyro.tolerance=new Degrees(3);
         //40 ft 5.5 in
         Hardware.init();
         Control.init();
+        SwitchAuto.init();
         DriveModule[] modules = new DriveModule[2];
+        intake = new CubeIntake();
+        mainLift=new MainLift();
+        intakeLift=new IntakeLift();
+        correction = new GyroCorrection(Hardware.navx, new PID(1.5, 0, 0.0015), 90, 1);
+        autoClimb = new AutoClimbSequence(mainLift);
+        //SetIntakeLift.setLift(intakeLift);
 
         modules[0] = new DriveModule(new XY(-1, 0),
                 new XY(0, 1),
                 Hardware.leftDriveEncoder,
                 new PID(0.5,0,0),
                 Module.MotorInputType.PERCENT,
-                new Motor(Hardware.motorDriveBL),
-                new Motor(Hardware.motorDriveFL));
+                new CoastMotor(Hardware.motorDriveBL,false),
+                new CoastMotor(Hardware.motorDriveFL,false));
 
         modules[1] = new DriveModule(new XY(1, 0),
                 new XY(0, 1),
                 Hardware.rightDriveEncoder,
                 new PID(0.5,0,0),
                 Module.MotorInputType.PERCENT,
-                new Motor(Hardware.motorDriveBR),
-                new Motor(Hardware.motorDriveFR));
+                new CoastMotor(Hardware.motorDriveBR,false),
+                new CoastMotor(Hardware.motorDriveFR,false));
 
 
 
@@ -99,14 +112,13 @@ public class PowerUpRobot extends SprocketRobot {
         /* Drive Train Pipeline: GyroCorrection, Deadzone */
 
 
-        new DashboardInput("Auto Selection");
+        new DashboardInput("auto Selection");
 
         ArrayList<Step<DTTarget>> steps = new ArrayList<>();
-
-        correction = new GyroCorrection(Hardware.navx, new PID(1.5, 0, 0.0015), 90, 1);
+        sensitivity=new Sensitivity(1,0.6);
         lock = new GyroLock(correction);
         steps.add(new Deadzone());
-        steps.add(new Sensitivity(1));
+        steps.add(sensitivity);
         steps.add(correction);
         driveTrain.setPipeline(new DTPipeline(steps));
 
@@ -128,26 +140,43 @@ public class PowerUpRobot extends SprocketRobot {
         //this.intake =
         //new CubeIntake();
 
-        super.addAutoMode(new AutoMode("Dynamic Auto", new DynamicAutoState()));
+        /*super.addAutoMode(new AutoMode("Dynamic auto", new DynamicAutoState()));
 new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
+*/
+        //Togglable fieldInput = new FieldCentricDriveInput(Control.driveStick,correction);
+        //new ToggleButton(Control.driveStick,Control.FieldCentricID,fieldInput);
 
-        Togglable fieldInput = new FieldCentricDriveInput(Control.driveStick,correction);
-        new ToggleButton(Control.driveStick,Control.FieldCentricID,fieldInput);
-
-        Button resetButton=new JoystickButton(Control.driveStick,Control.ResetID);
-        resetButton.setPressAction(new ButtonAction() {
+        //Button resetButton=new JoystickButton(Control.driveStick,Control.ResetID);
+        /*resetButton.setPressAction(new ButtonAction() {
             @Override
             public void onAction() {
                 correction.reset();
             }
+        });*/
+
+        /*Control.halfSpeed.setPressAction(new ButtonAction() {
+            @Override
+            public void onAction() {
+                sensitivity.set(0.5,0.3);
+            }
         });
 
+        Control.halfSpeed.setReleaseAction(new ButtonAction() {
+            @Override
+            public void onAction() {
+                sensitivity.set(1,0.6);
+            }
+        });
+*/
 
-        //Auto
+
+
+
+        //auto
         final double driveSpeed = 0.4;
         final int maxEncAccel = 10;
         final int maxTicksPerSec = 10;
-        AutoMode autoDrive = new AutoMode("Auto Drive",
+        AutoMode autoDrive = new AutoMode("auto Drive",
                 new DriveEncoderGyro(120,
                         0.25,
                         Angle.ZERO,
@@ -194,7 +223,6 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
                 new DriveEncoderGyro(122, .5, new Degrees(-90), false, correction),
                 new DriveEncoderGyro(80, .5, new Degrees(0), false, correction));
 
-        AutoMode rightAuto = new AutoMode("Right Auto", new RightAuto(null, null));
 
         AutoMode twentyFeet=new AutoMode("Twenty Feet",
                 new ResetGyro(correction),
@@ -223,20 +251,73 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
         AutoMode backTen = new AutoMode("Back Ten",
                 new ResetGyro(correction),
                 new DriveEncoderGyro(-12*10,.5,new Degrees(0),false,correction));
-        addAutoMode(backTen);
-        addAutoMode(farAuto);
+
+
+        AutoMode mainLiftUp= new AutoMode("Main Lift Up",new MoveLift(mainLift,MainLift.TOP*0.5,1,true));
+        AutoMode turnQuarter=new AutoMode("Turn Quarter",new TurnGyro(Angle.QUARTER,correction,true));
+
+        // addAutoMode(new AutoClimbSequence(mainLift));
+        addAutoMode(autoDrive);
         addAutoMode(baseLine);
         addAutoMode(centerBaseLineLeft);
         addAutoMode(centerBaseLineRight);
-        addAutoMode(square2);
-        addAutoMode(encoder);
-        addAutoMode(autoDrive);
-        addAutoMode(turn90);
-        addAutoMode(square);
-        addAutoMode(rightAuto);
+        addAutoMode(new AutoMode("Switch Using Intake", new SwitchAuto(mainLift,correction, intake, intakeLift)));
+        addAutoMode(mainLiftUp);
+        addAutoMode(turnQuarter);
+        addAutoMode(new AutoMode("Switch Using Lift", new TopCubeAuto(mainLift, intake, correction)));
+        //addAutoMode(new AutoMode("Switch Auto", new SwitchAuto(correction, intake)));
         sendAutoModes();
 
+        StateMachine shootCube = new StateMachine(false, new SetIntakeRotation(intake, intake.middlePos), new CubeOuttake(intake, 1), new SetIntakeRotation(intake, intake.downPos));
+
+        /*Control.intakeSubroutine.setHeldAction(new ButtonAction() {
+            @Override
+            public void onAction() {
+                shootCube.start();
+            }
+        });
+
+
+        Control.intakeSubroutine.setHeldAction(new ButtonAction() {
+            @Override
+            public void onAction() {
+                shootCube.stateUpdate();
+            }
+        });
+
+        Control.intakeSubroutine.setReleaseAction(new ButtonAction() {
+            @Override
+            public void onAction() {
+                shootCube.stop();
+                intake.disable();
+                intake.roationalMotor.set(intake.downPos);
+            }
+        });
+*/
+
+        Control.autoClimb.setPressAction(new ButtonAction() {
+            @Override
+            public void onAction() {
+                autoClimb.start();
+            }
+        });
+
+        Control.autoClimb.setHeldAction(new ButtonAction() {
+            @Override
+            public void onAction() {
+                //autoClimb.stateUpdate();
+            }
+        });
+
+        Control.autoClimb.setReleaseAction(new ButtonAction() {
+            @Override
+            public void onAction() {
+                autoClimb.stop();
+            }
+        });
+
         // vision stuff
+//        CameraServer.getInstance().startAutomaticCapture();
         /*UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
         camera.setResolution(IMG_WIDTH, IMG_HEIGHT);
 
@@ -249,6 +330,7 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
             }
         });
         visionThread.start();*/
+        intakeLift.setPower(0);
     }
 
     @Override
@@ -270,8 +352,18 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
         SmartDashboard.putNumber("Distance", driveTrain.getDistance().getY());
         SmartDashboard.putNumber("Left Encoder", Hardware.leftDriveEncoder.getInches().get());
         SmartDashboard.putNumber("Right Encoder", Hardware.rightDriveEncoder.getInches().get());
+        SmartDashboard.putBoolean("Lift Limit Switch", Hardware.liftLimitSwitch.get());
+        debugCurrent("Main Lift Front",Hardware.motorLiftMainFront);
+        debugCurrent("Main Lift Back",Hardware.motorLiftMainBack);
+        debugCurrent("Intake Lift",Hardware.motorLiftIntake);
+        SmartDashboard.putNumber("Main Lift Encoder Value",Hardware.liftEncoder.getInches().get());
+        //SmartDashboard.putNumber("Intake Lift Encoder",in.getInches().get());
         gyroLocking();
+        SwitchAuto.loop();
+    }
 
+    private void debugCurrent(String name,WPI_TalonSRX motor) {
+        SmartDashboard.putNumber(name + " Current", motor.getOutputCurrent());
     }
 
     private void gyroLocking(){
@@ -283,5 +375,18 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
             lock.disable();
         }
         //lock.update();
+        if(Hardware.liftEncoder.getInches().get()>MainLift.TOP*0.5&&!Control.driveStick.getRawButton(3)||Control.driveStick.getRawButton(2))
+        {
+            sensitivity.set(0.4,0.3);
+        }
+        else
+        {
+            sensitivity.set(1,0.6);
+        }
+    }
+
+    @Override
+    public void userDisabledPeriodic(){
+        SwitchAuto.disabled();
     }
 }
