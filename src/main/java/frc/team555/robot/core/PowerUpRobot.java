@@ -9,7 +9,6 @@ import frc.team555.robot.components.CubeIntake;
 import frc.team555.robot.components.IntakeLift;
 import frc.team555.robot.components.MainLift;
 import frc.team555.robot.utils.CoastMotor;
-import frc.team555.robot.utils.Side;
 import org.montclairrobotics.sprocket.SprocketRobot;
 import org.montclairrobotics.sprocket.auto.AutoMode;
 import org.montclairrobotics.sprocket.auto.states.*;
@@ -21,11 +20,8 @@ import org.montclairrobotics.sprocket.drive.steps.Sensitivity;
 import org.montclairrobotics.sprocket.drive.utils.GyroLock;
 import org.montclairrobotics.sprocket.geometry.*;
 import org.montclairrobotics.sprocket.motors.Module;
-import org.montclairrobotics.sprocket.motors.Motor;
 import org.montclairrobotics.sprocket.pipeline.Step;
 import org.montclairrobotics.sprocket.states.StateMachine;
-import org.montclairrobotics.sprocket.utils.Debug;
-import org.montclairrobotics.sprocket.utils.Input;
 import org.montclairrobotics.sprocket.utils.PID;
 import org.montclairrobotics.sprocket.utils.Togglable;
 
@@ -41,6 +37,12 @@ public class PowerUpRobot extends SprocketRobot {
     MainLift mainLift;
     IntakeLift intakeLift;
     StateMachine autoClimb;
+
+    double oldDistance;
+    double distance;
+    double oldSec;
+    public static Vector position;
+
 
     //vision stuff
     private static final int IMG_WIDTH = 320;
@@ -112,7 +114,7 @@ public class PowerUpRobot extends SprocketRobot {
         /* Drive Train Pipeline: GyroCorrection, Deadzone */
 
 
-        new DashboardInput("auto Selection");
+        new DashboardInput("Auto Selection");
 
         ArrayList<Step<DTTarget>> steps = new ArrayList<>();
         sensitivity=new Sensitivity(1,0.6);
@@ -331,6 +333,12 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
         });
         visionThread.start();*/
         intakeLift.setPower(0);
+
+        //pos stuff
+        oldDistance = 0;
+        distance = 0;
+        oldSec = System.currentTimeMillis()/1000.0;
+        position = Vector.ZERO;
     }
 
     @Override
@@ -359,6 +367,7 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
         SmartDashboard.putNumber("Main Lift Encoder Value",Hardware.liftEncoder.getInches().get());
         //SmartDashboard.putNumber("Intake Lift Encoder",in.getInches().get());
         gyroLocking();
+        position();
         SwitchAuto.loop();
     }
 
@@ -383,6 +392,27 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
         {
             sensitivity.set(1,0.6);
         }
+    }
+
+    private void position(){
+        double pastSec = System.currentTimeMillis()/1000.0-oldSec;
+        if(pastSec > 0.25) {
+            distance = ((Hardware.leftDriveEncoder.getInches().get() +
+                    Hardware.rightDriveEncoder.getInches().get()) / 2);
+
+            double diffDistance = distance - oldDistance;
+
+            Angle heading = correction.getCurrentAngleReset();
+            Polar coord = new Polar(diffDistance, heading);
+            position = position.add(coord);
+
+            SmartDashboard.putNumber("Current X", position.getX());
+            SmartDashboard.putNumber("Current Y", position.getY());
+            SmartDashboard.putNumber("Current Heading", heading.toDegrees());
+            oldDistance = distance;
+            oldSec = System.currentTimeMillis()/1000.0;
+        }
+
     }
 
     @Override
