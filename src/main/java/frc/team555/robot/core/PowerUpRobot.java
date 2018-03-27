@@ -300,6 +300,7 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
         }
     }
 
+    //TODO: TEST AND SWITCH TO FLOW IF WE HAVE IT IN TIME
     private void position(){
         double pastSec = System.currentTimeMillis()/1000.0-oldSec;
         if(pastSec > 0.25) {
