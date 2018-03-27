@@ -1,8 +1,6 @@
-package frc.team555.robot.auto;
+package frc.team555.robot.states;
 
-import frc.team555.robot.components.MainLift;
 import frc.team555.robot.core.Hardware;
-import org.montclairrobotics.sprocket.auto.AutoState;
 import org.montclairrobotics.sprocket.states.State;
 
 @Deprecated

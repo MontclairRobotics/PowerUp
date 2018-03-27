@@ -1,4 +1,4 @@
-package frc.team555.robot.auto;
+package frc.team555.robot.states;
 
 import org.montclairrobotics.sprocket.states.State;
 import org.montclairrobotics.sprocket.utils.Input;

@@ -38,7 +38,8 @@ public class Control {
             //intakeRotateUpManual,
             //intakeRotateDownManual;
             //intakeSubroutine;
-            autoClimb;
+            autoClimb,
+            autoIntake;
 
 
     //public static int FieldCentricID=2;
@@ -91,6 +92,7 @@ public class Control {
         mainLiftAutoUp = new JoystickButton(auxStick, 1);
         halfSpeed=new JoystickButton(driveStick,2);
         autoClimb = new JoystickButton(auxStick, 2);
+        autoIntake = new JoystickButton(driveStick,3);
 
 
         // intakeLiftTop = new JoystickButton(auxStick, 12);

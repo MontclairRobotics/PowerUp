@@ -1,4 +1,4 @@
-package frc.team555.robot.auto;
+package frc.team555.robot.states;
 
 import frc.team555.robot.components.CubeIntake;
 import org.montclairrobotics.sprocket.auto.states.Delay;

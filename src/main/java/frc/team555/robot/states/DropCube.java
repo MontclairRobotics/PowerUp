@@ -1,4 +1,4 @@
-package frc.team555.robot.auto;
+package frc.team555.robot.states;
 
 import frc.team555.robot.components.CubeIntake;
 import frc.team555.robot.components.MainLift;
@@ -9,7 +9,6 @@ import org.montclairrobotics.sprocket.auto.states.DriveTime;
 import org.montclairrobotics.sprocket.drive.steps.GyroCorrection;
 import org.montclairrobotics.sprocket.geometry.Angle;
 import org.montclairrobotics.sprocket.states.MultiState;
-import org.montclairrobotics.sprocket.states.State;
 import org.montclairrobotics.sprocket.states.StateMachine;
 import org.montclairrobotics.sprocket.utils.Input;
 

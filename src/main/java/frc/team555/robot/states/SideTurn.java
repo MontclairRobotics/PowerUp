@@ -1,12 +1,10 @@
-package frc.team555.robot.auto;
+package frc.team555.robot.states;
 
-import edu.wpi.first.wpilibj.interfaces.Gyro;
 import frc.team555.robot.utils.Side;
 import org.montclairrobotics.sprocket.auto.states.TurnGyro;
 import org.montclairrobotics.sprocket.drive.steps.GyroCorrection;
 import org.montclairrobotics.sprocket.geometry.Angle;
 import org.montclairrobotics.sprocket.geometry.Degrees;
-import org.montclairrobotics.sprocket.loop.Updater;
 import org.montclairrobotics.sprocket.utils.Input;
 
 public class SideTurn extends TurnGyro {

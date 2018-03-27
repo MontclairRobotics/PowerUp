@@ -1,10 +1,9 @@
-package frc.team555.robot.auto;
+package frc.team555.robot.states;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team555.robot.core.Hardware;
 import frc.team555.robot.utils.Side;
-import org.montclairrobotics.sprocket.auto.AutoState;
 import org.montclairrobotics.sprocket.auto.states.Delay;
 import org.montclairrobotics.sprocket.auto.states.DriveEncoderGyro;
 import org.montclairrobotics.sprocket.auto.states.DriveTime;
@@ -12,7 +11,6 @@ import org.montclairrobotics.sprocket.auto.states.ResetGyro;
 import org.montclairrobotics.sprocket.drive.steps.GyroCorrection;
 import org.montclairrobotics.sprocket.geometry.Angle;
 import org.montclairrobotics.sprocket.states.MultiState;
-import org.montclairrobotics.sprocket.states.State;
 import org.montclairrobotics.sprocket.states.StateMachine;
 import org.montclairrobotics.sprocket.utils.Input;
 

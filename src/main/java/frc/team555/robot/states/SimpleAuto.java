@@ -1,4 +1,4 @@
-package frc.team555.robot.auto;
+package frc.team555.robot.states;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;

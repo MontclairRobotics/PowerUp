@@ -1,10 +1,10 @@
 package frc.team555.robot.core;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.team555.robot.auto.*;
+import frc.team555.robot.automodes.*;
+import frc.team555.robot.states.*;
 import frc.team555.robot.components.CubeIntake;
 import frc.team555.robot.components.IntakeLift;
 import frc.team555.robot.components.MainLift;
@@ -23,7 +23,6 @@ import org.montclairrobotics.sprocket.motors.Module;
 import org.montclairrobotics.sprocket.pipeline.Step;
 import org.montclairrobotics.sprocket.states.StateMachine;
 import org.montclairrobotics.sprocket.utils.PID;
-import org.montclairrobotics.sprocket.utils.Togglable;
 
 import java.util.ArrayList;
 
@@ -33,9 +32,9 @@ public class PowerUpRobot extends SprocketRobot {
     Sensitivity sensitivity;
     GyroLock lock;
     boolean manualLock;
-    CubeIntake intake;
-    MainLift mainLift;
-    IntakeLift intakeLift;
+    public static CubeIntake intake;
+    public static MainLift mainLift;
+    public static IntakeLift intakeLift;
     StateMachine autoClimb;
 
     double oldDistance;
@@ -175,99 +174,13 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
 
 
         //auto
-        final double driveSpeed = 0.4;
-        final int maxEncAccel = 10;
-        final int maxTicksPerSec = 10;
-        AutoMode autoDrive = new AutoMode("auto Drive",
-                new DriveEncoderGyro(120,
-                        0.25,
-                        Angle.ZERO,
-                        true,
-                        correction));
-
-
-        AutoMode encoder = new AutoMode("encoder",
-                new DriveEncoders(100,.25));
-
-        AutoMode turn90 = new AutoMode("Turn 90",
-                new TurnGyro(new Degrees(90),correction,true));
-
-        AutoMode square = new AutoMode("Square",
-                new ResetGyro(correction),
-                new DriveEncoders(4*12,0.25),
-                new TurnGyro(new Degrees(90),correction,false),
-                new DriveEncoders(4*12,0.25),
-                new TurnGyro(new Degrees(180),correction,false),
-                new DriveEncoders(4*12,0.25),
-                new TurnGyro(new Degrees(270),correction,false),
-                new DriveEncoders(4*12,0.25),
-                new TurnGyro(new Degrees(0),correction,false));
-
-        AutoMode square2 = new AutoMode("Square 2",
-                new ResetGyro(correction),
-                new DriveEncoderGyro(4*12,0.25,new Degrees(0),false,correction),
-                new DriveEncoderGyro(4*12,0.25,new Degrees(90),false,correction),
-                new DriveEncoderGyro(4*12,0.25,new Degrees(180),false,correction),
-                new DriveEncoderGyro(4*12,0.25,new Degrees(270),false,correction));
-
-
-        AutoMode baseLine = new AutoMode("Base Line",
-                new ResetGyro(correction),
-                new DriveEncoderGyro(140, .5 , new Degrees(0), false, correction));
-        AutoMode centerBaseLineRight = new AutoMode("Center Base Line Right",
-                new ResetGyro(correction),
-                new DriveEncoderGyro(60, .5, new Degrees(0), false, correction),
-                new DriveEncoderGyro(12, .5, new Degrees(90), false, correction),
-                new DriveEncoderGyro(80, .5, new Degrees(0), false, correction));
-        AutoMode centerBaseLineLeft = new AutoMode("Center Base Line Left",
-                new ResetGyro(correction),
-                new DriveEncoderGyro(60, .5, new Degrees(0), false, correction),
-                new DriveEncoderGyro(122, .5, new Degrees(-90), false, correction),
-                new DriveEncoderGyro(80, .5, new Degrees(0), false, correction));
-
-
-        AutoMode twentyFeet=new AutoMode("Twenty Feet",
-                new ResetGyro(correction),
-                new DriveEncoderGyro(12*20,.5,new Degrees(0),false,correction));
-        addAutoMode(twentyFeet);
-
-        AutoMode tenFeet=new AutoMode("ten Feet",
-                new ResetGyro(correction),
-                new DriveEncoderGyro(12*10,.5,new Degrees(0),false,correction));
-        addAutoMode(tenFeet);
-
-        AutoMode thirtyFeet=new AutoMode("thirty Feet",
-                new ResetGyro(correction),
-                new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction));
-        addAutoMode(thirtyFeet);
-        AutoMode farAuto = new AutoMode("Rich Mode",
-                new ResetGyro(correction),
-                new DriveEncoderGyro(12*4*oldOverNew, .5,new Degrees(0),false,correction),
-                new DriveEncoderGyro((12*20+4)*oldOverNew,.5,new Degrees(90),false,correction),
-                new DriveEncoderGyro((12*4)*oldOverNew, .5,new Degrees(180),false,correction),
-                new Delay(5),
-                new DriveEncoderGyro((-12*4)*oldOverNew, .5,new Degrees(180),false,correction),
-                new DriveEncoderGyro((-12*20-4)*oldOverNew,.5,new Degrees(90),false,correction),
-                new DriveEncoderGyro((-12*4)*oldOverNew, .5,new Degrees(0),false,correction));
-
-        AutoMode backTen = new AutoMode("Back Ten",
-                new ResetGyro(correction),
-                new DriveEncoderGyro(-12*10,.5,new Degrees(0),false,correction));
-
-
-        AutoMode mainLiftUp= new AutoMode("Main Lift Up",new MoveLift(mainLift,MainLift.TOP*0.5,1,true));
-        AutoMode turnQuarter=new AutoMode("Turn Quarter",new TurnGyro(Angle.QUARTER,correction,true));
-
-        // addAutoMode(new AutoClimbSequence(mainLift));
-        addAutoMode(autoDrive);
-        addAutoMode(baseLine);
-        addAutoMode(centerBaseLineLeft);
-        addAutoMode(centerBaseLineRight);
-        addAutoMode(new AutoMode("Switch Using Intake", new SwitchAuto(mainLift,correction, intake, intakeLift)));
-        addAutoMode(mainLiftUp);
-        addAutoMode(turnQuarter);
-        addAutoMode(new AutoMode("Switch Using Lift", new TopCubeAuto(mainLift, intake, correction)));
-        //addAutoMode(new AutoMode("Switch Auto", new SwitchAuto(correction, intake)));
+        addAutoMode(new AutoDrive());
+        addAutoMode(new BaseLineLR());
+        addAutoMode(new CenterBaseLineLeft());
+        addAutoMode(new CenterBaseLineRight());
+        addAutoMode(new Square());
+        addAutoMode(new SwitchUsingIntake());
+        addAutoMode(new SwitchUsingLift());
         sendAutoModes();
 
         StateMachine shootCube = new StateMachine(false, new SetIntakeRotation(intake, intake.middlePos), new CubeOuttake(intake, 1), new SetIntakeRotation(intake, intake.downPos));
@@ -301,13 +214,6 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
             @Override
             public void onAction() {
                 autoClimb.start();
-            }
-        });
-
-        Control.autoClimb.setHeldAction(new ButtonAction() {
-            @Override
-            public void onAction() {
-                //autoClimb.stateUpdate();
             }
         });
 

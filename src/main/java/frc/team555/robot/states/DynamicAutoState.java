@@ -1,17 +1,13 @@
-package frc.team555.robot.auto;
+package frc.team555.robot.states;
 
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import org.montclairrobotics.sprocket.auto.AutoMode;
 import org.montclairrobotics.sprocket.auto.states.*;
 import org.montclairrobotics.sprocket.geometry.Degrees;
-import org.montclairrobotics.sprocket.loop.Updater;
 import org.montclairrobotics.sprocket.states.State;
 import org.montclairrobotics.sprocket.states.StateMachine;
-import org.montclairrobotics.sprocket.utils.Debug;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+
 @Deprecated
 public class DynamicAutoState implements State {
     ArrayList<State> states = new ArrayList<State>();

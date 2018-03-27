@@ -1,4 +1,4 @@
-package frc.team555.robot.auto;
+package frc.team555.robot.states;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -6,9 +6,7 @@ import frc.team555.robot.components.CubeIntake;
 import frc.team555.robot.components.IntakeLift;
 import frc.team555.robot.components.MainLift;
 import frc.team555.robot.utils.Side;
-import org.montclairrobotics.sprocket.auto.states.Delay;
 import org.montclairrobotics.sprocket.auto.states.DriveEncoderGyro;
-import org.montclairrobotics.sprocket.auto.states.DriveTime;
 import org.montclairrobotics.sprocket.auto.states.ResetGyro;
 import org.montclairrobotics.sprocket.drive.steps.GyroCorrection;
 import org.montclairrobotics.sprocket.geometry.Angle;
