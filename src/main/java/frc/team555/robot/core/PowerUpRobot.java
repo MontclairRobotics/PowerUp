@@ -2,16 +2,16 @@ package frc.team555.robot.core;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.CameraServer;
+import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team555.robot.stateMachines.AutoClimbSequence;
-import frc.team555.robot.stateMachines.CubeOuttake;
 import frc.team555.robot.stateMachines.SwitchAuto;
 import frc.team555.robot.stateMachines.automodes.*;
-import frc.team555.robot.stateMachines.states.*;
 import frc.team555.robot.components.CubeIntake;
 import frc.team555.robot.components.IntakeLift;
 import frc.team555.robot.components.MainLift;
 import frc.team555.robot.utils.CoastMotor;
+import frc.team555.robot.utils.NavXInput;
 import org.montclairrobotics.sprocket.SprocketRobot;
 import org.montclairrobotics.sprocket.auto.states.*;
 import org.montclairrobotics.sprocket.control.*;
@@ -38,25 +38,6 @@ public class PowerUpRobot extends SprocketRobot {
     public static MainLift mainLift;
     public static IntakeLift intakeLift;
     StateMachine autoClimb;
-
-    double oldDistance;
-    double distance;
-    double oldSec;
-    public static Vector position;
-
-
-    //vision stuff
-    private static final int IMG_WIDTH = 320;
-    private static final int IMG_HEIGHT = 240;
-
-
-
-    private static final double oldOverNew=17.1859 * 1.25/(6544.0/143.0);
-
-    //private double centerX = 0.0;
-    //private VisionThread visionThread;
-
-    //private final Object imgLock = new Object();
 
     @Override
     public void robotInit(){
@@ -143,37 +124,8 @@ public class PowerUpRobot extends SprocketRobot {
         //this.intake =
         //new CubeIntake();
 
-        /*super.addAutoMode(new AutoMode("Dynamic auto", new DynamicAutoState()));
-new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
-*/
         //Togglable fieldInput = new FieldCentricDriveInput(Control.driveStick,correction);
         //new ToggleButton(Control.driveStick,Control.FieldCentricID,fieldInput);
-
-        //Button resetButton=new JoystickButton(Control.driveStick,Control.ResetID);
-        /*resetButton.setPressAction(new ButtonAction() {
-            @Override
-            public void onAction() {
-                correction.reset();
-            }
-        });*/
-
-        /*Control.halfSpeed.setPressAction(new ButtonAction() {
-            @Override
-            public void onAction() {
-                sensitivity.set(0.5,0.3);
-            }
-        });
-
-        Control.halfSpeed.setReleaseAction(new ButtonAction() {
-            @Override
-            public void onAction() {
-                sensitivity.set(1,0.6);
-            }
-        });
-*/
-
-
-
 
         //auto
         addAutoMode(new AutoDrive());
@@ -184,33 +136,6 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
         addAutoMode(new SwitchUsingIntake());
         addAutoMode(new SwitchUsingLift());
         sendAutoModes();
-
-        StateMachine shootCube = new StateMachine(false, new SetIntakeRotation(intake, intake.middlePos), new CubeOuttake(intake, 1), new SetIntakeRotation(intake, intake.downPos));
-
-        /*Control.intakeSubroutine.setHeldAction(new ButtonAction() {
-            @Override
-            public void onAction() {
-                shootCube.start();
-            }
-        });
-
-
-        Control.intakeSubroutine.setHeldAction(new ButtonAction() {
-            @Override
-            public void onAction() {
-                shootCube.stateUpdate();
-            }
-        });
-
-        Control.intakeSubroutine.setReleaseAction(new ButtonAction() {
-            @Override
-            public void onAction() {
-                shootCube.stop();
-                intake.disable();
-                intake.roationalMotor.set(intake.downPos);
-            }
-        });
-*/
 
         Control.autoClimb.setPressAction(new ButtonAction() {
             @Override
@@ -226,27 +151,8 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
             }
         });
 
-        // vision stuff
-//        CameraServer.getInstance().startAutomaticCapture();
-        /*UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
-        camera.setResolution(IMG_WIDTH, IMG_HEIGHT);
-
-        visionThread = new VisionThread(camera, new DrivePipeline(), pipeline -> {
-            if (!pipeline.filterContoursOutput().isEmpty()) {
-                org.opencv.core.Rect r = Imgproc.boundingRect(pipeline.filterContoursOutput().get(0));
-                synchronized (imgLock) {
-                    centerX = r.x + (r.width / 2);
-                }
-            }
-        });
-        visionThread.start();*/
         intakeLift.setPower(0);
 
-        //pos stuff
-        oldDistance = 0;
-        distance = 0;
-        oldSec = System.currentTimeMillis()/1000.0;
-        position = Vector.ZERO;
     }
 
     @Override
@@ -257,14 +163,7 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
 
     @Override
     public void update(){
-        /*double centerX;
-        synchronized (imgLock) {
-            centerX = this.centerX;
-        }
-        double turn = centerX - (IMG_WIDTH / 2);
 
-        SmartDashboard.putNumber("turn", turn);
-*/
         SmartDashboard.putNumber("Distance", driveTrain.getDistance().getY());
         SmartDashboard.putNumber("Left Encoder", Hardware.leftDriveEncoder.getInches().get());
         SmartDashboard.putNumber("Right Encoder", Hardware.rightDriveEncoder.getInches().get());
@@ -273,9 +172,10 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
         debugCurrent("Main Lift Back",Hardware.motorLiftMainBack);
         debugCurrent("Intake Lift",Hardware.motorLiftIntake);
         SmartDashboard.putNumber("Main Lift Encoder Value",Hardware.liftEncoder.getInches().get());
+        SmartDashboard.putNumber("Pitch", Hardware.navx.getPitch());
+        SmartDashboard.putBoolean("Pitch Correction", pitchCorrection(Hardware.navx,60));
         //SmartDashboard.putNumber("Intake Lift Encoder",in.getInches().get());
         gyroLocking();
-        position();
         SwitchAuto.loop();
     }
 
@@ -302,27 +202,19 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
         }
     }
 
-    //TODO: TEST AND SWITCH TO FLOW IF WE HAVE IT IN TIME
-    private void position(){
-        double pastSec = System.currentTimeMillis()/1000.0-oldSec;
-        if(pastSec > 0.25) {
-            distance = ((Hardware.leftDriveEncoder.getInches().get() +
-                    Hardware.rightDriveEncoder.getInches().get()) / 2);
-
-            double diffDistance = distance - oldDistance;
-
-            Angle heading = correction.getCurrentAngleReset();
-            Polar coord = new Polar(diffDistance, heading);
-            position = position.add(coord);
-
-            SmartDashboard.putNumber("Current X", position.getX());
-            SmartDashboard.putNumber("Current Y", position.getY());
-            SmartDashboard.putNumber("Current Heading", heading.toDegrees());
-            oldDistance = distance;
-            oldSec = System.currentTimeMillis()/1000.0;
+    //TODO: NEEDS Robot TESTING
+    private boolean pitchCorrection(NavXInput navXInput, double threshold){
+        if(navXInput.getPitch() > threshold){
+            sensitivity.set(1,0.6);
+            return false;
+        }else{
+            sensitivity.set(0.5,0.6);
+            return true;
         }
 
     }
+
+
 
     @Override
     public void userDisabledPeriodic(){
