@@ -1,4 +1,4 @@
-package frc.team555.robot.states;
+package frc.team555.robot.stateMachines.states;
 
 import frc.team555.robot.components.Lift;
 import org.montclairrobotics.sprocket.states.State;

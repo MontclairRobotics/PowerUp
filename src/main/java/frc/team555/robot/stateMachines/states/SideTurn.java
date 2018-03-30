@@ -1,4 +1,4 @@
-package frc.team555.robot.states;
+package frc.team555.robot.stateMachines.states;
 
 import frc.team555.robot.utils.Side;
 import org.montclairrobotics.sprocket.auto.states.TurnGyro;

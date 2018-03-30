@@ -1,4 +1,4 @@
-package frc.team555.robot.automodes;
+package frc.team555.robot.stateMachines.automodes;
 
 import org.montclairrobotics.sprocket.auto.AutoMode;
 import org.montclairrobotics.sprocket.auto.states.DriveEncoderGyro;

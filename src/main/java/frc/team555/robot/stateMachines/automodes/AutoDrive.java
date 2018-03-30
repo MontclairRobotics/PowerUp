@@ -1,9 +1,8 @@
-package frc.team555.robot.automodes;
+package frc.team555.robot.stateMachines.automodes;
 
 import org.montclairrobotics.sprocket.auto.AutoMode;
 import org.montclairrobotics.sprocket.auto.states.DriveEncoderGyro;
 import org.montclairrobotics.sprocket.geometry.Angle;
-import org.montclairrobotics.sprocket.states.State;
 
 import static frc.team555.robot.core.PowerUpRobot.correction;
 

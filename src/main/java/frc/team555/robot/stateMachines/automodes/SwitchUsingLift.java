@@ -1,6 +1,6 @@
-package frc.team555.robot.automodes;
+package frc.team555.robot.stateMachines.automodes;
 
-import frc.team555.robot.states.TopCubeAuto;
+import frc.team555.robot.stateMachines.TopCubeAuto;
 import org.montclairrobotics.sprocket.auto.AutoMode;
 
 import static frc.team555.robot.core.PowerUpRobot.correction;

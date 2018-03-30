@@ -1,6 +1,6 @@
-package frc.team555.robot.automodes;
+package frc.team555.robot.stateMachines.automodes;
 
-import frc.team555.robot.states.SwitchAuto;
+import frc.team555.robot.stateMachines.SwitchAuto;
 import org.montclairrobotics.sprocket.auto.AutoMode;
 
 import static frc.team555.robot.core.PowerUpRobot.*;

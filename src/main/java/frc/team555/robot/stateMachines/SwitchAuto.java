@@ -1,7 +1,8 @@
-package frc.team555.robot.states;
+package frc.team555.robot.stateMachines;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.team555.robot.stateMachines.states.ConditionalState;
 import frc.team555.robot.components.CubeIntake;
 import frc.team555.robot.components.IntakeLift;
 import frc.team555.robot.components.MainLift;

@@ -1,7 +1,9 @@
-package frc.team555.robot.states;
+package frc.team555.robot.stateMachines;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.team555.robot.stateMachines.states.ConditionalState;
+import frc.team555.robot.stateMachines.states.SideTurn;
 import frc.team555.robot.core.Hardware;
 import frc.team555.robot.utils.Side;
 import org.montclairrobotics.sprocket.auto.states.Delay;

@@ -1,5 +1,6 @@
-package frc.team555.robot.states;
+package frc.team555.robot.stateMachines;
 
+import frc.team555.robot.stateMachines.states.MoveLift;
 import frc.team555.robot.components.MainLift;
 import frc.team555.robot.core.PowerUpRobot;
 import org.montclairrobotics.sprocket.auto.states.DriveEncoderGyro;
