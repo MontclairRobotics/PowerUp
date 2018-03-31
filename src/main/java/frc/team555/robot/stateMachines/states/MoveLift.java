@@ -1,7 +1,6 @@
-package frc.team555.robot.auto;
+package frc.team555.robot.stateMachines.states;
 
 import frc.team555.robot.components.Lift;
-import frc.team555.robot.core.Hardware;
 import org.montclairrobotics.sprocket.states.State;
 
 public class MoveLift implements State
