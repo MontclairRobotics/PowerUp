@@ -168,13 +168,14 @@ public class PowerUpRobot extends SprocketRobot {
         SmartDashboard.putNumber("Left Encoder", Hardware.leftDriveEncoder.getInches().get());
         SmartDashboard.putNumber("Right Encoder", Hardware.rightDriveEncoder.getInches().get());
         SmartDashboard.putBoolean("Lift Limit Switch", Hardware.liftLimitSwitch.get());
+        SmartDashboard.putNumber("Main Lift Encoder Value",Hardware.liftEncoder.getInches().get());
+        SmartDashboard.putBoolean("Pitch Correction", pitchCorrection(Hardware.navx,60));
+        //SmartDashboard.putNumber("Intake Lift Encoder",in.getInches().get());
+
         debugCurrent("Main Lift Front",Hardware.motorLiftMainFront);
         debugCurrent("Main Lift Back",Hardware.motorLiftMainBack);
         debugCurrent("Intake Lift",Hardware.motorLiftIntake);
-        SmartDashboard.putNumber("Main Lift Encoder Value",Hardware.liftEncoder.getInches().get());
-        SmartDashboard.putNumber("Pitch", Hardware.navx.getPitch());
-        SmartDashboard.putBoolean("Pitch Correction", pitchCorrection(Hardware.navx,60));
-        //SmartDashboard.putNumber("Intake Lift Encoder",in.getInches().get());
+
         gyroLocking();
         SwitchAuto.loop();
     }

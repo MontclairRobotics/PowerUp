@@ -10,10 +10,26 @@ import org.montclairrobotics.sprocket.drive.DTInput;
 
 public class Control {
 
-    // Port Configuration
-    public static int lockButtonID = 1;
-    public static final int driveStickID = 0;
-    public static final int auxStickID   = 1;
+    // HID Port Numbers
+    public static final int driveStickID  = 0;
+    public static final int auxStickID    = 1;
+    public static final int buttonBoardID = 2;
+
+    //Button Assignments (Driver)
+    private static final int lockButtonID      = 1;
+    private static final int halfSpeedButtonID = 2;
+    private static final int autoClimbID       = 4;
+    private static final int autoIntakeID      = 3;
+
+    //Button Assignments (Aux)
+    private static final int mainLiftAutoUpID       = 1;
+    private static final int mainLiftManualUpID     = 4;
+    private static final int mainLiftManualDownID   = 3;
+    private static final int intakeLiftManualUpID   = 6;
+    private static final int intakeLiftManualDownID = 5;
+
+    //Button Assignments (Button Board)
+
 
     // Drive Inputs
     public static DTInput driveInput;
@@ -44,6 +60,7 @@ public class Control {
 
     //public static int FieldCentricID=2;
     //public static int ResetID=3;
+
     // Joystick Declaration
     public static Joystick driveStick;
     public static Joystick auxStick;
@@ -75,24 +92,14 @@ public class Control {
         // mainLiftTop = new JoystickButton(auxStick,9);
         // mainLiftBottom = new JoystickButton(auxStick,8);
 
-
-
-        /*
-        OLD
-        mainLiftManualUp = new JoystickButton(auxStick,3);
-        mainLiftManualDown = new JoystickButton(auxStick,2);
-        intakeLiftManualUp = new JoystickButton(auxStick,5);
-        intakeLiftManualDown = new JoystickButton(auxStick,4);
-        mainLiftAutoUp = new JoystickButton(auxStick, 1);
-        */
-        mainLiftManualUp = new JoystickButton(auxStick,4);
-        mainLiftManualDown = new JoystickButton(auxStick,3);
-        intakeLiftManualUp = new JoystickButton(auxStick,6);
-        intakeLiftManualDown = new JoystickButton(auxStick,5);
-        mainLiftAutoUp = new JoystickButton(auxStick, 1);
-        halfSpeed=new JoystickButton(driveStick,2);
-        autoClimb = new JoystickButton(auxStick, 2);
-        autoIntake = new JoystickButton(driveStick,3);
+        halfSpeed            = new JoystickButton(driveStick, halfSpeedButtonID);
+        autoIntake           = new JoystickButton(driveStick, autoIntakeID);
+        mainLiftManualUp     = new JoystickButton(auxStick, mainLiftManualUpID);
+        mainLiftManualDown   = new JoystickButton(auxStick, mainLiftManualDownID);
+        intakeLiftManualUp   = new JoystickButton(auxStick, intakeLiftManualUpID);
+        intakeLiftManualDown = new JoystickButton(auxStick, intakeLiftManualDownID);
+        mainLiftAutoUp       = new JoystickButton(auxStick, mainLiftAutoUpID);
+        autoClimb            = new JoystickButton(auxStick, autoClimbID);
 
 
         // intakeLiftTop = new JoystickButton(auxStick, 12);
