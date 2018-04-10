@@ -13,7 +13,7 @@ import org.montclairrobotics.sprocket.drive.steps.GyroCorrection;
 import org.montclairrobotics.sprocket.geometry.Angle;
 import org.montclairrobotics.sprocket.states.StateMachine;
 import org.montclairrobotics.sprocket.utils.Input;
-
+@Deprecated
 public class SwitchAuto extends StateMachine{
 
     static Input<Boolean> startSide;

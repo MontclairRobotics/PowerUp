@@ -9,11 +9,11 @@ public abstract class AutoSwitch extends AutoMode {
         super(name, states);
     }
 
-    public static AutoSwitch fromMiddle(Side target) {
+    public static AutoSwitch fromMiddle() {
         return new AutoSwitchMid(Side.fromDriverStation()[0]);
     }
 
-    public static AutoSwitch fromSide(Side pos, Side target) {
-        return new AutoSwitchLR(pos, target);
+    public static AutoSwitch fromSide(Side pos) {
+        return new AutoSwitchLR(pos, Side.fromDriverStation()[0]);
     }
 }
