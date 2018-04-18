@@ -3,6 +3,7 @@ package frc.team555.robot.core;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team555.robot.auto.*;
 import frc.team555.robot.components.CubeIntake;
@@ -39,8 +40,12 @@ public class PowerUpRobot extends SprocketRobot {
     boolean manualLock;
     CubeIntake intake;
     MainLift mainLift;
-    IntakeLift intakeLift;
+    // IntakeLift intakeLift;
     StateMachine autoClimb;
+    public static Side startSide;
+    SendableChooser<Side> startSideChooser;
+    static Input<Boolean> switchOnSide;
+
 
     //vision stuff
     private static final int IMG_WIDTH = 320;
@@ -57,6 +62,17 @@ public class PowerUpRobot extends SprocketRobot {
 
     @Override
     public void robotInit(){
+        startSideChooser = new SendableChooser<>();
+        startSideChooser.addObject("Right", Side.RIGHT);
+        startSideChooser.addObject("Right", Side.LEFT);
+        switchOnSide = new Input<Boolean>() {
+            @Override
+            public Boolean get() {
+                return Side.fromDriverStation()[0] == startSide;
+            }
+        };
+
+
         CameraServer.getInstance().startAutomaticCapture();
         DriveEncoders.TOLLERANCE=/*45.5363/17.1859*/6;
         TurnGyro.TURN_SPEED=0.3;
@@ -68,7 +84,6 @@ public class PowerUpRobot extends SprocketRobot {
         DriveModule[] modules = new DriveModule[2];
         intake = new CubeIntake();
         mainLift=new MainLift();
-        intakeLift=new IntakeLift();
         correction = new GyroCorrection(Hardware.navx, new PID(1.5, 0, 0.0015), 90, 1);
         autoClimb = new AutoClimbSequence(mainLift);
         //SetIntakeLift.setLift(intakeLift);
@@ -261,7 +276,7 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
         addAutoMode(baseLine);
         addAutoMode(centerBaseLineLeft);
         addAutoMode(centerBaseLineRight);
-        addAutoMode(new AutoMode("Switch Using Intake", new SwitchAuto(mainLift,correction, intake, intakeLift)));
+        addAutoMode(new AutoMode("Switch Using Intake", new SwitchAuto(mainLift,correction, intake)));
         addAutoMode(mainLiftUp);
         addAutoMode(turnQuarter);
         addAutoMode(new AutoMode("Switch Using Lift", new TopCubeAuto(mainLift, intake, correction)));
@@ -330,7 +345,7 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
             }
         });
         visionThread.start();*/
-        intakeLift.setPower(0);
+        // intakeLift.setPower(0);
     }
 
     @Override
@@ -359,7 +374,7 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
         SmartDashboard.putNumber("Main Lift Encoder Value",Hardware.liftEncoder.getInches().get());
         //SmartDashboard.putNumber("Intake Lift Encoder",in.getInches().get());
         gyroLocking();
-        SwitchAuto.loop();
+        startSide = startSideChooser.getSelected();
     }
 
     private void debugCurrent(String name,WPI_TalonSRX motor) {
@@ -387,6 +402,7 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
 
     @Override
     public void userDisabledPeriodic(){
-        SwitchAuto.disabled();
+        SmartDashboard.putData(startSideChooser);
+        startSide = startSideChooser.getSelected();
     }
 }

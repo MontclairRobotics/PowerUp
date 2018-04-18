@@ -24,7 +24,7 @@ public class CubeIntake implements Updatable, Togglable{
 
 	public final Motor left;
 	public final Motor right;
-	public final TargetMotor roationalMotor;
+	// public final TargetMotor roationalMotor;
 	public final double tolerance = 1; // Todo: Maybe needs to be tuned
 
 	public final int upPos = 0;
@@ -39,21 +39,21 @@ public class CubeIntake implements Updatable, Togglable{
 		this.right = new Motor(Hardware.motorIntakeR);
 		right.setInverted(true);
 		//this.clamp = new Motor(Hardware.motorIntakeClamp);
-		Motor rotateMotor=new Motor(Hardware.motorIntakeRotate);
-		this.roationalMotor = new TargetMotor(Hardware.intakeRotationEncoder, new BangBang(tolerance,rotatePower), rotateMotor); // Todo: needs to be implemented
+		//Motor rotateMotor=new Motor(Hardware.motorIntakeRotate);
+		// this.roationalMotor = new TargetMotor(Hardware.intakeRotationEncoder, new BangBang(tolerance,rotatePower), rotateMotor); // Todo: needs to be implemented
 
 		this.power = new Input<Vector>() {
 			@Override
 			public Vector get() {
 				double x=-Control.auxStick.getX();
-				if(Math.abs(x)<0.2)
+				if(Math.abs(x)<0.1)
 				{
 					x=0;
 				}
 				double y=-Control.auxStick.getY();
-				if(Math.abs(y)<0.2)
+				if(Math.abs(y)<0.1)
 				{
-					y=0;
+					y=-.05;
 				}
 				return new XY(x,y);
 			}
@@ -107,7 +107,7 @@ public class CubeIntake implements Updatable, Togglable{
 			}
 		});
 */
-		roationalMotor.setPower(0);
+		// roationalMotor.setPower(0);
 		Updater.add(this, Priority.CALC);
 	}
 
@@ -115,10 +115,9 @@ public class CubeIntake implements Updatable, Togglable{
 	@Override
 	public void update() {
 		Vector p = power.get();
-
 		if(!auto) {
-			left.set(p.getY() - p.getX());
-			right.set(p.getY() + p.getX());
+			left.set(p.getY() - p.getX()*.25);
+			right.set(p.getY() + p.getX()*.25);
 		}
 		auto=false;
 	}
@@ -129,6 +128,13 @@ public class CubeIntake implements Updatable, Togglable{
 		auto=true;
 		enable();
 	}
+
+	public void setAutoPower(double power){
+		auto = true;
+		left.set(power);
+		right.set(power);
+	}
+
 	@Override
 	public void enable() {
 		left.set(1);
