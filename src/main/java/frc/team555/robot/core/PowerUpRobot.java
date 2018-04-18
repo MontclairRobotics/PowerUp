@@ -259,6 +259,15 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
         addAutoMode(baseLine);
         addAutoMode(centerBaseLineLeft);
         addAutoMode(centerBaseLineRight);
+
+
+        /* Joshua Rapoport: AutoSwitch (left, right, middle) */
+
+        addAutoMode(AutoSwitch.fromSide(Side.LEFT));
+        addAutoMode(AutoSwitch.fromSide(Side.RIGHT));
+        addAutoMode(AutoSwitch.fromMiddle());
+
+
         //addAutoMode(new AutoMode("Switch Auto", new SwitchAuto(correction, intake)));
         sendAutoModes();
 
