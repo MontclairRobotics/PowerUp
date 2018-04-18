@@ -30,10 +30,10 @@ import java.util.ArrayList;
 
 public class PowerUpRobot extends SprocketRobot {
     DriveTrain driveTrain;
-    GyroCorrection correction;
+    public static GyroCorrection correction;
     GyroLock lock;
     boolean manualLock;
-    CubeIntake intake;
+    public static CubeIntake intake;
 
     public static SendableChooser<Side> startSidesChooser;
 
