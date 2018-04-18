@@ -5,7 +5,7 @@ import org.montclairrobotics.sprocket.states.State;
 
 class AutoSwitchLR extends AutoSwitch {
     AutoSwitchLR(Side pos, Side target) {
-        super("Cube to " + target.toString() + " Switch (" + pos.toString() + ")",
+        super("Cube to " + target.toString() + " Switch (" + pos.toString() + ")"
 
         );
     }
