@@ -26,7 +26,7 @@ public class SwitchAuto extends StateMachine{
         for(Side side :  Side.values()){
             startSidesChooser.addObject(side.toString(), side);
         }
-        SmartDashboard.putData(startSidesChooser);
+        //SmartDashboard.putData(startSidesChooser);
         startSide = new Input<Boolean>() {
             @Override
             public Boolean get() {

@@ -43,7 +43,7 @@ public class PowerUpRobot extends SprocketRobot {
     // IntakeLift intakeLift;
     StateMachine autoClimb;
     public static Side startSide;
-    SendableChooser<Side> startSideChooser;
+    //SendableChooser<Side> startSideChooser;
     static Input<Boolean> switchOnSide;
 
 
@@ -62,15 +62,15 @@ public class PowerUpRobot extends SprocketRobot {
 
     @Override
     public void robotInit(){
-        startSideChooser = new SendableChooser<>();
-        startSideChooser.addObject("Right", Side.RIGHT);
-        startSideChooser.addObject("Right", Side.LEFT);
-        switchOnSide = new Input<Boolean>() {
+        //startSideChooser = new SendableChooser<>();
+        //startSideChooser.addObject("Right", Side.RIGHT);
+        //startSideChooser.addObject("Right", Side.LEFT);
+        /*switchOnSide = new Input<Boolean>() {
             @Override
             public Boolean get() {
                 return Side.fromDriverStation()[0] == startSide;
             }
-        };
+        };*/
 
 
         CameraServer.getInstance().startAutomaticCapture();
@@ -374,7 +374,7 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
         SmartDashboard.putNumber("Main Lift Encoder Value",Hardware.liftEncoder.getInches().get());
         //SmartDashboard.putNumber("Intake Lift Encoder",in.getInches().get());
         gyroLocking();
-        startSide = startSideChooser.getSelected();
+        //startSide = startSideChooser.getSelected();
     }
 
     private void debugCurrent(String name,WPI_TalonSRX motor) {
@@ -402,7 +402,8 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
 
     @Override
     public void userDisabledPeriodic(){
-        SmartDashboard.putData(startSideChooser);
-        startSide = startSideChooser.getSelected();
+        //SmartDashboard.putData(startSideChooser);
+        //startSide = startSideChooser.getSelected();
+        SwitchAuto.disabled();
     }
 }

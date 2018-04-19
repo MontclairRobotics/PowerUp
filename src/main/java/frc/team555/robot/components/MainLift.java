@@ -23,7 +23,7 @@ public class MainLift extends TargetMotor implements Lift {
 
     private final double speed = 1.0;
     public static final double TOP= 30834.0;
-
+    private final boolean LIMIT_SWITCH_DISABLED=true;
 
     private boolean auto=false;
 
@@ -54,7 +54,7 @@ public class MainLift extends TargetMotor implements Lift {
         Control.mainLiftManualDown.setHeldAction(new ButtonAction() {
             @Override
             public void onAction() {
-                if(!Hardware.liftLimitSwitch.get()) {
+                if(LIMIT_SWITCH_DISABLED || !Hardware.liftLimitSwitch.get()) {
                     if(encoder.getInches().get()>TOP*0.2||Control.auxStick.getRawButton(7)) {
                         set(-speed);
                     }
