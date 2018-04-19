@@ -169,7 +169,6 @@ public class PowerUpRobot extends SprocketRobot {
         SmartDashboard.putNumber("Right Encoder", Hardware.rightDriveEncoder.getInches().get());
         SmartDashboard.putBoolean("Lift Limit Switch", Hardware.liftLimitSwitch.get());
         SmartDashboard.putNumber("Main Lift Encoder Value",Hardware.liftEncoder.getInches().get());
-        SmartDashboard.putBoolean("Pitch Correction", pitchCorrection(Hardware.navx,60));
         //SmartDashboard.putNumber("Intake Lift Encoder",in.getInches().get());
 
         debugCurrent("Main Lift Front",Hardware.motorLiftMainFront);
@@ -202,20 +201,6 @@ public class PowerUpRobot extends SprocketRobot {
             sensitivity.set(1,0.6);
         }
     }
-
-    //TODO: NEEDS Robot TESTING
-    private boolean pitchCorrection(NavXInput navXInput, double threshold){
-        if(navXInput.getPitch() > threshold){
-            sensitivity.set(1,0.6);
-            return false;
-        }else{
-            sensitivity.set(0.5,0.6);
-            return true;
-        }
-
-    }
-
-
 
     @Override
     public void userDisabledPeriodic(){
