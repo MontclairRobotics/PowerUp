@@ -10,14 +10,10 @@ public class NavXInput extends AHRS implements Input<Double> {
         super(id);
     }
 
-
-
     @Override
-
     public Double get() {
         return new Double(super.getYaw());
     }
-
 
 
 }
