@@ -127,7 +127,33 @@ public class PowerUpRobot extends SprocketRobot {
         /* Drive Train Pipeline: GyroCorrection, Deadzone */
 
 
+
+        //VISION
+        DTStep vision =new DTStep() {
+            @Override
+            public DTTarget get(DTTarget dtTarget) {
+                if(!Control.driveStick.getRawButton(7))
+                {
+                    return dtTarget;
+                }
+                double turn=0;
+                double x=SmartDashboard.getNumber("cubeX",600)-600;
+                if(x<-100)
+                {
+                    turn=-.1;
+                }
+                else if(x>100)
+                {
+                    turn=.1;
+                }
+                return new DTTarget(dtTarget.getDirection(),new Radians(turn));
+            }
+        };
+
         new DashboardInput("auto Selection");
+
+
+
 
         ArrayList<Step<DTTarget>> steps = new ArrayList<>();
         sensitivity=new Sensitivity(1,0.6);
@@ -135,6 +161,7 @@ public class PowerUpRobot extends SprocketRobot {
         steps.add(new Deadzone());
         steps.add(sensitivity);
         steps.add(correction);
+        steps.add(vision);
         driveTrain.setPipeline(new DTPipeline(steps));
 
         /* Enabling and Disabling GyroLock */
@@ -310,6 +337,9 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
         });
 */
 
+
+
+
         Control.autoClimb.setPressAction(new ButtonAction() {
             @Override
             public void onAction() {
@@ -364,10 +394,14 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
 
         SmartDashboard.putNumber("turn", turn);
 */
+
+        double cubeCenterX=SmartDashboard.getNumber("cubeCenterX",0.0);
+        SmartDashboard.putNumber("x rebroadcasted",cubeCenterX);
         SmartDashboard.putNumber("Distance", driveTrain.getDistance().getY());
         SmartDashboard.putNumber("Left Encoder", Hardware.leftDriveEncoder.getInches().get());
         SmartDashboard.putNumber("Right Encoder", Hardware.rightDriveEncoder.getInches().get());
         SmartDashboard.putBoolean("Lift Limit Switch", Hardware.liftLimitSwitch.get());
+        SmartDashboard.putNumber("POV",Control.auxStick.getPOV());
         debugCurrent("Main Lift Front",Hardware.motorLiftMainFront);
         debugCurrent("Main Lift Back",Hardware.motorLiftMainBack);
         debugCurrent("Intake Lift",Hardware.motorLiftIntake);

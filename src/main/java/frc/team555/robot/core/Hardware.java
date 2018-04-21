@@ -103,6 +103,8 @@ public class Hardware {
 
     public static DigitalInput intakeClosedSwitch;
     public static DigitalInput intakeOpenSwitch;
+    public static DigitalInput intakeUpperBound;
+    public static DigitalInput intakeLowerBound;
 
 
     // Encoders
@@ -145,6 +147,8 @@ public class Hardware {
         intakeClosedSwitch = new DigitalInput(6);
         intakeOpenSwitch = new DigitalInput(8);
 
+        intakeUpperBound=new DigitalInput(5);
+        intakeLowerBound=new DigitalInput(9);
 
         //double ticksPerInch=6544.0/143.0;`
         //old/new=17.1859 * 1.25/(6544.0/143.0)

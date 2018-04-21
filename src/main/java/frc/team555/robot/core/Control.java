@@ -1,6 +1,7 @@
 package frc.team555.robot.core;
 
 import edu.wpi.first.wpilibj.Joystick;
+import frc.team555.robot.utils.POVButton;
 import org.montclairrobotics.sprocket.control.ArcadeDriveInput;
 import org.montclairrobotics.sprocket.control.Button;
 import org.montclairrobotics.sprocket.control.JoystickButton;
@@ -32,11 +33,11 @@ public class Control {
             // mainLiftBottom,
             //openButton,
             //closeButton,
-            //intakeRotateUp,
-            //intakeRotateDown,
-            //intakeRotateMiddle,
-            //intakeRotateUpManual,
-            //intakeRotateDownManual;
+            intakeRotateUp,
+            intakeRotateDown,
+            intakeRotateMiddle,
+            intakeRotateUpManual,
+            intakeRotateDownManual,
             //intakeSubroutine;
             autoClimb;
 
@@ -102,11 +103,11 @@ public class Control {
         // closeButton=new JoystickButton(Control.auxStick,9);
 
         //Intake Buttons
-        // intakeRotateUp = new JoystickButton(auxStick, 12);
-        // intakeRotateDown = new JoystickButton(auxStick, 4);
-        // intakeRotateMiddle=new JoystickButton(auxStick,5);
-        // intakeRotateUpManual = new JoystickButton(auxStick, 3);
-        // intakeRotateDownManual = new JoystickButton(auxStick, 2);
+        intakeRotateUp = new POVButton(auxStick, 0);
+        intakeRotateDown = new POVButton(auxStick, 180);
+        intakeRotateMiddle=new POVButton(auxStick,90);
+        intakeRotateUpManual = new JoystickButton(auxStick, 7);
+        intakeRotateDownManual = new JoystickButton(auxStick, 11);
 
                 // Auxiliary Buttons
 
