@@ -1,20 +1,33 @@
 package frc.team555.robot.components;
 
+<<<<<<< HEAD
 import frc.team555.robot.auto.MoveLift;
 import frc.team555.robot.core.Control;
 import frc.team555.robot.core.Hardware;
 import frc.team555.robot.core.PowerUpRobot;
 import frc.team555.robot.utils.BangBang;
+=======
+import edu.wpi.first.wpilibj.DigitalInput;
+import frc.team555.robot.core.Control;
+import frc.team555.robot.core.Hardware;
+import frc.team555.robot.utils.MotorMonitor;
+>>>>>>> josh-auto-switch
 import frc.team555.robot.utils.TargetMotor;
 import org.montclairrobotics.sprocket.auto.AutoMode;
 import org.montclairrobotics.sprocket.auto.states.DriveEncoderGyro;
 import org.montclairrobotics.sprocket.auto.states.DriveTime;
 import org.montclairrobotics.sprocket.control.ButtonAction;
+<<<<<<< HEAD
 import org.montclairrobotics.sprocket.geometry.Angle;
 import org.montclairrobotics.sprocket.motors.Motor;
 import org.montclairrobotics.sprocket.motors.SEncoder;
 import org.montclairrobotics.sprocket.states.State;
 import org.montclairrobotics.sprocket.states.StateMachine;
+=======
+import org.montclairrobotics.sprocket.motors.CurrentMonitor;
+import org.montclairrobotics.sprocket.motors.Motor;
+import org.montclairrobotics.sprocket.utils.Input;
+>>>>>>> josh-auto-switch
 import org.montclairrobotics.sprocket.utils.PID;
 
 import java.nio.channels.Pipe;
@@ -29,9 +42,14 @@ public class MainLift extends TargetMotor implements Lift {
 
     private int upPosition;
     private int downPosition;
+    private DigitalInput bottomLimitSwitch;
 
     public MainLift(){
+<<<<<<< HEAD
         super(Hardware.liftEncoder, new BangBang(1,1), new Motor(Hardware.motorLiftMainFront), new Motor(Hardware.motorLiftMainBack));
+=======
+        super(Hardware.liftEncoder, new PID(.1, 0, 0), new Motor(Hardware.motorLiftMainFront), new Motor(Hardware.motorLiftMainBack));
+>>>>>>> josh-auto-switch
 
         mode = Mode.POWER;
 
@@ -54,6 +72,7 @@ public class MainLift extends TargetMotor implements Lift {
         Control.mainLiftManualDown.setHeldAction(new ButtonAction() {
             @Override
             public void onAction() {
+<<<<<<< HEAD
                 if(LIMIT_SWITCH_DISABLED || !Hardware.liftLimitSwitch.get()) {
                     if(encoder.getInches().get()>TOP*0.2||Control.auxStick.getRawButton(7)) {
                         set(-speed);
@@ -64,14 +83,29 @@ public class MainLift extends TargetMotor implements Lift {
                 }else{
                     set(0);
                     encoder.reset();
+=======
+                if(!bottomLimitSwitch.get()) {
+                    MainLift.super.set(-speed);
+                }else{
+                    MainLift.super.set(0);
+                    Hardware.liftEncoder.reset();
+>>>>>>> josh-auto-switch
                 }
             }
         });
 
+
+
         Control.mainLiftManualDown.setReleaseAction(new ButtonAction() {
             @Override
             public void onAction() {
+<<<<<<< HEAD
                 set(0);
+=======
+                if(encoder != null) {
+                    MainLift.super.set(0);
+                }
+>>>>>>> josh-auto-switch
             }
         });
 
@@ -99,6 +133,7 @@ public class MainLift extends TargetMotor implements Lift {
                 }
             }
         });
+<<<<<<< HEAD
         Control.mainLiftAutoUp.setReleaseAction(new ButtonAction() {
             @Override
             public void onAction() {
@@ -107,6 +142,26 @@ public class MainLift extends TargetMotor implements Lift {
             }
         });
         setPower(0);
+=======
+
+
+
+        new CurrentMonitor("Main Lift Front", Hardware.motorLiftMainFront, new Input<Boolean>() {
+            @Override
+            public Boolean get() {
+                return Math.abs(getTarget() - getDistance().get()) > 20 || speed != 0;
+            }
+        }).setEncoder(Hardware.liftEncoder);
+
+        new CurrentMonitor("Main Lift Back", Hardware.motorLiftMainBack, new Input<Boolean>() {
+            @Override
+            public Boolean get() {
+                return Math.abs(getTarget() - getDistance().get()) > 20 || speed != 0;
+            }
+        }).setEncoder(Hardware.liftEncoder);
+
+
+>>>>>>> josh-auto-switch
         // Lift Bottom
 
 
