@@ -61,9 +61,13 @@ public class OldSideAuto implements State {
         states.add(new ResetGyro(correction));
         states.add(new SetIntakeRotation(intake, intake.downPos));
 
-        if(Side.fromDriverStation()[0] == PowerUpRobot.startSidesChooser.getSelected()){
+        if(Side.fromDriverStation()[0] == SwitchAuto.startSidesChooser.getSelected()){
             states.add(new DriveEncoderGyro(168, .75, Angle.ZERO, false, correction));
-            states.add(new DropCubeSwitch(Side.fromDriverStation()[0], correction));
+            states.add(new DropCubeSwitch(new Input<Side>(){
+                @Override
+                public Side get() {
+                    return Side.fromDriverStation()[0];}
+                }, correction));
             Debug.msg("Target", "RightSwitch");
         }else if(crossover.get()){
         	states.add(new DriveEncoderGyro(100, .75, Angle.ZERO, false, correction));

@@ -15,11 +15,7 @@ public class SetIntakeRotation implements State {
 
     @Override
     public void start() {
-<<<<<<< HEAD
-        intake.rotationalMotor.setTarget(position);
-=======
         // intake.roationalMotor.setTarget(position);
->>>>>>> cleanup
     }
 
     @Override

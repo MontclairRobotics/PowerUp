@@ -63,13 +63,6 @@ public class Hardware {
         public static final int motorIntakeL = 10;
         public static final int motorIntakeR = 5;
 
-<<<<<<< HEAD
-        public static final int motorRotational = 10;
-
-        public static final int motorIntakeL = 5;
-        public static final int motorIntakeR = 10;
-=======
->>>>>>> cleanup
         //left intake 5
         //pincer 6
         //lifter 9
@@ -182,15 +175,11 @@ public class Hardware {
 //Intake Lift Travel
 
 //15.5 to 49.5
-<<<<<<< HEAD
-        liftEncoder       = new SEncoder(new Encoder(4,5), 31600/(82 - 54)); // todo: REALLY NEED TO BE SET
-        intakeLiftEncoder = new TalonEncoder(motorLiftIntake, 1333600/(49.5 - 15.5));
-        intakeRotationEncoder = new TalonEncoder(motorRotational, 1); // todo, needs to be set
-=======
+
         liftEncoder       = new SEncoder(new Encoder(4,5), 1/*31600/(82 - 54)*/); // todo: REALLY NEED TO BE SET
         intakeLiftEncoder = new TalonEncoder(motorLiftIntake, 1 /*1333600/(49.5 - 15.5)*/);
         intakeRotationEncoder = new TalonEncoder(motorIntakeRotate, 1); // todo, needs to be set
->>>>>>> cleanup
+
 
 
         navx = new NavXInput(DeviceID.navxPort);

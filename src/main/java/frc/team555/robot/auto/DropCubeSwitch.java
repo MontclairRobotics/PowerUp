@@ -10,13 +10,14 @@ import org.montclairrobotics.sprocket.geometry.Angle;
 import org.montclairrobotics.sprocket.states.MultiState;
 import org.montclairrobotics.sprocket.states.State;
 import org.montclairrobotics.sprocket.states.StateMachine;
+import org.montclairrobotics.sprocket.utils.Input;
 
 public class DropCubeSwitch extends StateMachine {
 
     private CubeIntake intake;
     private IntakeLift lift;
 
-    public DropCubeSwitch(Side side, GyroCorrection correction){
+    public DropCubeSwitch(Input<Side> side, GyroCorrection correction){
         super(
                 new MultiState(0,
                         new SideTurn(correction,false, side),

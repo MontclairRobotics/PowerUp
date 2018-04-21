@@ -5,6 +5,7 @@ import frc.team555.robot.utils.Side;
 import org.montclairrobotics.sprocket.auto.states.DriveEncoderGyro;
 import org.montclairrobotics.sprocket.auto.states.ResetGyro;
 import org.montclairrobotics.sprocket.geometry.Angle;
+import org.montclairrobotics.sprocket.utils.Input;
 
 class AutoSwitchMid extends AutoSwitch {
 
@@ -19,7 +20,7 @@ class AutoSwitchMid extends AutoSwitch {
                 /* Drive forward 36 inches */
                 new DriveEncoderGyro(36, POWER, Angle.ZERO, true, PowerUpRobot.correction),
                 /* Move the lift, turn, and drop the cube into the switch */
-                new DropCubeSwitch(target, PowerUpRobot.correction)
+                new DropCubeSwitch(new Input<Side>(){public Side get(){return target;}}, PowerUpRobot.correction)
         );
     }
 }

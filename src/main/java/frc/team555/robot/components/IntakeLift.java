@@ -32,11 +32,9 @@ public class IntakeLift implements Lift{
      * Constructor for IntakeLift Class with default position of 0
      */
     public IntakeLift() {
-<<<<<<< HEAD
-        motors = new TargetMotor(Hardware.liftEncoder, new PID(0, 0, 0),new Motor(Hardware.motorLiftIntake)); // Todo: Needs Tuninng
-=======
+
         motors = new TargetMotor(Hardware.intakeLiftEncoder, new BangBang(1,1),new Motor(Hardware.motorLiftIntake)); // Todo: Needs Tuninng
->>>>>>> cleanup
+
         encoder=Hardware.intakeLiftEncoder;
 
         //=================
@@ -101,22 +99,10 @@ public class IntakeLift implements Lift{
                 motors.setPower(0);
             }
         };
-<<<<<<< HEAD
-        Control.intakeLiftManualUp.setOffAction(stop);
-        Control.intakeLiftManualDown.setOffAction(stop);
 
-        new CurrentMonitor("Intake Lift Encoder", Hardware.motorLiftIntake, new Input<Boolean>() {
-            @Override
-            public Boolean get() {
-                return Control.intakeLiftManualUp.get() || Control.intakeLiftManualUp.get() || Math.abs(motors.getTarget() - motors.getDistance().get()) > 20;
-            }
-        }).setEncoder(Hardware.intakeLiftEncoder);
-
-=======
         Control.intakeLiftManualUp.setReleaseAction(stop);
         Control.intakeLiftManualDown.setReleaseAction(stop);
         motors.setPower(0);
->>>>>>> cleanup
     }
 
 

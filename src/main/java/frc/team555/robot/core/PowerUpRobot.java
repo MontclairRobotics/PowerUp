@@ -38,7 +38,7 @@ public class PowerUpRobot extends SprocketRobot {
     Sensitivity sensitivity;
     GyroLock lock;
     boolean manualLock;
-    CubeIntake intake;
+    public static CubeIntake intake;
     MainLift mainLift;
     // IntakeLift intakeLift;
     StateMachine autoClimb;

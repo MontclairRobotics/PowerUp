@@ -17,7 +17,6 @@ import org.montclairrobotics.sprocket.states.StateMachine;
 import org.montclairrobotics.sprocket.utils.Input;
 
 
-@Deprecated
 public class SwitchAuto extends StateMachine{
 
     static Input<Boolean> startSide;
