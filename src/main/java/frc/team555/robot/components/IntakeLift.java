@@ -5,10 +5,8 @@ import frc.team555.robot.core.Hardware;
 import frc.team555.robot.utils.BangBang;
 import frc.team555.robot.utils.TargetMotor;
 import org.montclairrobotics.sprocket.control.ButtonAction;
-import org.montclairrobotics.sprocket.motors.CurrentMonitor;
 import org.montclairrobotics.sprocket.motors.Motor;
 import org.montclairrobotics.sprocket.motors.SEncoder;
-import org.montclairrobotics.sprocket.utils.Input;
 import org.montclairrobotics.sprocket.utils.PID;
 import org.montclairrobotics.sprocket.utils.Utils;
 
@@ -32,11 +30,7 @@ public class IntakeLift implements Lift{
      * Constructor for IntakeLift Class with default position of 0
      */
     public IntakeLift() {
-<<<<<<< HEAD
         motors = new TargetMotor(Hardware.intakeLiftEncoder, new BangBang(1,1),new Motor(Hardware.motorLiftIntake)); // Todo: Needs Tuninng
-=======
-        motors = new TargetMotor(Hardware.liftEncoder, new PID(0, 0, 0),new Motor(Hardware.motorLiftIntake)); // Todo: Needs Tuninng
->>>>>>> josh-auto-switch
         encoder=Hardware.intakeLiftEncoder;
 
         //=================
@@ -101,22 +95,9 @@ public class IntakeLift implements Lift{
                 motors.setPower(0);
             }
         };
-<<<<<<< HEAD
         Control.intakeLiftManualUp.setReleaseAction(stop);
         Control.intakeLiftManualDown.setReleaseAction(stop);
         motors.setPower(0);
-=======
-        Control.intakeLiftManualUp.setOffAction(stop);
-        Control.intakeLiftManualDown.setOffAction(stop);
-
-        new CurrentMonitor("Intake Lift Encoder", Hardware.motorLiftIntake, new Input<Boolean>() {
-            @Override
-            public Boolean get() {
-                return Control.intakeLiftManualUp.get() || Control.intakeLiftManualUp.get() || Math.abs(motors.getTarget() - motors.getDistance().get()) > 20;
-            }
-        }).setEncoder(Hardware.intakeLiftEncoder);
-
->>>>>>> josh-auto-switch
     }
 
 

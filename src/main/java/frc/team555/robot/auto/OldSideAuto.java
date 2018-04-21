@@ -1,11 +1,12 @@
 package frc.team555.robot.auto;
 
+import edu.wpi.first.wpilibj.interfaces.Gyro;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team555.robot.components.CubeIntake;
 import frc.team555.robot.components.IntakeLift;
-import frc.team555.robot.components.MainLift;
-import frc.team555.robot.core.PowerUpRobot;
 import frc.team555.robot.utils.Side;
+import frc.team555.robot.core.Hardware;
 import org.montclairrobotics.sprocket.auto.states.*;
 import org.montclairrobotics.sprocket.drive.steps.GyroCorrection;
 import org.montclairrobotics.sprocket.geometry.Angle;
@@ -14,13 +15,14 @@ import org.montclairrobotics.sprocket.states.State;
 import org.montclairrobotics.sprocket.states.StateMachine;
 import org.montclairrobotics.sprocket.utils.Debug;
 import org.montclairrobotics.sprocket.utils.Input;
+import org.montclairrobotics.sprocket.utils.PID;
 
 import java.util.ArrayList;
 
+@Deprecated
 public class OldSideAuto implements State {
     CubeIntake intake;
     IntakeLift intakeLift;
-    MainLift mainLift;
     StateMachine machine;
     ArrayList<State> states = new ArrayList<State>();
     Input<Boolean> crossover;
@@ -28,10 +30,9 @@ public class OldSideAuto implements State {
     GyroCorrection correction;
 
 
-    public OldSideAuto(CubeIntake intake, IntakeLift intakeLift, MainLift mainLift, GyroCorrection gyroCorrection){
+    public OldSideAuto(CubeIntake intake, IntakeLift intakeLift, GyroCorrection gyroCorrection){
         this.intake = intake;
         this.intakeLift = intakeLift;
-        this.mainLift = mainLift;
         correction = gyroCorrection;
 
 
@@ -61,10 +62,13 @@ public class OldSideAuto implements State {
         states.add(new ResetGyro(correction));
         states.add(new SetIntakeRotation(intake, intake.downPos));
 
-        if(Side.fromDriverStation()[0] == PowerUpRobot.startSidesChooser.getSelected()){
+        if(Side.fromDriverStation()[0] == Side.RIGHT){
             states.add(new DriveEncoderGyro(168, .75, Angle.ZERO, false, correction));
-            states.add(new DropCubeSwitch(Side.fromDriverStation()[0], correction));
+            states.add(new TurnGyro(new Degrees(90), correction, false));
             Debug.msg("Target", "RightSwitch");
+            //states.add(new Enable(intake));
+            //states.add(new Delay(1));
+            //states.add(new Disable(intake));
         }else if(crossover.get()){
         	states.add(new DriveEncoderGyro(100, .75, Angle.ZERO, false, correction));
         	states.add(new DriveEncoderGyro(150, .75, new Degrees(90), false, correction));

@@ -12,7 +12,6 @@ import org.montclairrobotics.sprocket.geometry.XY;
 import org.montclairrobotics.sprocket.loop.Priority;
 import org.montclairrobotics.sprocket.loop.Updatable;
 import org.montclairrobotics.sprocket.loop.Updater;
-import org.montclairrobotics.sprocket.motors.CurrentMonitor;
 import org.montclairrobotics.sprocket.motors.Motor;
 import org.montclairrobotics.sprocket.utils.Debug;
 import org.montclairrobotics.sprocket.utils.Input;
@@ -22,7 +21,6 @@ import org.montclairrobotics.sprocket.utils.Togglable;
 
 
 public class CubeIntake implements Updatable, Togglable{
-<<<<<<< HEAD
 	private double rotatePower=.1;
 
 	private boolean auto;
@@ -31,20 +29,12 @@ public class CubeIntake implements Updatable, Togglable{
 	public  Motor right;
 	public  TargetMotor rotate;
 	public final double tolerance = 1; // Todo: Maybe needs to be tuned
-=======
-	public final Motor left;
-	public final Motor right;
-	public final Motor clamp;
-	public final TargetMotor rotationalMotor;
-	public final double tolerance = .01; // Todo: Maybe needs to be tuned
->>>>>>> josh-auto-switch
 
 	public final int upPos = 0;
 	public final int downPos = 2;
 	public final int middlePos = 1;
 
 
-<<<<<<< HEAD
 	public  Input<Vector> power;
 	
 	public CubeIntake() {
@@ -57,23 +47,6 @@ public class CubeIntake implements Updatable, Togglable{
 		this.rotate=new TargetMotor(Hardware.intakeRotationEncoder,new BangBang(tolerance,rotatePower),rotateMotor);
 		// this.roationalMotor = new TargetMotor(Hardware.intakeRotationEncoder, new BangBang(tolerance,rotatePower), rotateMotor); // Todo: needs to be implemented
 
-=======
-	public final Input<Vector> power;
-	
-	private long clampStart=0;
-	private long clampTime=500; // Todo: needs to be tuned
-	private double clampPower=0.5;
-	private boolean clampOpen=true; // True for open, false for close
-    private double rotationalMotorPower = 0;
-	private final double roatatePower = .5;
-
-	public CubeIntake() {
-		this.left = new Motor(Hardware.motorIntakeL);
-		this.right = new Motor(Hardware.motorIntakeR);
-		this.clamp = new Motor(Hardware.motorIntakeClamp);
-		this.rotationalMotor = new TargetMotor(Hardware.intakeRotationEncoder, new PID(.1, 0, 0), new Motor(Hardware.motorRotational)); // Todo: needs to be implemented
-		
->>>>>>> josh-auto-switch
 		this.power = new Input<Vector>() {
 			@Override
 			public Vector get() {
@@ -90,7 +63,6 @@ public class CubeIntake implements Updatable, Togglable{
 				return new XY(x,y);
 			}
 		};
-<<<<<<< HEAD
 
 
 		Control.intakeRotateDown.setPressAction(new ButtonAction() {
@@ -105,39 +77,16 @@ public class CubeIntake implements Updatable, Togglable{
 			@Override
 			public void onAction() {
 				rotate.setTarget(upPos);
-=======
-		Control.intakeRotationDown.setPressAction(new ButtonAction() {
-			@Override
-			public void onAction() {
-				rotationalMotor.set(downPos);
-			}
-		});
-		Control.intakeRotationUp.setPressAction(new ButtonAction() {
-			@Override
-			public void onAction() {
-				rotationalMotor.set(upPos);
->>>>>>> josh-auto-switch
 			}
 		});
 		Control.intakeRotateMiddle.setPressAction(new ButtonAction() {
 			@Override
 			public void onAction() {
-<<<<<<< HEAD
 				rotate.setTarget(middlePos);
-=======
-				rotationalMotor.set(middlePos);
->>>>>>> josh-auto-switch
 			}
 		});
 
-        Control.intakeLiftManualUp.setPressAction(new ButtonAction() {
-            @Override
-            public void onAction() {
-                rotationalMotor.set(rotationalMotorPower);
-            }
-        });
 
-<<<<<<< HEAD
 		Control.intakeRotateUpManual.setPressAction(new ButtonAction() {
 			@Override
 			public void onAction() {
@@ -165,37 +114,6 @@ public class CubeIntake implements Updatable, Togglable{
 		});
 
 		rotate.setPower(0);
-=======
-        Control.intakeLiftManualUp.setReleaseAction(new ButtonAction() {
-            @Override
-            public void onAction() {
-                rotationalMotor.set(rotationalMotorPower);
-            }
-        });
-
-
-		new CurrentMonitor("Intake Right Motor", Hardware.motorIntakeR, new Input<Boolean>() {
-			@Override
-			public Boolean get() {
-				return power.get().getMagnitude() > .1;
-			}
-		});
-
-		new CurrentMonitor("Intake Left Motor", Hardware.motorIntakeL, new Input<Boolean>() {
-			@Override
-			public Boolean get() {
-				return power.get().getMagnitude() > .1;
-			}
-		});
-
-		new CurrentMonitor("Intake Rotational Motor", Hardware.motorRotational, new Input<Boolean>() {
-			@Override
-			public Boolean get() {
-				return Math.abs(rotationalMotor.getTarget() - rotationalMotor.getDistance().get()) > 20;
-			}
-		}).setEncoder(Hardware.intakeRotationEncoder);
-
->>>>>>> josh-auto-switch
 		Updater.add(this, Priority.CALC);
 	}
 
@@ -203,7 +121,6 @@ public class CubeIntake implements Updatable, Togglable{
 	@Override
 	public void update() {
 		Vector p = power.get();
-<<<<<<< HEAD
 		if(!auto) {
 			left.set(p.getY() - p.getX()*.25);
 			right.set(p.getY() + p.getX()*.25);
@@ -224,17 +141,6 @@ public class CubeIntake implements Updatable, Togglable{
 		auto = true;
 		left.set(power);
 		right.set(power);
-=======
-		// if(p.getMagnitude() < tolerance){
-		// 		openClamp();
-		// }else{
-		// 		closeClamp();
-		// }
-		left.set(p.getX());
-		right.set(p.getY());
-
-		// updateClamp();
->>>>>>> josh-auto-switch
 	}
 
 	@Override

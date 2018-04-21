@@ -15,11 +15,7 @@ public class SetIntakeRotation implements State {
 
     @Override
     public void start() {
-<<<<<<< HEAD
         // intake.roationalMotor.setTarget(position);
-=======
-        intake.rotationalMotor.setTarget(position);
->>>>>>> josh-auto-switch
     }
 
     @Override

@@ -83,8 +83,4 @@ public class TargetMotor extends Module implements Updatable{
             super.set(pid.get());
         }
     }
-
-    public double getTarget(){
-        return pid.getTarget();
-    }
 }
