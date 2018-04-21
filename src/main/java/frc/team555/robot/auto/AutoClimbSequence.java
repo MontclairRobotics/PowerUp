@@ -12,7 +12,7 @@ import org.montclairrobotics.sprocket.states.State;
 import org.montclairrobotics.sprocket.states.StateMachine;
 
 import static frc.team555.robot.components.MainLift.TOP;
-
+@Deprecated
 public class AutoClimbSequence extends StateMachine {
 
     private Lift lift;
