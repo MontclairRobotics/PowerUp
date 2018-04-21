@@ -13,15 +13,9 @@ import org.montclairrobotics.sprocket.states.State;
 import org.montclairrobotics.sprocket.states.StateMachine;
 import org.montclairrobotics.sprocket.utils.Input;
 
-<<<<<<< HEAD:src/main/java/frc/team555/robot/auto/OldDropCube.java
 
-@Deprecated
-public class OldDropCube extends StateMachine{
-    public OldDropCube(CubeIntake intake, MainLift lift, GyroCorrection correction, Side side){
-=======
-public class DropCube extends StateMachine{
-    public DropCube(MainLift mainLift,CubeIntake intake, GyroCorrection correction, Input<Side> side){
->>>>>>> cleanup:src/main/java/frc/team555/robot/auto/DropCube.java
+public class SimpleDropCube extends StateMachine{
+    public SimpleDropCube(MainLift mainLift, CubeIntake intake, GyroCorrection correction, Input<Side> side){
         super(
                 new MultiState(
                     new MoveLift(mainLift,MainLift.TOP*0.6,1,true),

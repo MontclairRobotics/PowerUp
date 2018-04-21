@@ -1,22 +1,13 @@
 package frc.team555.robot.core;
 
-<<<<<<< HEAD
-=======
+
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
->>>>>>> cleanup
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team555.robot.auto.*;
 import frc.team555.robot.components.CubeIntake;
-<<<<<<< HEAD
-import frc.team555.robot.utils.MotorMonitor;
-=======
-import frc.team555.robot.components.IntakeLift;
 import frc.team555.robot.components.MainLift;
 import frc.team555.robot.utils.CoastMotor;
->>>>>>> cleanup
 import frc.team555.robot.utils.Side;
 import org.montclairrobotics.sprocket.SprocketRobot;
 import org.montclairrobotics.sprocket.auto.AutoMode;
@@ -43,13 +34,7 @@ import java.util.ArrayList;
 public class PowerUpRobot extends SprocketRobot {
     DriveTrain driveTrain;
     public static GyroCorrection correction;
-<<<<<<< HEAD
-    GyroLock lock;
-    boolean manualLock;
-    public static CubeIntake intake;
 
-    public static SendableChooser<Side> startSidesChooser;
-=======
     Sensitivity sensitivity;
     GyroLock lock;
     boolean manualLock;
@@ -57,10 +42,7 @@ public class PowerUpRobot extends SprocketRobot {
     MainLift mainLift;
     // IntakeLift intakeLift;
     StateMachine autoClimb;
-    public static Side startSide;
     //SendableChooser<Side> startSideChooser;
-    static Input<Boolean> switchOnSide;
->>>>>>> cleanup
 
 
     //vision stuff
@@ -349,26 +331,20 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
         addAutoMode(baseLine);
         addAutoMode(centerBaseLineLeft);
         addAutoMode(centerBaseLineRight);
-<<<<<<< HEAD
-
 
         /* Joshua Rapoport: AutoSwitch (left, right, middle) */
 
         addAutoMode(AutoSwitch.fromSide(Side.LEFT));
         addAutoMode(AutoSwitch.fromSide(Side.RIGHT));
         addAutoMode(AutoSwitch.fromMiddle());
-
-
-=======
         addAutoMode(new AutoMode("Switch Using Intake", new SwitchAuto(mainLift,correction, intake)));
         addAutoMode(mainLiftUp);
         addAutoMode(turnQuarter);
         addAutoMode(new AutoMode("Switch Using Lift", new TopCubeAuto(mainLift, intake, correction)));
->>>>>>> cleanup
         //addAutoMode(new AutoMode("Switch Auto", new SwitchAuto(correction, intake)));
         sendAutoModes();
 
-        StateMachine shootCube = new StateMachine(false, new SetIntakeRotation(intake, intake.middlePos), new CubeOuttake(intake, 1), new SetIntakeRotation(intake, intake.downPos));
+        //StateMachine shootCube = new StateMachine(false, new SetIntakeRotation(intake, intake.middlePos), new CubeOuttake(intake, 1), new SetIntakeRotation(intake, intake.downPos));
 
         /*Control.intakeSubroutine.setHeldAction(new ButtonAction() {
             @Override
@@ -433,17 +409,6 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
             }
         });
         visionThread.start();*/
-<<<<<<< HEAD
-
-        startSidesChooser = new SendableChooser<>();
-        for(Side side :  Side.values()){
-            startSidesChooser.addObject(side.toString(), side);
-        }
-        SmartDashboard.putData(startSidesChooser);
-
-=======
-        // intakeLift.setPower(0);
->>>>>>> cleanup
     }
 
     @Override
@@ -468,10 +433,7 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
         SmartDashboard.putNumber("Distance", driveTrain.getDistance().getY());
         SmartDashboard.putNumber("Left Encoder", Hardware.leftDriveEncoder.getInches().get());
         SmartDashboard.putNumber("Right Encoder", Hardware.rightDriveEncoder.getInches().get());
-<<<<<<< HEAD
         Debug.msg("Intake Rotation", Hardware.intakeRotationEncoder.get());
-
-=======
         SmartDashboard.putBoolean("Lift Limit Switch", Hardware.liftLimitSwitch.get());
         SmartDashboard.putNumber("POV",Control.auxStick.getPOV());
         debugCurrent("Main Lift Front",Hardware.motorLiftMainFront);
@@ -479,7 +441,6 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
         debugCurrent("Intake Lift",Hardware.motorLiftIntake);
         SmartDashboard.putNumber("Main Lift Encoder Value",Hardware.liftEncoder.getInches().get());
         //SmartDashboard.putNumber("Intake Lift Encoder",in.getInches().get());
->>>>>>> cleanup
         gyroLocking();
         //startSide = startSideChooser.getSelected();
     }
@@ -509,12 +470,8 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
 
     @Override
     public void userDisabledPeriodic(){
-<<<<<<< HEAD
-        SmartDashboard.putData(startSidesChooser) ;
-=======
         //SmartDashboard.putData(startSideChooser);
         //startSide = startSideChooser.getSelected();
         SwitchAuto.disabled();
->>>>>>> cleanup
     }
 }
