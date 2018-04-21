@@ -46,7 +46,7 @@ public class SwitchAuto2 extends StateMachine {
         super(new ResetGyro(correction),
                 new MoveLiftTime(.5,.5),
                 new MoveLiftTime(-.5,.5),
-                new MoveIntake(-.8,0.5),
+                //new MoveIntake(-.8,0.5),
                 new MultiState(
                         new MoveLiftTime(.5, 2),
                         new DriveEncoderGyro(150, .75, Angle.ZERO, false, correction)),
@@ -58,9 +58,10 @@ public class SwitchAuto2 extends StateMachine {
     {
         public RotateAndDropCube(GyroCorrection correction) {
             super(
-                    new SideTurn(correction, false, startSidesChooser.getSelected()),
-                    new DriveTime(3, .3),
-                    new MoveIntake(.8,0.5));
+                    new SideTurn(correction, false, new Input<Side>(){
+                        public Side get(){return startSidesChooser.getSelected();}}),
+                    new DriveTime(3, .3));
+                    //new MoveIntake(.8,0.5));
         }
     }
 
@@ -85,7 +86,7 @@ public class SwitchAuto2 extends StateMachine {
         }
     }
 
-    public static class MoveIntake extends Delay
+    /*public static class MoveIntake extends Delay
     {
         private double power;
         public MoveIntake(double power,double time)
@@ -103,6 +104,6 @@ public class SwitchAuto2 extends StateMachine {
             Hardware.motorIntakeClamp.set(0);
         }
 
-    }
+    }*/
 
 }

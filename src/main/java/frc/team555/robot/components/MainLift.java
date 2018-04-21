@@ -1,26 +1,55 @@
 package frc.team555.robot.components;
 
+<<<<<<< HEAD
 import edu.wpi.first.wpilibj.DigitalInput;
 import frc.team555.robot.core.Control;
 import frc.team555.robot.core.Hardware;
 import frc.team555.robot.utils.MotorMonitor;
+=======
+import frc.team555.robot.auto.MoveLift;
+import frc.team555.robot.core.Control;
+import frc.team555.robot.core.Hardware;
+import frc.team555.robot.core.PowerUpRobot;
+import frc.team555.robot.utils.BangBang;
+>>>>>>> cleanup
 import frc.team555.robot.utils.TargetMotor;
+import org.montclairrobotics.sprocket.auto.AutoMode;
+import org.montclairrobotics.sprocket.auto.states.DriveEncoderGyro;
+import org.montclairrobotics.sprocket.auto.states.DriveTime;
 import org.montclairrobotics.sprocket.control.ButtonAction;
+<<<<<<< HEAD
 import org.montclairrobotics.sprocket.motors.CurrentMonitor;
 import org.montclairrobotics.sprocket.motors.Motor;
 import org.montclairrobotics.sprocket.utils.Input;
+=======
+import org.montclairrobotics.sprocket.geometry.Angle;
+import org.montclairrobotics.sprocket.motors.Motor;
+import org.montclairrobotics.sprocket.motors.SEncoder;
+import org.montclairrobotics.sprocket.states.State;
+import org.montclairrobotics.sprocket.states.StateMachine;
+>>>>>>> cleanup
 import org.montclairrobotics.sprocket.utils.PID;
 
-public class MainLift extends TargetMotor {
+import java.nio.channels.Pipe;
+
+public class MainLift extends TargetMotor implements Lift {
 
     private final double speed = 1.0;
+    public static final double TOP= 30834.0;
+    private final boolean LIMIT_SWITCH_DISABLED=true;
+
+    private boolean auto=false;
 
     private int upPosition;
     private int downPosition;
     private DigitalInput bottomLimitSwitch;
 
     public MainLift(){
+<<<<<<< HEAD
         super(Hardware.liftEncoder, new PID(.1, 0, 0), new Motor(Hardware.motorLiftMainFront), new Motor(Hardware.motorLiftMainBack));
+=======
+        super(Hardware.liftEncoder, new BangBang(1,1), new Motor(Hardware.motorLiftMainFront), new Motor(Hardware.motorLiftMainBack));
+>>>>>>> cleanup
 
         mode = Mode.POWER;
 
@@ -28,26 +57,39 @@ public class MainLift extends TargetMotor {
         Control.mainLiftManualUp.setPressAction(new ButtonAction() {
             @Override
             public void onAction() {
-                MainLift.super.set(speed);
+                 set(speed);
             }
         });
 
         Control.mainLiftManualUp.setReleaseAction(new ButtonAction() {
             @Override
             public void onAction() {
-                MainLift.super.set(0);
+                set(0);
             }
         });
 
         // Manual Down
-        Control.mainLiftManualDown.setPressAction(new ButtonAction() {
+        Control.mainLiftManualDown.setHeldAction(new ButtonAction() {
             @Override
             public void onAction() {
+<<<<<<< HEAD
                 if(!bottomLimitSwitch.get()) {
                     MainLift.super.set(-speed);
                 }else{
                     MainLift.super.set(0);
                     Hardware.liftEncoder.reset();
+=======
+                if(LIMIT_SWITCH_DISABLED || !Hardware.liftLimitSwitch.get()) {
+                    if(encoder.getInches().get()>TOP*0.2||Control.auxStick.getRawButton(7)) {
+                        set(-speed);
+                    }
+                    else {
+                        set(-0.4);
+                    }
+                }else{
+                    set(0);
+                    encoder.reset();
+>>>>>>> cleanup
                 }
             }
         });
@@ -57,21 +99,41 @@ public class MainLift extends TargetMotor {
         Control.mainLiftManualDown.setReleaseAction(new ButtonAction() {
             @Override
             public void onAction() {
+<<<<<<< HEAD
                 if(encoder != null) {
                     MainLift.super.set(0);
                 }
+=======
+                set(0);
+>>>>>>> cleanup
             }
         });
 
         // Lift Top
-        Control.mainLiftTop.setPressAction(new ButtonAction() {
+        /* Control.mainLiftTop.setPressAction(new ButtonAction() {
             @Override
             public void onAction() {
                 if(encoder != null){
                     MainLift.super.setTarget(downPosition);
                 }
             }
+        });*/
+        Control.mainLiftAutoUp.setHeldAction(new ButtonAction() {
+            @Override
+            public void onAction() {
+                if(Hardware.liftEncoder.getInches().get()<TOP)
+                {
+                    Hardware.motorLiftMainFront.set(1);
+                    Hardware.motorLiftMainBack.set(1);
+                }
+                else
+                {
+                    Hardware.motorLiftMainFront.set(0);
+                    Hardware.motorLiftMainBack.set(0);
+                }
+            }
         });
+<<<<<<< HEAD
 
 
 
@@ -90,6 +152,16 @@ public class MainLift extends TargetMotor {
         }).setEncoder(Hardware.liftEncoder);
 
 
+=======
+        Control.mainLiftAutoUp.setReleaseAction(new ButtonAction() {
+            @Override
+            public void onAction() {
+                Hardware.motorLiftMainFront.set(0);
+                Hardware.motorLiftMainBack.set(0);
+            }
+        });
+        setPower(0);
+>>>>>>> cleanup
         // Lift Bottom
 
 
@@ -97,5 +169,14 @@ public class MainLift extends TargetMotor {
     }
 
 
+    @Override
+    public SEncoder getEncoder() {
+        return encoder;
+    }
 
+    @Override
+    public void setAuto(double power) {
+        setPower(power);
+        auto=true;
+    }
 }
