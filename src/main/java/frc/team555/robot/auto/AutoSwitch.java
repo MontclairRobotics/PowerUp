@@ -5,6 +5,8 @@ import org.montclairrobotics.sprocket.auto.AutoMode;
 import org.montclairrobotics.sprocket.states.State;
 
 public abstract class AutoSwitch extends AutoMode {
+    protected static double POWER = 0.75;
+
     public AutoSwitch(String name, State... states) {
         super(name, states);
     }
