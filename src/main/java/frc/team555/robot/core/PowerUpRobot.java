@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team555.robot.auto.*;
 import frc.team555.robot.components.CubeIntake;
+import frc.team555.robot.components.IntakeLift;
 import frc.team555.robot.components.MainLift;
 import frc.team555.robot.utils.CoastMotor;
 import frc.team555.robot.utils.Side;
@@ -40,7 +41,7 @@ public class PowerUpRobot extends SprocketRobot {
     boolean manualLock;
     public static CubeIntake intake;
     MainLift mainLift;
-    // IntakeLift intakeLift;
+    IntakeLift intakeLift;
     StateMachine autoClimb;
     //SendableChooser<Side> startSideChooser;
 
@@ -82,6 +83,7 @@ public class PowerUpRobot extends SprocketRobot {
         DriveModule[] modules = new DriveModule[2];
         intake = new CubeIntake();
         mainLift=new MainLift();
+        intakeLift=new IntakeLift();
         correction = new GyroCorrection(Hardware.navx, new PID(1.5, 0, 0.0015), 90, 1);
         autoClimb = new AutoClimbSequence(mainLift);
         //SetIntakeLift.setLift(intakeLift);
@@ -341,6 +343,7 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
         addAutoMode(mainLiftUp);
         addAutoMode(turnQuarter);
         addAutoMode(new AutoMode("Switch Using Lift", new TopCubeAuto(mainLift, intake, correction)));
+        addAutoMode(new AutoMode("Drive 120 Inches",new DriveEncoderGyro(120,.5,Angle.ZERO,true,correction)));
         //addAutoMode(new AutoMode("Switch Auto", new SwitchAuto(correction, intake)));
         sendAutoModes();
 

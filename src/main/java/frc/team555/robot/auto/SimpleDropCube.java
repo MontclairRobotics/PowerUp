@@ -27,7 +27,7 @@ public class SimpleDropCube extends StateMachine{
                 new AutoState() {
                     @Override
                     public void stateUpdate() {
-                        intake.auto();
+                        intake.setAutoPower(.3);
                     }
 
                     @Override

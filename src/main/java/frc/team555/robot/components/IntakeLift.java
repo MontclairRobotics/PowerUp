@@ -23,7 +23,8 @@ public class IntakeLift implements Lift{
     private boolean auto=false;
 
 
-    public double MANUAL_POWER=.5;
+    public double MANUAL_POWER_UP=.5;
+    public double MANUAL_POWER_DOWN=-.3;
     public final double[] positions = {0D, 49-15}; // Todo: test values
     private int pos;
     private TargetMotor motors;
@@ -79,7 +80,7 @@ public class IntakeLift implements Lift{
         Control.intakeLiftManualUp.setPressAction(new ButtonAction() {
             @Override
             public void onAction() {
-                motors.setPower(MANUAL_POWER);
+                motors.setPower(MANUAL_POWER_UP);
             }
         });
 
@@ -87,7 +88,7 @@ public class IntakeLift implements Lift{
         Control.intakeLiftManualDown.setPressAction(new ButtonAction() {
             @Override
             public void onAction() {
-                motors.setPower(-MANUAL_POWER);
+                motors.setPower(MANUAL_POWER_DOWN);
 
             }
         });

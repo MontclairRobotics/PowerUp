@@ -22,7 +22,8 @@ import org.montclairrobotics.sprocket.utils.Togglable;
 
 
 public class CubeIntake implements Updatable, Togglable{
-	private double rotatePower=.1;
+	private double rotatePowerUp=.5;
+	private double rotatePowerDown=-.2;
 
 	private boolean auto;
 
@@ -43,9 +44,9 @@ public class CubeIntake implements Updatable, Togglable{
 		this.right = new Motor(Hardware.motorIntakeR);
 		right.setInverted(true);
 		//this.clamp = new Motor(Hardware.motorIntakeClamp);
-		LimitedMotor rotateMotor=new LimitedMotor(Hardware.motorIntakeRotate,true,Hardware.intakeLowerBound,Hardware.intakeUpperBound);
-		//Motor motor=new Motor(Hardware.motorIntakeRotate);
-		this.rotate=new TargetMotor(Hardware.intakeRotationEncoder,new BangBang(tolerance,rotatePower),rotateMotor);
+		//LimitedMotor rotateMotor=new LimitedMotor(Hardware.motorIntakeRotate,true,Hardware.intakeLowerBound,Hardware.intakeUpperBound);
+		Motor rotateMotor=new Motor(Hardware.motorIntakeRotate);
+		this.rotate=new TargetMotor(Hardware.intakeRotationEncoder,new BangBang(tolerance,rotatePowerUp),rotateMotor);
 		// this.roationalMotor = new TargetMotor(Hardware.intakeRotationEncoder, new BangBang(tolerance,rotatePower), rotateMotor); // Todo: needs to be implemented
 
 		this.power = new Input<Vector>() {
@@ -59,7 +60,7 @@ public class CubeIntake implements Updatable, Togglable{
 				double y=-Control.auxStick.getY();
 				if(Math.abs(y)<0.1)
 				{
-					y=-.05;
+					y=-0.1;
 				}
 				return new XY(x,y);
 			}
@@ -67,7 +68,7 @@ public class CubeIntake implements Updatable, Togglable{
 
 
 
-		Control.intakeRotateDown.setPressAction(new ButtonAction() {
+		/*Control.intakeRotateDown.setPressAction(new ButtonAction() {
 			@Override
 			public void onAction() {
 				rotate.setTarget(downPos);
@@ -88,13 +89,14 @@ public class CubeIntake implements Updatable, Togglable{
 				rotate.setTarget(middlePos);
 			}
 		});
+		*/
 
 
 
 		Control.intakeRotateUpManual.setPressAction(new ButtonAction() {
 			@Override
 			public void onAction() {
-				rotate.setPower(rotatePower);
+				setPower(rotatePowerUp);
 			}
 		});
 		Control.intakeRotateUpManual.setReleaseAction(new ButtonAction() {
@@ -107,7 +109,7 @@ public class CubeIntake implements Updatable, Togglable{
 		Control.intakeRotateDownManual.setPressAction(new ButtonAction() {
 			@Override
 			public void onAction() {
-				rotate.setPower(-rotatePower);
+				setPower(rotatePowerDown);
 			}
 		});
 		Control.intakeRotateDownManual.setReleaseAction(new ButtonAction() {
@@ -122,6 +124,18 @@ public class CubeIntake implements Updatable, Togglable{
 	}
 
 
+	public void setPower(double pow) {
+		/*if (pow > 0 && Hardware.intakeUpperBound.get()) 			//Upper limit switch is not present
+		{
+			pow=0;
+		}
+		else*/ if (pow < 0 && !Hardware.intakeLowerBound.get())		//Lower Limit switch is inverted
+		{
+			pow=0;
+		}
+		rotate.setPower(pow);
+	}
+
 	@Override
 	public void update() {
 		Vector p = power.get();
@@ -132,7 +146,8 @@ public class CubeIntake implements Updatable, Togglable{
 		}
 		auto=false;
         Debug.msg("RotateMotor PID OUT",rotate.pid.get());
-        Debug.msg("RotateMotor PID TGT",rotate.pid.getTarget());
+		Debug.msg("RotateMotor PID TGT",rotate.pid.getTarget());
+		Debug.msg("RotateMotor Encoder",rotate.pid.getCurInput());
 	}
 
 

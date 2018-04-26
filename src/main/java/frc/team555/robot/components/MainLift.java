@@ -26,7 +26,7 @@ public class MainLift extends TargetMotor implements Lift {
 
     private final double speed = 1.0;
     public static final double TOP= 30834.0;
-    private final boolean LIMIT_SWITCH_DISABLED=true;
+    private final boolean LIMIT_SWITCH_DISABLED=false;
 
     private boolean auto=false;
 
