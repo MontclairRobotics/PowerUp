@@ -13,6 +13,7 @@ package frc.team555.robot.core;
 
 //15.5 to 49.5
 
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.*;
 import frc.team555.robot.utils.NavXInput;
@@ -134,6 +135,7 @@ public class Hardware {
         motorDriveFR.setInverted(true);
 
         motorLiftIntake = new WPI_TalonSRX(DeviceID.motorIntakeLift);
+        motorLiftIntake.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
         motorLiftMainFront = new WPI_TalonSRX(DeviceID.motorMainLiftFront);
         motorLiftMainBack = new WPI_TalonSRX(DeviceID.motorMainLiftBack);
         motorIntakeRotate = new WPI_TalonSRX(DeviceID.motorIntakeRotate);

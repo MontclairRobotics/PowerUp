@@ -60,7 +60,7 @@ public class CubeIntake implements Updatable, Togglable{
 				double y=-Control.auxStick.getY();
 				if(Math.abs(y)<0.1)
 				{
-					y=-0.1;
+					y=-0.05;
 				}
 				return new XY(x,y);
 			}

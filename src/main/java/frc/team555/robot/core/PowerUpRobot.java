@@ -336,9 +336,9 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
 
         /* Joshua Rapoport: AutoSwitch (left, right, middle) */
 
-        addAutoMode(AutoSwitch.fromSide(Side.LEFT));
-        addAutoMode(AutoSwitch.fromSide(Side.RIGHT));
-        addAutoMode(AutoSwitch.fromMiddle());
+        // addAutoMode(AutoSwitch.fromSide(Side.LEFT));
+        // addAutoMode(AutoSwitch.fromSide(Side.RIGHT));
+        // addAutoMode(AutoSwitch.fromMiddle());
         addAutoMode(new AutoMode("Switch Using Intake", new SwitchAuto(mainLift,correction, intake)));
         addAutoMode(mainLiftUp);
         addAutoMode(turnQuarter);
@@ -412,6 +412,7 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
             }
         });
         visionThread.start();*/
+
     }
 
     @Override
@@ -443,7 +444,7 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
         debugCurrent("Main Lift Back",Hardware.motorLiftMainBack);
         debugCurrent("Intake Lift",Hardware.motorLiftIntake);
         SmartDashboard.putNumber("Main Lift Encoder Value",Hardware.liftEncoder.getInches().get());
-        //SmartDashboard.putNumber("Intake Lift Encoder",in.getInches().get());
+        SmartDashboard.putNumber("Intake Lift Encoder",Hardware.motorLiftIntake.getSensorCollection().getQuadraturePosition());
         gyroLocking();
         //startSide = startSideChooser.getSelected();
     }

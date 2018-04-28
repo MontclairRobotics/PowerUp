@@ -18,7 +18,7 @@ public class SimpleDropCube extends StateMachine{
     public SimpleDropCube(MainLift mainLift, CubeIntake intake, GyroCorrection correction, Input<Side> side){
         super(
                 new MultiState(
-                    new MoveLift(mainLift,MainLift.TOP*0.6,1,true),
+                    new MoveLift(mainLift,MainLift.TOP*0.5,1,true),
                     new DriveEncoderGyro(140, .7, Angle.ZERO, false, correction)
                 ),
                 new SideTurn(correction, false, side),

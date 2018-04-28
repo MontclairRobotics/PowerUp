@@ -23,7 +23,7 @@ public class TopCubeAuto extends StateMachine {
                         return SwitchAuto.startSidesChooser.getSelected();
                     }
                 }), SwitchAuto.startSide),
-                new ConditionalState(new DriveEncoderGyro(180,0.5,Angle.ZERO,false,correction),new Input<Boolean>(){
+                new ConditionalState(new DriveEncoderGyro(140,0.4,Angle.ZERO,false,correction),new Input<Boolean>(){
                     @Override
                     public Boolean get() {
                         return !SwitchAuto.startSide.get();

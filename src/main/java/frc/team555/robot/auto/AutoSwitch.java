@@ -3,11 +3,11 @@ package frc.team555.robot.auto;
 import frc.team555.robot.utils.Side;
 import org.montclairrobotics.sprocket.auto.AutoMode;
 import org.montclairrobotics.sprocket.states.State;
-
+/*
 public abstract class AutoSwitch extends AutoMode {
-    protected static double POWER = 0.75;
+     /*protected static double POWER = 0.75;
 
-    public AutoSwitch(String name, State... states) {
+    // public AutoSwitch(String name, State... states) {
         super(name, states);
     }
 
@@ -19,3 +19,4 @@ public abstract class AutoSwitch extends AutoMode {
         return new AutoSwitchLR(pos, Side.fromDriverStation()[0]);
     }
 }
+*/

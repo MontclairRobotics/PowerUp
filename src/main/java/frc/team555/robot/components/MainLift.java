@@ -41,22 +41,22 @@ public class MainLift extends TargetMotor implements Lift {
         mode = Mode.POWER;
 
         // Manual Up
-        Control.mainLiftManualUp.setPressAction(new ButtonAction() {
-            @Override
-            public void onAction() {
-                 set(speed);
-            }
-        });
+//        Control.mainLiftManualUp.setPressAction(new ButtonAction() {
+//            @Override
+//            public void onAction() {
+//                 set(speed);
+//            }
+//        });
 
-        Control.mainLiftManualUp.setReleaseAction(new ButtonAction() {
-            @Override
-            public void onAction() {
-                set(0);
-            }
-        });
+//        Control.mainLiftManualUp.setReleaseAction(new ButtonAction() {
+//            @Override
+//            public void onAction() {
+//                set(0);
+//            }
+//        });
 
-        // Manual Down
-        Control.mainLiftManualDown.setHeldAction(new ButtonAction() {
+        // Auto Safe Down
+        Control.mainLiftAutoDown.setHeldAction(new ButtonAction() {
             @Override
             public void onAction() {
                 if(LIMIT_SWITCH_DISABLED || !Hardware.liftLimitSwitch.get()) {
@@ -75,7 +75,7 @@ public class MainLift extends TargetMotor implements Lift {
 
 
 
-        Control.mainLiftManualDown.setReleaseAction(new ButtonAction() {
+        Control.mainLiftAutoDown.setReleaseAction(new ButtonAction() {
             @Override
             public void onAction() {
                 set(0);
@@ -106,6 +106,28 @@ public class MainLift extends TargetMotor implements Lift {
                 }
             }
         });
+        Control.mainLiftManualUp.setHeldAction(new ButtonAction() {
+            @Override
+            public void onAction() {
+                if(Hardware.liftEncoder.getInches().get()<31296.0)
+                {
+                    Hardware.motorLiftMainFront.set(.5);
+                    Hardware.motorLiftMainBack.set(.5);
+                }
+                else
+                {
+                    Hardware.motorLiftMainFront.set(0);
+                    Hardware.motorLiftMainBack.set(0);
+                }
+            }
+        });
+        Control.mainLiftManualUp.setReleaseAction(new ButtonAction() {
+                                                      @Override
+                                                      public void onAction() {
+                                                          Hardware.motorLiftMainFront.set(0);
+                                                          Hardware.motorLiftMainBack.set(0);
+                                                      }
+                                                  });
 
         Control.mainLiftAutoUp.setReleaseAction(new ButtonAction() {
             @Override
