@@ -24,11 +24,13 @@ import java.nio.channels.Pipe;
 
 public class MainLift extends TargetMotor implements Lift {
 
-    private final double speed = 1.0;
+    private final double speed = 0.5;
     public static final double TOP= 30834.0;
     private final boolean LIMIT_SWITCH_DISABLED=false;
 
     private boolean auto=false;
+
+    public boolean hasReset=false;
 
     private int upPosition;
     private int downPosition;
@@ -36,7 +38,7 @@ public class MainLift extends TargetMotor implements Lift {
 
     public MainLift(){
 
-        super(Hardware.liftEncoder, new BangBang(1,1), new Motor(Hardware.motorLiftMainFront), new Motor(Hardware.motorLiftMainBack));
+        super(Hardware.liftEncoder, new BangBang(1,.5), new Motor(Hardware.motorLiftMainFront), new Motor(Hardware.motorLiftMainBack));
 
         mode = Mode.POWER;
 
@@ -59,7 +61,8 @@ public class MainLift extends TargetMotor implements Lift {
         Control.mainLiftAutoDown.setHeldAction(new ButtonAction() {
             @Override
             public void onAction() {
-                if(LIMIT_SWITCH_DISABLED || !Hardware.liftLimitSwitch.get()) {
+                if((LIMIT_SWITCH_DISABLED || !Hardware.liftLimitSwitch.get())
+                        &&Control.auxStick.getRawButton(1)) {
                     if(encoder.getInches().get()>TOP*0.2||Control.auxStick.getRawButton(7)) {
                         set(-speed);
                     }
@@ -69,6 +72,7 @@ public class MainLift extends TargetMotor implements Lift {
                 }else{
                     set(0);
                     encoder.reset();
+                    hasReset=true;
                 }
             }
         });
@@ -91,7 +95,7 @@ public class MainLift extends TargetMotor implements Lift {
                 }
             }
         });*/
-        Control.mainLiftAutoUp.setHeldAction(new ButtonAction() {
+        /*Control.mainLiftAutoUp.setHeldAction(new ButtonAction() {
             @Override
             public void onAction() {
                 if(Hardware.liftEncoder.getInches().get()<TOP)
@@ -105,11 +109,13 @@ public class MainLift extends TargetMotor implements Lift {
                     Hardware.motorLiftMainBack.set(0);
                 }
             }
-        });
+        });*/
         Control.mainLiftManualUp.setHeldAction(new ButtonAction() {
             @Override
             public void onAction() {
-                if(Hardware.liftEncoder.getInches().get()<31296.0)
+                if(Hardware.liftEncoder.getInches().get()<31296.0
+                        &&Control.auxStick.getRawButton(1)
+                        &&hasReset)
                 {
                     Hardware.motorLiftMainFront.set(.5);
                     Hardware.motorLiftMainBack.set(.5);
@@ -129,13 +135,13 @@ public class MainLift extends TargetMotor implements Lift {
                                                       }
                                                   });
 
-        Control.mainLiftAutoUp.setReleaseAction(new ButtonAction() {
+        /*Control.mainLiftAutoUp.setReleaseAction(new ButtonAction() {
             @Override
             public void onAction() {
                 Hardware.motorLiftMainFront.set(0);
                 Hardware.motorLiftMainBack.set(0);
             }
-        });
+        });*/
         setPower(0);
         // Lift Bottom
 

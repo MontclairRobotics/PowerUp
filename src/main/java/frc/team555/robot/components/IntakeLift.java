@@ -77,7 +77,9 @@ public class IntakeLift implements Lift{
 */
         //Start the motors in manual mode
         //IntakeLift up (manual backup control)
-        Control.intakeLiftManualUp.setPressAction(new ButtonAction() {
+
+        //COMMENT OUT FOR PETTING ZOO
+        /*Control.intakeLiftManualUp.setPressAction(new ButtonAction() {
             @Override
             public void onAction() {
                 motors.setPower(MANUAL_POWER_UP);
@@ -91,7 +93,7 @@ public class IntakeLift implements Lift{
                 motors.setPower(MANUAL_POWER_DOWN);
 
             }
-        });
+        });*/
 
         //Stop the motors in manual mode
         ButtonAction stop=new ButtonAction() {

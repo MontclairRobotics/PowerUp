@@ -50,7 +50,8 @@ public class PowerUpRobot extends SprocketRobot {
     private static final int IMG_WIDTH = 320;
     private static final int IMG_HEIGHT = 240;
 
-
+    private static final double fullSpeed=0.5;
+    private static final double halfSpeed=0.4;
 
     private static final double oldOverNew=17.1859 * 1.25/(6544.0/143.0);
 
@@ -183,7 +184,7 @@ public class PowerUpRobot extends SprocketRobot {
 
 
         ArrayList<Step<DTTarget>> steps = new ArrayList<>();
-        sensitivity=new Sensitivity(1,0.6);
+        sensitivity=new Sensitivity(fullSpeed,0.6);
         lock = new GyroLock(correction);
         steps.add(new Deadzone());
         steps.add(sensitivity);
@@ -464,11 +465,11 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
         //lock.update();
         if(Hardware.liftEncoder.getInches().get()>MainLift.TOP*0.5&&!Control.driveStick.getRawButton(3)||Control.driveStick.getRawButton(2))
         {
-            sensitivity.set(0.4,0.3);
+            sensitivity.set(halfSpeed,0.3);
         }
         else
         {
-            sensitivity.set(1,0.6);
+            sensitivity.set(fullSpeed,0.6);
         }
     }
 

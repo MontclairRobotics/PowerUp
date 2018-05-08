@@ -36,6 +36,7 @@ public class CubeIntake implements Updatable, Togglable{
 	public final int downPos = 2;
 	public final int middlePos = 1;
 
+	private double speed=0.5;
 
 	public  Input<Vector> power;
 	
@@ -141,8 +142,8 @@ public class CubeIntake implements Updatable, Togglable{
 		Vector p = power.get();
 
 		if(!auto) {
-			left.set(p.getY() - p.getX()*.25);
-			right.set(p.getY() + p.getX()*.25);
+			left.set((p.getY() - p.getX()*.25)*speed);
+			right.set((p.getY() + p.getX()*.25)*speed);
 		}
 		auto=false;
         Debug.msg("RotateMotor PID OUT",rotate.pid.get());

@@ -26,7 +26,7 @@ public class Control {
             intakeLiftManualDown,
             //intakeLiftTop,
             //intakeLiftBottom,
-            mainLiftAutoUp,
+            //mainLiftAutoUp,
             mainLiftManualUp,
             mainLiftAutoDown,
 
@@ -91,7 +91,7 @@ public class Control {
         mainLiftAutoDown = new JoystickButton(auxStick,3);
         intakeLiftManualUp = new JoystickButton(auxStick,6);
         intakeLiftManualDown = new JoystickButton(auxStick,5);
-        mainLiftAutoUp = new JoystickButton(auxStick, 1);
+        //mainLiftAutoUp = new JoystickButton(auxStick, 1);
         halfSpeed=new JoystickButton(driveStick,2);
         autoClimb = new JoystickButton(auxStick, 2);
 
