@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.ArrayList;
 
 public class PettingZooRobot {
-    protected enum Move {
+    public enum Move {
         FORWARD, BACK, LEFT, RIGHT, STOP
     }
 

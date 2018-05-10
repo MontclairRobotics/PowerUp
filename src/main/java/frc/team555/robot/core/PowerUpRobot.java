@@ -2,11 +2,10 @@ package frc.team555.robot.core;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.team555.robot.PettingAutoMode;
+import frc.team555.robot.auto.PettingAutoMode;
 import frc.team555.robot.PettingZooRobot;
 import frc.team555.robot.auto.*;
 import frc.team555.robot.components.CubeIntake;
-import frc.team555.robot.utils.MotorMonitor;
 import frc.team555.robot.utils.Side;
 import org.montclairrobotics.sprocket.SprocketRobot;
 import org.montclairrobotics.sprocket.auto.AutoMode;
@@ -275,10 +274,7 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
      */
     public void workshop() {
         // Put your fantabulous code here...
-        for(int i = 0; i < 4; i++){
-            robot.forward();
-            robot.right();
-        }
+
     }
 
 
