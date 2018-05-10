@@ -3,7 +3,6 @@ package frc.team555.robot.test;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team555.robot.components.CubeIntake;
 import frc.team555.robot.components.MainLift;
-import frc.team555.robot.auto.DynamicAutoState;
 import frc.team555.robot.core.Control;
 import frc.team555.robot.core.Hardware;
 import org.montclairrobotics.sprocket.SprocketRobot;
