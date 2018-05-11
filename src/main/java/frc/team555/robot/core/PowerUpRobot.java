@@ -2,9 +2,8 @@ package frc.team555.robot.core;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.team555.robot.auto.PettingAutoMode;
-import frc.team555.robot.PettingZooRobot;
-import frc.team555.robot.auto.*;
+import frc.team555.robot.workshop.CodeWorkshop;
+import frc.team555.robot.workshop.PettingAutoMode;
 import frc.team555.robot.components.CubeIntake;
 import frc.team555.robot.utils.Side;
 import org.montclairrobotics.sprocket.SprocketRobot;
@@ -21,7 +20,6 @@ import org.montclairrobotics.sprocket.motors.CurrentMonitor;
 import org.montclairrobotics.sprocket.motors.Module;
 import org.montclairrobotics.sprocket.motors.Motor;
 import org.montclairrobotics.sprocket.pipeline.Step;
-import org.montclairrobotics.sprocket.states.StateMachine;
 import org.montclairrobotics.sprocket.utils.Debug;
 import org.montclairrobotics.sprocket.utils.Input;
 import org.montclairrobotics.sprocket.utils.PID;
@@ -30,7 +28,7 @@ import org.montclairrobotics.sprocket.utils.Togglable;
 import java.util.ArrayList;
 
 public class PowerUpRobot extends SprocketRobot {
-    PettingZooRobot robot = new PettingZooRobot();
+    CodeWorkshop pettingZoo = new CodeWorkshop();
 
     DriveTrain driveTrain;
     public static GyroCorrection correction;
@@ -39,17 +37,6 @@ public class PowerUpRobot extends SprocketRobot {
     public static CubeIntake intake;
 
     public static SendableChooser<Side> startSidesChooser;
-
-    private static final int IMG_WIDTH = 320;
-    private static final int IMG_HEIGHT = 240;
-
-
-    private static final double oldOverNew=17.1859 * 1.25/(6544.0/143.0);
-
-    //private double centerX = 0.0;
-    //private VisionThread visionThread;
-
-    //private final Object imgLock = new Object();
 
     @Override
     public void robotInit(){
@@ -184,109 +171,22 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
                         true,
                         correction));
 
-        //addAutoMode(new AutoMode("Switch Auto", new SwitchAuto(correction, intake)));
         sendAutoModes();
 
-        StateMachine shootCube = new StateMachine(false, new SetIntakeRotation(intake, intake.middlePos),
-                new CubeOuttake(intake, 1), new SetIntakeRotation(intake, intake.downPos));
-
-        Control.intakeSubroutine.setHeldAction(new ButtonAction() {
-            @Override
-            public void onAction() {
-                shootCube.start();
-            }
-        });
-
-
-        Control.intakeSubroutine.setHeldAction(new ButtonAction() {
-            @Override
-            public void onAction() {
-                shootCube.stateUpdate();
-            }
-        });
-
-        Control.intakeSubroutine.setReleaseAction(new ButtonAction() {
-            @Override
-            public void onAction() {
-                shootCube.stop();
-                intake.disable();
-                intake.rotationalMotor.set(intake.downPos);
-            }
-        });
-
         startSidesChooser = new SendableChooser<>();
-        for(Side side :  Side.values()){
+
+        for(Side side :  Side.values()) {
             startSidesChooser.addObject(side.toString(), side);
         }
         SmartDashboard.putData(startSidesChooser);
-
     }
 
     @Override
     public void userAutonomousSetup(){
-        workshop();
+        pettingZoo.workshop();
 
-        addAutoMode(new PettingAutoMode(robot));
+        addAutoMode(new PettingAutoMode(pettingZoo.robot));
     }
-
-
-
-
-
-
-
-
-
-
-
-    /**
-     * Welcome to Robotics Petting Zoo!
-     *
-     * We're Team 555, and we compete in the FIRST Robotics Competition (the big boi robots) and
-     * today only, you can get a taste of what is like to program a --
-     *
-     * Wait. WAIT! Please don't leave! Coding can be fun, we promise. Let us introduce you to our friend.
-     *
-     * Meet "robot". robot is a robot who really, REALLY likes grammar -- no, not English. He speaks a language called
-     * Java, and once you learn it, you can tell robot to do all sorts of things.
-     *
-     * To give robot something to do, just write a sentence in Java:
-     *  - His name, (sup "robot"?)
-     *  - A period, "."
-     *  - Whatever the heck you want him to do (go "forward", turn "left", etc).
-     *  - Parentheses, "()"
-     *  - A semicolon, ";"
-     *
-     * In the end, your code might look something like this:
-     *
-     *    robot.forward();
-     *    robot.left();
-     *    robot.right(2);
-     *
-     * robot will go forward, turn left, then turn right 2 times (ooh, aah).
-     *
-     * Welp, that's about it. Please sign up for the Montclair Robotics Club this fall, see if you like it.
-     *
-     *
-     * Peace, love, and Java,
-     * The Code Division
-     *
-     */
-    public void workshop() {
-        // Put your fantabulous code here...
-
-    }
-
-
-
-
-
-
-
-
-
-
-
     @Override
     public void update(){
         SmartDashboard.putNumber("Distance", driveTrain.getDistance().getY());

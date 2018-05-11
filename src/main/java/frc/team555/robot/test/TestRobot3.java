@@ -1,6 +1,5 @@
 package frc.team555.robot.test;
 
-import frc.team555.robot.auto.ConditionalState;
 import frc.team555.robot.components.CubeIntake;
 import frc.team555.robot.components.IntakeLift;
 import frc.team555.robot.core.Control;
@@ -9,7 +8,6 @@ import org.montclairrobotics.sprocket.SprocketRobot;
 import org.montclairrobotics.sprocket.auto.AutoMode;
 import org.montclairrobotics.sprocket.control.JoystickYAxis;
 import org.montclairrobotics.sprocket.drive.ControlledMotor;
-import org.montclairrobotics.sprocket.utils.Debug;
 import org.montclairrobotics.sprocket.utils.Input;
 
 public class TestRobot3 extends SprocketRobot{

@@ -1,4 +1,6 @@
-package frc.team555.robot.core;
+package frc.team555.robot.test;
+
+import frc.team555.robot.core.*;
 
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -65,7 +67,6 @@ public class PIDLoopTest extends SprocketRobot {
         //40 ft 5.5 in
         Hardware.init();
         Control.init();
-        SwitchAuto2.init();
         DriveModule[] modules = new DriveModule[2];
         //intake = new SimpleIntake();
         //lift=new MainLift();
@@ -365,8 +366,6 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
                 new DriveEncoderGyro(122, .5, new Degrees(-90), false, correction),
                 new DriveEncoderGyro(80, .5, new Degrees(0), false, correction));
 
-        AutoMode switchAuto2=new AutoMode("Switch",new SwitchAuto2(correction));
-
 /*
         AutoMode twentyFeet=new AutoMode("Twenty Feet",
                 new ResetGyro(correction),
@@ -400,7 +399,6 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
         addAutoMode(centerBaseLineLeft);
         addAutoMode(centerBaseLineRight);
         //addAutoMode(new AutoMode("Switch Auto", new SwitchAuto(correction, intake)));
-        addAutoMode(switchAuto2);
         addAutoMode(new AutoMode("Drive Time",new DriveTime(4,.5)));
         sendAutoModes();
 
@@ -487,7 +485,7 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
     }
 
     @Override
-    public void userDisabledPeriodic(){
-        SwitchAuto2.disabled();
+    public void userDisabledPeriodic() {
+
     }
 }

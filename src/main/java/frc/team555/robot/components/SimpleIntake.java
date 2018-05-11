@@ -1,19 +1,9 @@
 package frc.team555.robot.components;
 
-import frc.team555.robot.auto.ConditionalState;
 import frc.team555.robot.core.Control;
 import frc.team555.robot.core.Hardware;
-import org.montclairrobotics.sprocket.control.Button;
 import org.montclairrobotics.sprocket.control.ButtonAction;
-import org.montclairrobotics.sprocket.control.JoystickButton;
-import org.montclairrobotics.sprocket.geometry.Vector;
-import org.montclairrobotics.sprocket.geometry.XY;
-import org.montclairrobotics.sprocket.loop.Priority;
-import org.montclairrobotics.sprocket.loop.Updatable;
-import org.montclairrobotics.sprocket.loop.Updater;
 import org.montclairrobotics.sprocket.motors.Motor;
-import org.montclairrobotics.sprocket.utils.Input;
-import org.montclairrobotics.sprocket.utils.Togglable;
 
 
 public class SimpleIntake {
