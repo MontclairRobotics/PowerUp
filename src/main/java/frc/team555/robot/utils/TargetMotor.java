@@ -93,16 +93,16 @@ public class TargetMotor extends Module implements Updatable{
         }
         else
         {
-            safeSet(power);
+            //safeSet(power);
         }
     }
     
     public void safeSet(double pow)
     {
-        if(pow>0 &&(upperBound!=null && upperBound.get()) || pow<0 && (lowerBound!=null && lowerBound.get()))
+        /*if(pow>0 &&(upperBound!=null && upperBound.get()) || pow<0 && (lowerBound!=null && lowerBound.get()))
         {
             pow=0;
-        }
+        }*/
         Debug.msg("Setting a power",pow);
         super.set(pow);
     }

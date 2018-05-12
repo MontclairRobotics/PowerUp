@@ -38,7 +38,7 @@ public class MainLift extends TargetMotor implements Lift {
 
     public MainLift(){
 
-        super(Hardware.liftEncoder, new BangBang(1,.5), new Motor(Hardware.motorLiftMainFront), new Motor(Hardware.motorLiftMainBack));
+        super(Hardware.liftEncoder, new BangBang(1,1), new Motor(Hardware.motorLiftMainFront), new Motor(Hardware.motorLiftMainBack));
 
         mode = Mode.POWER;
 

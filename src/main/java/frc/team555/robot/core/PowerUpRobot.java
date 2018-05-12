@@ -377,7 +377,7 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
 
 
 
-
+/*
         Control.autoClimb.setPressAction(new ButtonAction() {
             @Override
             public void onAction() {
@@ -398,7 +398,7 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
                 autoClimb.stop();
             }
         });
-
+*/
         // vision stuff
 //        CameraServer.getInstance().startAutomaticCapture();
         /*UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
