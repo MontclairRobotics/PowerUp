@@ -8,6 +8,8 @@ import org.montclairrobotics.sprocket.loop.Updater;
 import org.montclairrobotics.sprocket.motors.Module;
 import org.montclairrobotics.sprocket.motors.Motor;
 import org.montclairrobotics.sprocket.motors.SEncoder;
+import org.montclairrobotics.sprocket.utils.Debug;
+import org.montclairrobotics.sprocket.utils.Input;
 import org.montclairrobotics.sprocket.utils.PID;
 
 
@@ -97,10 +99,11 @@ public class TargetMotor extends Module implements Updatable{
     
     public void safeSet(double pow)
     {
-        if(pow>0 && upperBound.get() || pow<0 && lowerBound.get())
+        if(pow>0 &&(upperBound!=null && upperBound.get()) || pow<0 && (lowerBound!=null && lowerBound.get()))
         {
             pow=0;
         }
+        Debug.msg("Setting a power",pow);
         super.set(pow);
     }
 

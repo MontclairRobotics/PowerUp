@@ -24,7 +24,7 @@ import java.nio.channels.Pipe;
 
 public class MainLift extends TargetMotor implements Lift {
 
-    private final double speed = 0.5;
+    private final double speed =1;
     public static final double TOP= 30834.0;
     private final boolean LIMIT_SWITCH_DISABLED=false;
 
@@ -62,7 +62,8 @@ public class MainLift extends TargetMotor implements Lift {
             @Override
             public void onAction() {
                 if((LIMIT_SWITCH_DISABLED || !Hardware.liftLimitSwitch.get())
-                        &&Control.auxStick.getRawButton(1)) {
+                        //&&Control.auxStick.getRawButton(1)
+                ) {
                     if(encoder.getInches().get()>TOP*0.2||Control.auxStick.getRawButton(7)) {
                         set(-speed);
                     }
@@ -114,11 +115,11 @@ public class MainLift extends TargetMotor implements Lift {
             @Override
             public void onAction() {
                 if(Hardware.liftEncoder.getInches().get()<31296.0
-                        &&Control.auxStick.getRawButton(1)
+                        //&&Control.auxStick.getRawButton(1)
                         &&hasReset)
                 {
-                    Hardware.motorLiftMainFront.set(.5);
-                    Hardware.motorLiftMainBack.set(.5);
+                    Hardware.motorLiftMainFront.set(1);
+                    Hardware.motorLiftMainBack.set(1);
                 }
                 else
                 {
@@ -143,6 +144,9 @@ public class MainLift extends TargetMotor implements Lift {
             }
         });*/
         setPower(0);
+
+
+
         // Lift Bottom
 
 
