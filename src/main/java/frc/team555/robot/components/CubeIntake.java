@@ -36,7 +36,7 @@ public class CubeIntake implements Updatable, Togglable{
 	public final int downPos = 2;
 	public final int middlePos = 1;
 
-	private double speed=0.5;
+	private double speed=1;
 
 	public  Input<Vector> power;
 	

@@ -88,8 +88,8 @@ public class Control {
         intakeLiftManualDown = new JoystickButton(auxStick,4);
         mainLiftAutoUp = new JoystickButton(auxStick, 1);
         */
-        mainLiftManualUp = new JoystickButton(auxStick,3);
-        mainLiftAutoDown = new JoystickButton(auxStick,2);
+        mainLiftManualUp = new JoystickButton(auxStick,4);
+        mainLiftAutoDown = new JoystickButton(auxStick,3);
         intakeLiftManualUp = new JoystickButton(auxStick,6);
         intakeLiftManualDown = new JoystickButton(auxStick,5);
         //mainLiftAutoUp = new JoystickButton(auxStick, 1);
