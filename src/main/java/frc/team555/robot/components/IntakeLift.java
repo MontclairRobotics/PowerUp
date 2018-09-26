@@ -21,7 +21,7 @@ public class IntakeLift implements Lift{
     private boolean auto=false;
 
 
-    public double MANUAL_POWER=.5;
+    public double MANUAL_POWER=1;
     public final double[] positions = {0D, 49-15}; // Todo: test values
     private int pos;
     private TargetMotor motors;
