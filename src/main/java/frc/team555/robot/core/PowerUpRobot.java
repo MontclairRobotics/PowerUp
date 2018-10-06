@@ -8,8 +8,10 @@ import frc.team555.robot.auto.*;
 import frc.team555.robot.components.CubeIntake;
 import frc.team555.robot.components.IntakeLift;
 import frc.team555.robot.components.MainLift;
+import frc.team555.robot.utils.BangBang;
 import frc.team555.robot.utils.CoastMotor;
 import frc.team555.robot.utils.Side;
+import frc.team555.robot.utils.VisionCorrection;
 import org.montclairrobotics.sprocket.SprocketRobot;
 import org.montclairrobotics.sprocket.auto.AutoMode;
 import org.montclairrobotics.sprocket.auto.states.*;
@@ -58,6 +60,7 @@ public class PowerUpRobot extends SprocketRobot {
     @Override
     public void robotInit(){
         CameraServer.getInstance().startAutomaticCapture();
+
         DriveEncoders.TOLLERANCE=/*45.5363/17.1859*/6;
         TurnGyro.TURN_SPEED=0.3;
         TurnGyro.tolerance=new Degrees(3);
@@ -120,6 +123,29 @@ public class PowerUpRobot extends SprocketRobot {
         steps.add(new Deadzone());
         steps.add(sensitivity);
         steps.add(correction);
+        BangBang visionCorrection = new BangBang(10, 10);
+        visionCorrection.setInput(new DashboardInput("Cube X"));
+        visionCorrection.setTarget(140);
+        JoystickButton visionOn = new JoystickButton(Control.driveStick, 10);
+        steps.add(new Step<DTTarget>() {
+            @Override
+            public DTTarget get(DTTarget dtTarget) {
+                Debug.msg("Result", SmartDashboard.getNumber("Cube X", 10));
+                Debug.msg("Vision Button", visionOn.get());
+                if(visionOn.get()){
+                    Debug.msg("Correcting", true);
+                    Debug.msg("Correction", visionCorrection.get());
+                    DTTarget out = new DTTarget(dtTarget.getDirection(), new Degrees(dtTarget.getTurn().toDegrees() - visionCorrection.get()));
+                    Debug.msg("Vision Out: ", out);
+                    return out;
+                }else{
+                    Debug.msg("Correcting", false);
+                    Debug.msg("Correction", visionCorrection.get());
+                    Debug.msg("Vision out: ", dtTarget);
+                    return dtTarget;
+                }
+            }
+        });
         driveTrain.setPipeline(new DTPipeline(steps));
 
         /* Enabling and Disabling GyroLock */

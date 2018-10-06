@@ -22,7 +22,7 @@ import java.nio.channels.Pipe;
 public class MainLift extends TargetMotor implements Lift {
 
     private final double speed = 1.0;
-    public static final double TOP= 30834.0;
+    public static final double TOP= 7809.0;
 
 
     private boolean auto=false;

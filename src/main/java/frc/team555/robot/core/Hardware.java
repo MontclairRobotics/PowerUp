@@ -169,7 +169,7 @@ public class Hardware {
 
 //15.5 to 49.5
         liftEncoder       = new SEncoder(new Encoder(4,5), 1/*31600/(82 - 54)*/); // todo: REALLY NEED TO BE SET
-        intakeLiftEncoder = new SEncoder(new Encoder(1, 2),1);
+        // intakeLiftEncoder = new SEncoder(new Encoder(1, 2),1);
         // intakeRotationEncoder = new TalonEncoder(motorIntakeRotate, 1); // todo, needs to be set
 
 
