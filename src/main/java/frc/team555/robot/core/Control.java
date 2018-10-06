@@ -12,39 +12,22 @@ import org.montclairrobotics.sprocket.drive.DTInput;
 public class Control {
 
     // Port Configuration
-    public static int lockButtonID = 1;
     public static final int driveStickID = 0;
     public static final int auxStickID   = 1;
 
     // Drive Inputs
     public static DTInput driveInput;
     public static Button lock,
-            halfSpeed,
-            //intakeLiftIncrement,
-            //intakeLiftDecrement,
             intakeLiftManualUp,
             intakeLiftManualDown,
-            //intakeLiftTop,
-            //intakeLiftBottom,
             mainLiftAutoUp,
             mainLiftManualUp,
-            mainLiftManualDown,
-            // mainLiftTop,
-            // mainLiftBottom,
-            //openButton,
-            //closeButton,
-            //intakeRotateUp,
-            //intakeRotateDown,
-            //intakeRotateMiddle,
-            //intakeRotateUpManual,
-            //intakeRotateDownManual;
-            //intakeSubroutine;
+            mainLiftAutoDown,
+            visionOn,
             autoClimb,
-            autoOuttake;
+            autoOuttake,
+            cubeAssistance;
 
-
-    //public static int FieldCentricID=2;
-    //public static int ResetID=3;
     // Joystick Declaration
     public static Joystick driveStick;
     public static Joystick auxStick;
@@ -67,53 +50,21 @@ public class Control {
         // Button Creation
         // ==================
 
-        lock = new JoystickButton2(driveStick,lockButtonID);
+        lock = new JoystickButton2(driveStick,1);
 
-        //IntakeLift Buttons
+        // Main Lift Controls
+        mainLiftAutoUp = new JoystickButton2(auxStick, 2);
+        mainLiftAutoDown = new JoystickButton2(auxStick,3);
 
-        // intakeLiftIncrement = new JoystickButton(auxStick,12);
-        // intakeLiftDecrement = new JoystickButton(auxStick,12);
-        // mainLiftTop = new JoystickButton(auxStick,9);
-        // mainLiftBottom = new JoystickButton(auxStick,8);
+        // Intake Lift Controls
+        intakeLiftManualUp = new JoystickButton2(auxStick,4);
+        intakeLiftManualDown = new JoystickButton2(auxStick,5);
 
-
-
-        /*
-        OLD
-        mainLiftManualUp = new JoystickButton(auxStick,3);
-        mainLiftManualDown = new JoystickButton(auxStick,2);
-        intakeLiftManualUp = new JoystickButton(auxStick,5);
-        intakeLiftManualDown = new JoystickButton(auxStick,4);
-        mainLiftAutoUp = new JoystickButton(auxStick, 1);
-        */
-        mainLiftManualUp = new JoystickButton2(auxStick,5);
-        mainLiftManualDown = new JoystickButton2(auxStick,4);
-        intakeLiftManualUp = new JoystickButton2(auxStick,3);
-        intakeLiftManualDown = new JoystickButton2(auxStick,2);
-        mainLiftAutoUp = new JoystickButton2(auxStick, 11);
-        halfSpeed=new JoystickButton2(driveStick,2);
-
-
+        //Driver Assisted Controls
+        visionOn = new JoystickButton2(driveStick,10);
         autoClimb = new JoystickButton2(auxStick, 9);
         autoOuttake = new JoystickButton2(auxStick,1);
-
-        // intakeLiftTop = new JoystickButton(auxStick, 12);
-        // intakeLiftBottom = new JoystickButton(auxStick, 13);
-        // intakeSubroutine = new JoystickButton(auxStick, 14);
-
-
-        // openButton=new JoystickButton(Control.auxStick,8);
-        // closeButton=new JoystickButton(Control.auxStick,9);
-
-        //Intake Buttons
-        // intakeRotateUp = new JoystickButton(auxStick, 12);
-        // intakeRotateDown = new JoystickButton(auxStick, 4);
-        // intakeRotateMiddle=new JoystickButton(auxStick,5);
-        // intakeRotateUpManual = new JoystickButton(auxStick, 3);
-        // intakeRotateDownManual = new JoystickButton(auxStick, 2);
-
-                // Auxiliary Buttons
-
+        cubeAssistance = new JoystickButton2(auxStick,6);
     }
 }
 

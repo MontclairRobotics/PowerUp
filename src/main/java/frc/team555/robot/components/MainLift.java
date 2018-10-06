@@ -51,7 +51,7 @@ public class MainLift extends TargetMotor implements Lift {
         });
 
         // Manual Down
-        Control.mainLiftManualDown.setHeldAction(new ButtonAction() {
+        Control.mainLiftAutoDown.setHeldAction(new ButtonAction() {
             @Override
             public void onAction() {
                 if(!Hardware.liftLimitSwitch.get()) {
@@ -68,7 +68,7 @@ public class MainLift extends TargetMotor implements Lift {
             }
         });
 
-        Control.mainLiftManualDown.setReleaseAction(new ButtonAction() {
+        Control.mainLiftAutoDown.setReleaseAction(new ButtonAction() {
             @Override
             public void onAction() {
                 set(0);
@@ -87,13 +87,11 @@ public class MainLift extends TargetMotor implements Lift {
         Control.mainLiftAutoUp.setHeldAction(new ButtonAction() {
             @Override
             public void onAction() {
-                if(Hardware.liftEncoder.getInches().get()<TOP)
-                {
+                if(Hardware.liftEncoder.getInches().get()<TOP) {
                     Hardware.motorLiftMainFront.set(1);
                     Hardware.motorLiftMainBack.set(1);
                 }
-                else
-                {
+                else {
                     Hardware.motorLiftMainFront.set(0);
                     Hardware.motorLiftMainBack.set(0);
                 }

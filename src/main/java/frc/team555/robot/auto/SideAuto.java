@@ -1,6 +1,5 @@
 package frc.team555.robot.auto;
 
-import frc.team555.robot.driverAssistance.CubeIntake;
 import frc.team555.robot.components.IntakeLift;
 import frc.team555.robot.utils.Side;
 import org.montclairrobotics.sprocket.states.StateMachine;
@@ -8,7 +7,6 @@ import org.montclairrobotics.sprocket.states.StateMachine;
 @Deprecated
 public class SideAuto extends StateMachine {
 
-    CubeIntake intake;
     IntakeLift lift;
     Side side;
 

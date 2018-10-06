@@ -12,6 +12,9 @@ import org.montclairrobotics.sprocket.states.MultiState;
 import org.montclairrobotics.sprocket.states.StateMachine;
 import org.montclairrobotics.sprocket.utils.Input;
 
+/**
+ * Drops Cube using main lift
+ */
 public class DropCube extends StateMachine{
     public DropCube(MainLift mainLift, CubeIntake intake, GyroCorrection correction, Input<Side> side){
         super(

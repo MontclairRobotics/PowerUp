@@ -1,7 +1,7 @@
 package frc.team555.robot.auto;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.team555.robot.driverAssistance.CubeIntake;
+import frc.team555.robot.components.CubeIntake;
 import frc.team555.robot.components.IntakeLift;
 import frc.team555.robot.utils.Side;
 import org.montclairrobotics.sprocket.auto.states.*;

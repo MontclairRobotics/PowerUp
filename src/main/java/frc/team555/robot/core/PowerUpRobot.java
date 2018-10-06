@@ -7,7 +7,8 @@ import frc.team555.robot.driverAssistance.AutoClimbSequence;
 import frc.team555.robot.auto.*;
 import frc.team555.robot.components.IntakeLift;
 import frc.team555.robot.components.MainLift;
-import frc.team555.robot.driverAssistance.AutoCubeIntake;
+import frc.team555.robot.driverAssistance.VisionGuidedCubeIntake;
+import frc.team555.robot.driverAssistance.VisionTrackingStep;
 import frc.team555.robot.utils.BangBang;
 import frc.team555.robot.utils.CoastMotor;
 import org.montclairrobotics.sprocket.SprocketRobot;
@@ -23,7 +24,6 @@ import org.montclairrobotics.sprocket.geometry.*;
 import org.montclairrobotics.sprocket.motors.Module;
 import org.montclairrobotics.sprocket.pipeline.Step;
 import org.montclairrobotics.sprocket.states.StateMachine;
-import org.montclairrobotics.sprocket.utils.Debug;
 import org.montclairrobotics.sprocket.utils.PID;
 
 import java.util.ArrayList;
@@ -34,17 +34,12 @@ public class PowerUpRobot extends SprocketRobot {
     Sensitivity sensitivity;
     GyroLock lock;
     boolean manualLock;
-    AutoCubeIntake intake;
+    VisionGuidedCubeIntake intake;
     MainLift mainLift;
     IntakeLift intakeLift;
     StateMachine autoClimb;
 
     private static final double oldOverNew=17.1859 * 1.25/(6544.0/143.0);
-
-    //private double centerX = 0.0;
-    //private VisionThread visionThread;
-
-    //private final Object imgLock = new Object();
 
     @Override
     public void robotInit(){
@@ -58,12 +53,11 @@ public class PowerUpRobot extends SprocketRobot {
         Control.init();
         SwitchAuto.init();
         DriveModule[] modules = new DriveModule[2];
-        intake = new AutoCubeIntake();
+        intake = new VisionGuidedCubeIntake(intakeLift);
         mainLift=new MainLift();
         intakeLift=new IntakeLift();
         correction = new GyroCorrection(Hardware.navx, new PID(1.5, 0, 0.0015), 90, 1);
         autoClimb = new AutoClimbSequence(mainLift);
-        //SetIntakeLift.setLift(intakeLift);
 
         modules[0] = new DriveModule(new XY(-1, 0),
                 new XY(0, 1),
@@ -112,29 +106,13 @@ public class PowerUpRobot extends SprocketRobot {
         steps.add(new Deadzone());
         steps.add(sensitivity);
         steps.add(correction);
+
+        //Vision Tracking
         BangBang visionCorrection = new BangBang(10, 10);
         visionCorrection.setInput(new DashboardInput("Cube X"));
         visionCorrection.setTarget(140);
-        JoystickButton visionOn = new JoystickButton(Control.driveStick, 10);
-        steps.add(new Step<DTTarget>() {
-            @Override
-            public DTTarget get(DTTarget dtTarget) {
-                Debug.msg("Result", SmartDashboard.getNumber("Cube X", 10));
-                Debug.msg("Vision Button", visionOn.get());
-                if(visionOn.get()){
-                    Debug.msg("Correcting", true);
-                    Debug.msg("Correction", visionCorrection.get());
-                    DTTarget out = new DTTarget(dtTarget.getDirection(), new Degrees(dtTarget.getTurn().toDegrees() - visionCorrection.get()));
-                    Debug.msg("Vision Out: ", out);
-                    return out;
-                }else{
-                    Debug.msg("Correcting", false);
-                    Debug.msg("Correction", visionCorrection.get());
-                    Debug.msg("Vision out: ", dtTarget);
-                    return dtTarget;
-                }
-            }
-        });
+        steps.add(new VisionTrackingStep(visionCorrection));
+
         driveTrain.setPipeline(new DTPipeline(steps));
 
         /* Enabling and Disabling GyroLock */
@@ -152,45 +130,12 @@ public class PowerUpRobot extends SprocketRobot {
                 manualLock = false;
             }
         });
-        //this.intake =
-        //new CubeIntake();
-
-        /*super.addAutoMode(new AutoMode("Dynamic auto", new DynamicAutoState()));
-new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
-*/
-        //Togglable fieldInput = new FieldCentricDriveInput(Control.driveStick,correction);
-        //new ToggleButton(Control.driveStick,Control.FieldCentricID,fieldInput);
-
-        //Button resetButton=new JoystickButton(Control.driveStick,Control.ResetID);
-        /*resetButton.setPressAction(new ButtonAction() {
-            @Override
-            public void onAction() {
-                correction.reset();
-            }
-        });*/
-
-        /*Control.halfSpeed.setPressAction(new ButtonAction() {
-            @Override
-            public void onAction() {
-                sensitivity.set(0.5,0.3);
-            }
-        });
-
-        Control.halfSpeed.setReleaseAction(new ButtonAction() {
-            @Override
-            public void onAction() {
-                sensitivity.set(1,0.6);
-            }
-        });
-*/
-
-
-
 
         //auto
         final double driveSpeed = 0.4;
         final int maxEncAccel = 10;
         final int maxTicksPerSec = 10;
+
         AutoMode autoDrive = new AutoMode("auto Drive",
                 new DriveEncoderGyro(120,
                         0.25,
@@ -201,28 +146,6 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
 
         AutoMode encoder = new AutoMode("encoder",
                 new DriveEncoders(100,.25));
-
-        AutoMode turn90 = new AutoMode("Turn 90",
-                new TurnGyro(new Degrees(90),correction,true));
-
-        AutoMode square = new AutoMode("Square",
-                new ResetGyro(correction),
-                new DriveEncoders(4*12,0.25),
-                new TurnGyro(new Degrees(90),correction,false),
-                new DriveEncoders(4*12,0.25),
-                new TurnGyro(new Degrees(180),correction,false),
-                new DriveEncoders(4*12,0.25),
-                new TurnGyro(new Degrees(270),correction,false),
-                new DriveEncoders(4*12,0.25),
-                new TurnGyro(new Degrees(0),correction,false));
-
-        AutoMode square2 = new AutoMode("Square 2",
-                new ResetGyro(correction),
-                new DriveEncoderGyro(4*12,0.25,new Degrees(0),false,correction),
-                new DriveEncoderGyro(4*12,0.25,new Degrees(90),false,correction),
-                new DriveEncoderGyro(4*12,0.25,new Degrees(180),false,correction),
-                new DriveEncoderGyro(4*12,0.25,new Degrees(270),false,correction));
-
 
         AutoMode baseLine = new AutoMode("Base Line",
                 new ResetGyro(correction),

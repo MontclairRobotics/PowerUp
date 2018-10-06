@@ -138,8 +138,7 @@ public class IntakeLift implements Lift{
         setPosition(pos);
     }
 
-    public void reset()
-    {
+    public void reset() {
         encoder.reset();
     }
 
