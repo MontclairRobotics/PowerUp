@@ -1,9 +1,8 @@
 package frc.team555.robot.auto;
 
-import frc.team555.robot.components.CubeIntake;
+import frc.team555.robot.driverAssistance.CubeIntake;
 import frc.team555.robot.components.IntakeLift;
 import frc.team555.robot.utils.Side;
-import org.montclairrobotics.sprocket.states.State;
 import org.montclairrobotics.sprocket.states.StateMachine;
 
 @Deprecated

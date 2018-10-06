@@ -1,6 +1,6 @@
 package frc.team555.robot.test;
 
-import frc.team555.robot.components.CubeIntake;
+import frc.team555.robot.driverAssistance.CubeIntake;
 import frc.team555.robot.components.IntakeLift;
 import frc.team555.robot.core.Control;
 import frc.team555.robot.core.Hardware;

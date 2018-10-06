@@ -1,12 +1,9 @@
 package frc.team555.robot.auto;
 
-import edu.wpi.first.wpilibj.interfaces.Gyro;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.team555.robot.components.CubeIntake;
+import frc.team555.robot.driverAssistance.CubeIntake;
 import frc.team555.robot.components.IntakeLift;
 import frc.team555.robot.utils.Side;
-import frc.team555.robot.core.Hardware;
 import org.montclairrobotics.sprocket.auto.states.*;
 import org.montclairrobotics.sprocket.drive.steps.GyroCorrection;
 import org.montclairrobotics.sprocket.geometry.Angle;
@@ -15,7 +12,6 @@ import org.montclairrobotics.sprocket.states.State;
 import org.montclairrobotics.sprocket.states.StateMachine;
 import org.montclairrobotics.sprocket.utils.Debug;
 import org.montclairrobotics.sprocket.utils.Input;
-import org.montclairrobotics.sprocket.utils.PID;
 
 import java.util.ArrayList;
 

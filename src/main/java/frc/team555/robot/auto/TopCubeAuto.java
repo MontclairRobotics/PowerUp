@@ -1,14 +1,13 @@
 package frc.team555.robot.auto;
 
+
 import frc.team555.robot.components.CubeIntake;
 import frc.team555.robot.components.MainLift;
 import frc.team555.robot.utils.Side;
-import org.montclairrobotics.sprocket.auto.AutoMode;
 import org.montclairrobotics.sprocket.auto.states.DriveEncoderGyro;
 import org.montclairrobotics.sprocket.auto.states.ResetGyro;
 import org.montclairrobotics.sprocket.drive.steps.GyroCorrection;
 import org.montclairrobotics.sprocket.geometry.Angle;
-import org.montclairrobotics.sprocket.states.State;
 import org.montclairrobotics.sprocket.states.StateMachine;
 import org.montclairrobotics.sprocket.utils.Input;
 

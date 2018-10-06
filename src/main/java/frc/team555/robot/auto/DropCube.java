@@ -9,12 +9,11 @@ import org.montclairrobotics.sprocket.auto.states.DriveTime;
 import org.montclairrobotics.sprocket.drive.steps.GyroCorrection;
 import org.montclairrobotics.sprocket.geometry.Angle;
 import org.montclairrobotics.sprocket.states.MultiState;
-import org.montclairrobotics.sprocket.states.State;
 import org.montclairrobotics.sprocket.states.StateMachine;
 import org.montclairrobotics.sprocket.utils.Input;
 
 public class DropCube extends StateMachine{
-    public DropCube(MainLift mainLift,CubeIntake intake, GyroCorrection correction, Input<Side> side){
+    public DropCube(MainLift mainLift, CubeIntake intake, GyroCorrection correction, Input<Side> side){
         super(
                 new MultiState(
                     new MoveLift(mainLift,MainLift.TOP*0.6,1,true),

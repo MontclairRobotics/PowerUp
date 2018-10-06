@@ -2,7 +2,6 @@ package frc.team555.robot.auto;
 
 import frc.team555.robot.components.CubeIntake;
 import frc.team555.robot.utils.Side;
-import org.montclairrobotics.sprocket.auto.AutoState;
 import org.montclairrobotics.sprocket.auto.states.DriveEncoderGyro;
 import org.montclairrobotics.sprocket.auto.states.DriveTime;
 import org.montclairrobotics.sprocket.drive.steps.GyroCorrection;

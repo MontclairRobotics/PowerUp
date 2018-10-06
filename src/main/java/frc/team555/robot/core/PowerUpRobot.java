@@ -1,17 +1,15 @@
 package frc.team555.robot.core;
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import frc.team555.robot.driverAssistance.AutoClimbSequence;
 import frc.team555.robot.auto.*;
-import frc.team555.robot.components.CubeIntake;
 import frc.team555.robot.components.IntakeLift;
 import frc.team555.robot.components.MainLift;
+import frc.team555.robot.driverAssistance.AutoCubeIntake;
 import frc.team555.robot.utils.BangBang;
 import frc.team555.robot.utils.CoastMotor;
-import frc.team555.robot.utils.Side;
-import frc.team555.robot.utils.VisionCorrection;
 import org.montclairrobotics.sprocket.SprocketRobot;
 import org.montclairrobotics.sprocket.auto.AutoMode;
 import org.montclairrobotics.sprocket.auto.states.*;
@@ -23,13 +21,10 @@ import org.montclairrobotics.sprocket.drive.steps.Sensitivity;
 import org.montclairrobotics.sprocket.drive.utils.GyroLock;
 import org.montclairrobotics.sprocket.geometry.*;
 import org.montclairrobotics.sprocket.motors.Module;
-import org.montclairrobotics.sprocket.motors.Motor;
 import org.montclairrobotics.sprocket.pipeline.Step;
 import org.montclairrobotics.sprocket.states.StateMachine;
 import org.montclairrobotics.sprocket.utils.Debug;
-import org.montclairrobotics.sprocket.utils.Input;
 import org.montclairrobotics.sprocket.utils.PID;
-import org.montclairrobotics.sprocket.utils.Togglable;
 
 import java.util.ArrayList;
 
@@ -39,16 +34,10 @@ public class PowerUpRobot extends SprocketRobot {
     Sensitivity sensitivity;
     GyroLock lock;
     boolean manualLock;
-    CubeIntake intake;
+    AutoCubeIntake intake;
     MainLift mainLift;
     IntakeLift intakeLift;
     StateMachine autoClimb;
-
-    //vision stuff
-    private static final int IMG_WIDTH = 320;
-    private static final int IMG_HEIGHT = 240;
-
-
 
     private static final double oldOverNew=17.1859 * 1.25/(6544.0/143.0);
 
@@ -69,7 +58,7 @@ public class PowerUpRobot extends SprocketRobot {
         Control.init();
         SwitchAuto.init();
         DriveModule[] modules = new DriveModule[2];
-        intake = new CubeIntake();
+        intake = new AutoCubeIntake();
         mainLift=new MainLift();
         intakeLift=new IntakeLift();
         correction = new GyroCorrection(Hardware.navx, new PID(1.5, 0, 0.0015), 90, 1);
@@ -287,15 +276,6 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
         addAutoMode(baseLine);
         addAutoMode(centerBaseLineLeft);
         addAutoMode(centerBaseLineRight);
-        addAutoMode(new AutoMode("Switch Using Intake", new SwitchAuto(mainLift,correction, intake, intakeLift)));
-        addAutoMode(mainLiftUp);
-        addAutoMode(turnQuarter);
-        addAutoMode(new AutoMode("Switch Using Lift", new TopCubeAuto(mainLift, intake, correction)));
-        //addAutoMode(new AutoMode("Switch Auto", new SwitchAuto(correction, intake)));
-        sendAutoModes();
-
-        StateMachine shootCube = new StateMachine(false, new SetIntakeRotation(intake, intake.middlePos), new CubeOuttake(intake, 1), new SetIntakeRotation(intake, intake.downPos));
-
         /*Control.intakeSubroutine.setHeldAction(new ButtonAction() {
             @Override
             public void onAction() {

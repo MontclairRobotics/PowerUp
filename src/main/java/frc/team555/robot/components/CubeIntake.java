@@ -15,8 +15,6 @@ import org.montclairrobotics.sprocket.utils.Input;
 import org.montclairrobotics.sprocket.utils.PID;
 import org.montclairrobotics.sprocket.utils.Togglable;
 
-
-
 public class CubeIntake implements Updatable, Togglable{
 	private double rotatePower=1;
 
