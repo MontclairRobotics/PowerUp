@@ -1,7 +1,6 @@
 package frc.team555.robot.visionAssistance;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.team555.robot.components.IntakeLift;
 import frc.team555.robot.core.Control;
 import frc.team555.robot.core.Hardware;
 import org.montclairrobotics.sprocket.geometry.Vector;
