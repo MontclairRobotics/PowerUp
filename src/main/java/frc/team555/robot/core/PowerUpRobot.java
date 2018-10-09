@@ -7,8 +7,8 @@ import frc.team555.robot.driverAssistance.AutoClimbSequence;
 import frc.team555.robot.auto.*;
 import frc.team555.robot.components.IntakeLift;
 import frc.team555.robot.components.MainLift;
-import frc.team555.robot.driverAssistance.VisionGuidedCubeIntake;
-import frc.team555.robot.driverAssistance.VisionTrackingStep;
+import frc.team555.robot.visionAssistance.VisionGuidedCubeIntake;
+import frc.team555.robot.visionAssistance.VisionTrackingStep;
 import frc.team555.robot.utils.BangBang;
 import frc.team555.robot.utils.CoastMotor;
 import org.montclairrobotics.sprocket.SprocketRobot;
@@ -45,7 +45,7 @@ public class PowerUpRobot extends SprocketRobot {
     public void robotInit(){
         CameraServer.getInstance().startAutomaticCapture();
 
-        DriveEncoders.TOLLERANCE=/*45.5363/17.1859*/6;
+        DriveEncoders.TOLLERANCE = 6; /*45.5363/17.1859*/
         TurnGyro.TURN_SPEED=0.3;
         TurnGyro.tolerance=new Degrees(3);
         //40 ft 5.5 in
@@ -53,7 +53,7 @@ public class PowerUpRobot extends SprocketRobot {
         Control.init();
         SwitchAuto.init();
         DriveModule[] modules = new DriveModule[2];
-        intake = new VisionGuidedCubeIntake(intakeLift);
+        intake = new VisionGuidedCubeIntake();
         mainLift=new MainLift();
         intakeLift=new IntakeLift();
         correction = new GyroCorrection(Hardware.navx, new PID(1.5, 0, 0.0015), 90, 1);
@@ -107,11 +107,17 @@ public class PowerUpRobot extends SprocketRobot {
         steps.add(sensitivity);
         steps.add(correction);
 
-        //Vision Tracking
-        BangBang visionCorrection = new BangBang(10, 10);
-        visionCorrection.setInput(new DashboardInput("Cube X"));
-        visionCorrection.setTarget(140);
-        steps.add(new VisionTrackingStep(visionCorrection));
+        // Vision Angle Correction
+        BangBang visionAngleCorrection = new BangBang(10, 10);
+        visionAngleCorrection.setInput(new DashboardInput("Cube X"));
+        visionAngleCorrection.setTarget(140);
+
+        // Vision Dist Correction
+        BangBang visionDistanceCorrection = new BangBang(10, 10);
+        visionDistanceCorrection.setInput(new DashboardInput("Cube Y"));
+        visionDistanceCorrection.setTarget(225);
+
+        steps.add(new VisionTrackingStep(visionDistanceCorrection, visionAngleCorrection));
 
         driveTrain.setPipeline(new DTPipeline(steps));
 
@@ -245,7 +251,7 @@ public class PowerUpRobot extends SprocketRobot {
             }
         });
 
-        // vision stuff
+        // visionAssistance stuff
 //        CameraServer.getInstance().startAutomaticCapture();
         /*UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
         camera.setResolution(IMG_WIDTH, IMG_HEIGHT);

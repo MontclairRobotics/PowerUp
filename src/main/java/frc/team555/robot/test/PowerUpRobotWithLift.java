@@ -31,7 +31,7 @@ public class PowerUpRobotWithLift extends SprocketRobot {
     boolean manualLock;
     CubeIntake intake;
 
-    //vision stuff
+    //visionAssistance stuff
     private static final int IMG_WIDTH = 320;
     private static final int IMG_HEIGHT = 240;
 
@@ -234,7 +234,7 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);*/
         //addAutoMode(rightAuto);
         sendAutoModes();
 
-        // vision stuff
+        // visionAssistance stuff
         /*UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
         camera.setResolution(IMG_WIDTH, IMG_HEIGHT);
 

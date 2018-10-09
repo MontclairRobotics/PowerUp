@@ -35,21 +35,6 @@ public class MainLift extends TargetMotor implements Lift {
 
         mode = Mode.POWER;
 
-        // Manual Up
-        Control.mainLiftManualUp.setPressAction(new ButtonAction() {
-            @Override
-            public void onAction() {
-                 set(speed);
-            }
-        });
-
-        Control.mainLiftManualUp.setReleaseAction(new ButtonAction() {
-            @Override
-            public void onAction() {
-                set(0);
-            }
-        });
-
         // Manual Down
         Control.mainLiftAutoDown.setHeldAction(new ButtonAction() {
             @Override
