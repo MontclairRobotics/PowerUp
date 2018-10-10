@@ -1,5 +1,6 @@
 package frc.team555.robot.driverAssistance;
 
+import frc.team555.robot.auto.CubeOuttake;
 import frc.team555.robot.core.PowerUpRobot;
 import org.montclairrobotics.sprocket.auto.states.DriveEncoderGyro;
 import org.montclairrobotics.sprocket.geometry.Angle;
@@ -14,22 +15,15 @@ public class VaultAlignment extends StateMachine {
     private XY vaultPos;
     private double vaultAngle;
 
+    public VaultAlignment(XY currentPos, double currentAngle, XY vaultPos, double vaultAngle){
 
-
-    public VaultAlignment(){
         super(
-                new DriveEncoderGyro(Math.sqrt(x*2+y*2),
-                        0.4,
+                new DriveEncoderGyro(Math.sqrt(Math.pow(currentPos.getX()-vaultPos.getX(),2)+
+                        Math.pow(currentPos.getY()-vaultPos.getY(),2)),
+                        1,
                         Angle.ZERO,
                         true,
-                        PowerUpRobot.correction
-                )
-
-
-
-
-
-
+                        PowerUpRobot.correction)
 
         );
     }
