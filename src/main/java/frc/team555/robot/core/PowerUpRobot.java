@@ -108,16 +108,18 @@ public class PowerUpRobot extends SprocketRobot {
         steps.add(correction);
 
         // Vision Angle Correction
-        BangBang visionAngleCorrection = new BangBang(0.5, 10);
+        PID visionAngleCorrection = new PID(1.5,0,0.0015);
         visionAngleCorrection.setInput(new DashboardInput("Cube X"));
         visionAngleCorrection.setTarget(170);
 
         // Vision Dist Correction
-        BangBang visionDistanceCorrection = new BangBang(10, 0.25);
+        PID visionDistanceCorrection = new PID(1.5, 0, 0.0015);
         visionDistanceCorrection.setInput(new DashboardInput("Cube Y"));
         visionDistanceCorrection.setTarget(225);
 
-        steps.add(new VisionTrackingStep(visionDistanceCorrection, visionAngleCorrection));
+        steps.add(new VisionTrackingStep(visionDistanceCorrection,
+                visionAngleCorrection,
+                Control.visionOn));
 
         driveTrain.setPipeline(new DTPipeline(steps));
 
