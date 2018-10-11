@@ -7,6 +7,7 @@ import frc.team555.robot.driverAssistance.AutoClimbSequence;
 import frc.team555.robot.auto.*;
 import frc.team555.robot.components.IntakeLift;
 import frc.team555.robot.components.MainLift;
+import frc.team555.robot.driverAssistance.VaultAlignment;
 import frc.team555.robot.visionAssistance.VisionGuidedCubeIntake;
 import frc.team555.robot.visionAssistance.VisionTrackingStep;
 import frc.team555.robot.utils.BangBang;
@@ -118,6 +119,8 @@ public class PowerUpRobot extends SprocketRobot {
         visionDistanceCorrection.setTarget(225);
 
         steps.add(new VisionTrackingStep(visionDistanceCorrection, visionAngleCorrection));
+
+        steps.add(new VaultAlignment(new XY(0,0), new Degrees(90), Control.vaultAlign));
 
         driveTrain.setPipeline(new DTPipeline(steps));
 

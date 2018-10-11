@@ -1,30 +1,29 @@
 package frc.team555.robot.driverAssistance;
 
-import frc.team555.robot.auto.CubeOuttake;
-import frc.team555.robot.core.PowerUpRobot;
-import org.montclairrobotics.sprocket.auto.states.DriveEncoderGyro;
+import org.montclairrobotics.sprocket.control.Button;
+import org.montclairrobotics.sprocket.drive.DTTarget;
 import org.montclairrobotics.sprocket.geometry.Angle;
 import org.montclairrobotics.sprocket.geometry.XY;
-import org.montclairrobotics.sprocket.states.StateMachine;
+import org.montclairrobotics.sprocket.pipeline.Step;
 
-public class VaultAlignment extends StateMachine {
-
-    private XY currentPos;
-    private double currentAngle;
+public class VaultAlignment implements Step<DTTarget> {
 
     private XY vaultPos;
-    private double vaultAngle;
+    private Angle vaultAngle;
+    private Button button;
 
-    public VaultAlignment(XY currentPos, double currentAngle, XY vaultPos, double vaultAngle){
+    public VaultAlignment(XY vaultPos, Angle vaultAngle, Button button){
+            this.vaultPos = vaultPos;
+            this.vaultAngle = vaultAngle;
+            this.button = button;
+    }
 
-        super(
-                new DriveEncoderGyro(Math.sqrt(Math.pow(currentPos.getX()-vaultPos.getX(),2)+
-                        Math.pow(currentPos.getY()-vaultPos.getY(),2)),
-                        1,
-                        Angle.ZERO,
-                        true,
-                        PowerUpRobot.correction)
+    @Override
+    public DTTarget get(DTTarget dtTarget) {
+        if(button.get()){
+            // drive to thing
+        }
 
-        );
+        return null;
     }
 }

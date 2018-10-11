@@ -1,6 +1,7 @@
 package frc.team555.robot.core;
 
 import edu.wpi.first.wpilibj.Joystick;
+import frc.team555.robot.driverAssistance.VaultAlignment;
 import frc.team555.robot.utils.JoystickButton2;
 import org.montclairrobotics.sprocket.control.ArcadeDriveInput;
 import org.montclairrobotics.sprocket.control.Button;
@@ -21,9 +22,9 @@ public class Control {
             intakeLiftManualUp,
             intakeLiftManualDown,
             mainLiftAutoUp,
-            mainLiftManualUp,
             mainLiftAutoDown,
             visionOn,
+            vaultAlign,
             autoClimb,
             autoOuttake;
 
@@ -63,6 +64,7 @@ public class Control {
         visionOn = new JoystickButton2(driveStick,2);
         autoClimb = new JoystickButton2(auxStick, 9);
         autoOuttake = new JoystickButton2(driveStick,3);
+        vaultAlign = new JoystickButton2(driveStick,4);
     }
 }
 
