@@ -25,8 +25,7 @@ public class Control {
             mainLiftAutoDown,
             visionOn,
             autoClimb,
-            autoOuttake,
-            cubeAssistance;
+            autoOuttake;
 
     // Joystick Declaration
     public static Joystick driveStick;
@@ -61,10 +60,9 @@ public class Control {
         intakeLiftManualDown = new JoystickButton2(auxStick,5);
 
         //Driver Assisted Controls
-        visionOn = new JoystickButton2(driveStick,10);
+        visionOn = new JoystickButton2(driveStick,2);
         autoClimb = new JoystickButton2(auxStick, 9);
-        autoOuttake = new JoystickButton2(auxStick,1);
-        cubeAssistance = new JoystickButton2(auxStick,6);
+        autoOuttake = new JoystickButton2(driveStick,3);
     }
 }
 

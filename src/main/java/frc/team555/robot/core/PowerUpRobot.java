@@ -108,12 +108,12 @@ public class PowerUpRobot extends SprocketRobot {
         steps.add(correction);
 
         // Vision Angle Correction
-        BangBang visionAngleCorrection = new BangBang(10, 10);
+        BangBang visionAngleCorrection = new BangBang(0.5, 10);
         visionAngleCorrection.setInput(new DashboardInput("Cube X"));
-        visionAngleCorrection.setTarget(140);
+        visionAngleCorrection.setTarget(170);
 
         // Vision Dist Correction
-        BangBang visionDistanceCorrection = new BangBang(10, 10);
+        BangBang visionDistanceCorrection = new BangBang(10, 0.25);
         visionDistanceCorrection.setInput(new DashboardInput("Cube Y"));
         visionDistanceCorrection.setTarget(225);
 
