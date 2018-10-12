@@ -12,7 +12,6 @@ import frc.team555.robot.components.IntakeLift;
 import frc.team555.robot.components.MainLift;
 import frc.team555.robot.driverAssistance.AutoClimbSequence;
 import frc.team555.robot.driverAssistance.VaultAlignmentStep;
-import frc.team555.robot.utils.BangBang;
 import frc.team555.robot.utils.CoastMotor;
 import frc.team555.robot.visionAssistance.VisionGuidedCubeIntake;
 import frc.team555.robot.visionAssistance.VisionTrackingStep;
@@ -111,23 +110,12 @@ public class PowerUpRobot extends SprocketRobot {
         new DashboardInput("auto Selection");
 
         ArrayList<Step<DTTarget>> steps = new ArrayList<>();
-        sensitivity=new Sensitivity(1,0.6);
+        sensitivity = new Sensitivity(1,0.6);
         lock = new GyroLock(correction);
         steps.add(new Deadzone());
         steps.add(sensitivity);
         steps.add(correction);
-
-        // Vision Angle Correction
-        BangBang visionAngleCorrection = new BangBang(0.5, 10);
-        visionAngleCorrection.setInput(new DashboardInput("Cube X"));
-        visionAngleCorrection.setTarget(170);
-
-        // Vision Dist Correction
-        BangBang visionDistanceCorrection = new BangBang(10, 0.25);
-        visionDistanceCorrection.setInput(new DashboardInput("Cube Y"));
-        visionDistanceCorrection.setTarget(225);
-
-        steps.add(new VisionTrackingStep(visionDistanceCorrection, visionAngleCorrection));
+        steps.add(new VisionTrackingStep(Control.visionOn));
         steps.add(new VaultAlignmentStep(navigation, Control.vaultAlign));
 
         driveTrain.setPipeline(new DTPipeline(steps));

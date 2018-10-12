@@ -30,6 +30,7 @@ public class VisionGuidedCubeIntake implements Updatable{
     Vector intakeVector  = new XY(1,0);
     Vector outtakeVector = new XY(-1,0);
     Vector idleVector    = new XY(0.3,0);
+    Vector disableVector = new XY(0,0);
 
     public VisionGuidedCubeIntake() {
         this.left = new Motor(Hardware.motorIntakeL);
@@ -51,12 +52,23 @@ public class VisionGuidedCubeIntake implements Updatable{
         boolean inIntake = (cubeX < X_MAX) && (cubeX > X_MIN) && (cubeY < Y_MAX) && (cubeY > Y_MIN);
         Debug.msg("Cube In Intake", inIntake);
 
-        if(Control.autoOuttake.get()){
-            return outtakeVector;
-        }else if(inIntake){
-            return idleVector;
+        boolean cubeDetected = SmartDashboard.getBoolean("Cube Detected", false);
+
+        if(cubeDetected){
+            if(Control.autoOuttake.get()){
+                Debug.msg("Intake Vector", "Outtake");
+                return outtakeVector;
+            }else if(inIntake){
+                Debug.msg("Intake Vector", "Idle");
+                return idleVector;
+            }else{
+                Debug.msg("Intake Vector", "Intake");
+                return intakeVector;
+            }
         }else{
-            return intakeVector;
+            Debug.msg("Intake Vector", "Disable");
+            return disableVector;
         }
+
     }
 }
