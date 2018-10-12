@@ -108,12 +108,12 @@ public class PowerUpRobot extends SprocketRobot {
         steps.add(correction);
 
         // Vision Angle Correction
-        PID visionAngleCorrection = new PID(1.5,0,0.0015);
+        PID visionAngleCorrection = new PID(7,0,0);
         visionAngleCorrection.setInput(new DashboardInput("Cube X"));
         visionAngleCorrection.setTarget(170);
 
         // Vision Dist Correction
-        PID visionDistanceCorrection = new PID(1.5, 0, 0.0015);
+        PID visionDistanceCorrection = new PID(0.8, 0, 0);
         visionDistanceCorrection.setInput(new DashboardInput("Cube Y"));
         visionDistanceCorrection.setTarget(225);
 
