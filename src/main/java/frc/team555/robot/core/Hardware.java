@@ -13,6 +13,7 @@ package frc.team555.robot.core;
 
 //15.5 to 49.5
 
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.*;
 import frc.team555.robot.utils.NavXInput;
@@ -58,6 +59,7 @@ public class Hardware {
 
         //public static final int motorIntakeClamp = 6;
 
+        //TODO: Check
         public static final int motorIntakeRotate = 6;
 
         public static final int motorIntakeL = 10;
@@ -101,8 +103,10 @@ public class Hardware {
 
     public static WPI_TalonSRX motorIntakeRotate;
 
-    public static DigitalInput intakeClosedSwitch;
-    public static DigitalInput intakeOpenSwitch;
+    //public static DigitalInput intakeClosedSwitch;
+    //public static DigitalInput intakeOpenSwitch;
+    public static DigitalInput intakeUpperBound;
+    public static DigitalInput intakeLowerBound;
 
 
     // Encoders
@@ -131,20 +135,27 @@ public class Hardware {
         motorDriveFR.setInverted(true);
 
         motorLiftIntake = new WPI_TalonSRX(DeviceID.motorIntakeLift);
+        motorLiftIntake.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, 0, 0);
         motorLiftMainFront = new WPI_TalonSRX(DeviceID.motorMainLiftFront);
         motorLiftMainBack = new WPI_TalonSRX(DeviceID.motorMainLiftBack);
         motorIntakeRotate = new WPI_TalonSRX(DeviceID.motorIntakeRotate);
+//        motorIntakeRotate.set
 
         motorIntakeR = new WPI_TalonSRX(DeviceID.motorIntakeR);
         motorIntakeL = new WPI_TalonSRX(DeviceID.motorIntakeL);
+
+        motorIntakeL = new WPI_TalonSRX(DeviceID.motorIntakeL);
+        motorIntakeR = new WPI_TalonSRX(DeviceID.motorIntakeR);
 
         motorLiftMainBack.setInverted(true);
 
         //motorIntakeClamp = new WPI_TalonSRX(DeviceID.motorIntakeClamp);
 
-        intakeClosedSwitch = new DigitalInput(6);
-        intakeOpenSwitch = new DigitalInput(8);
+        //intakeClosedSwitch = new DigitalInput(6);
+        //intakeOpenSwitch = new DigitalInput(8);
 
+        intakeUpperBound=new DigitalInput(7);
+        intakeLowerBound=new DigitalInput(6);
 
         //double ticksPerInch=6544.0/143.0;`
         //old/new=17.1859 * 1.25/(6544.0/143.0)
@@ -168,9 +179,11 @@ public class Hardware {
 //Intake Lift Travel
 
 //15.5 to 49.5
-        liftEncoder       = new SEncoder(new Encoder(4,5), 1/*31600/(82 - 54)*/); // todo: REALLY NEED TO BE SET
+
+        liftEncoder       = new SEncoder(new Encoder(4,5), 1/*31600/(82 - 54)*/);
         intakeLiftEncoder = new TalonEncoder(motorLiftIntake, 1 /*1333600/(49.5 - 15.5)*/);
-        intakeRotationEncoder = new TalonEncoder(motorIntakeRotate, 1); // todo, needs to be set
+        intakeRotationEncoder = new TalonEncoder(motorIntakeRotate, 1); // TODO: needs to be set
+
 
 
         navx = new NavXInput(DeviceID.navxPort);

@@ -1,7 +1,7 @@
 package frc.team555.robot.core;
 
+
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team555.robot.auto.*;
@@ -20,6 +20,7 @@ import org.montclairrobotics.sprocket.drive.steps.GyroCorrection;
 import org.montclairrobotics.sprocket.drive.steps.Sensitivity;
 import org.montclairrobotics.sprocket.drive.utils.GyroLock;
 import org.montclairrobotics.sprocket.geometry.*;
+import org.montclairrobotics.sprocket.motors.CurrentMonitor;
 import org.montclairrobotics.sprocket.motors.Module;
 import org.montclairrobotics.sprocket.motors.Motor;
 import org.montclairrobotics.sprocket.pipeline.Step;
@@ -34,13 +35,16 @@ import java.util.ArrayList;
 public class PowerUpRobot extends SprocketRobot {
     DriveTrain driveTrain;
     public static GyroCorrection correction;
+
     Sensitivity sensitivity;
     GyroLock lock;
     boolean manualLock;
-    CubeIntake intake;
+    public static CubeIntake intake;
     MainLift mainLift;
     IntakeLift intakeLift;
     StateMachine autoClimb;
+    //SendableChooser<Side> startSideChooser;
+
 
     //vision stuff
     private static final int IMG_WIDTH = 320;
@@ -57,6 +61,17 @@ public class PowerUpRobot extends SprocketRobot {
 
     @Override
     public void robotInit(){
+        //startSideChooser = new SendableChooser<>();
+        //startSideChooser.addObject("Right", Side.RIGHT);
+        //startSideChooser.addObject("Right", Side.LEFT);
+        /*switchOnSide = new Input<Boolean>() {
+            @Override
+            public Boolean get() {
+                return Side.fromDriverStation()[0] == startSide;
+            }
+        };*/
+
+
         CameraServer.getInstance().startAutomaticCapture();
         DriveEncoders.TOLLERANCE=/*45.5363/17.1859*/6;
         TurnGyro.TURN_SPEED=0.3;
@@ -89,6 +104,33 @@ public class PowerUpRobot extends SprocketRobot {
                 new CoastMotor(Hardware.motorDriveBR,false),
                 new CoastMotor(Hardware.motorDriveFR,false));
 
+        new CurrentMonitor("Front Right Drive Motor", Hardware.motorDriveFR,  new Input<Boolean>() {
+            @Override
+            public Boolean get() {
+                return Control.driveStick.getMagnitude() > .1;
+            }
+        }).setEncoder(Hardware.rightDriveEncoder);
+
+        new CurrentMonitor("Back Right Drive Motor", Hardware.motorDriveBR,  new Input<Boolean>() {
+            @Override
+            public Boolean get() {
+                return Control.driveStick.getMagnitude() > .1;
+            }
+        }).setEncoder(Hardware.rightDriveEncoder);
+
+        new CurrentMonitor("Front Left Drive Motor", Hardware.motorDriveFL,  new Input<Boolean>() {
+            @Override
+            public Boolean get() {
+                return Control.driveStick.getMagnitude() > .1;
+            }
+        }).setEncoder(Hardware.leftDriveEncoder);
+
+        new CurrentMonitor("Back Left Drive Motor", Hardware.motorDriveBL,  new Input<Boolean>() {
+            @Override
+            public Boolean get() {
+                return Control.driveStick.getMagnitude() > .1;
+            }
+        }).setEncoder(Hardware.leftDriveEncoder);
 
 
         DriveTrainBuilder dtBuilder = new DriveTrainBuilder();
@@ -112,7 +154,33 @@ public class PowerUpRobot extends SprocketRobot {
         /* Drive Train Pipeline: GyroCorrection, Deadzone */
 
 
+
+        //VISION
+        DTStep vision =new DTStep() {
+            @Override
+            public DTTarget get(DTTarget dtTarget) {
+                if(!Control.driveStick.getRawButton(7))
+                {
+                    return dtTarget;
+                }
+                double turn=0;
+                double x=SmartDashboard.getNumber("cubeX",600)-600;
+                if(x<-100)
+                {
+                    turn=-.1;
+                }
+                else if(x>100)
+                {
+                    turn=.1;
+                }
+                return new DTTarget(dtTarget.getDirection(),new Radians(turn));
+            }
+        };
+
         new DashboardInput("auto Selection");
+
+
+
 
         ArrayList<Step<DTTarget>> steps = new ArrayList<>();
         sensitivity=new Sensitivity(1,0.6);
@@ -120,6 +188,7 @@ public class PowerUpRobot extends SprocketRobot {
         steps.add(new Deadzone());
         steps.add(sensitivity);
         steps.add(correction);
+        steps.add(vision);
         driveTrain.setPipeline(new DTPipeline(steps));
 
         /* Enabling and Disabling GyroLock */
@@ -182,6 +251,9 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
                         Angle.ZERO,
                         true,
                         correction));
+
+
+
 
 
         AutoMode encoder = new AutoMode("encoder",
@@ -261,14 +333,21 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
         addAutoMode(baseLine);
         addAutoMode(centerBaseLineLeft);
         addAutoMode(centerBaseLineRight);
-        addAutoMode(new AutoMode("Switch Using Intake", new SwitchAuto(mainLift,correction, intake, intakeLift)));
+
+        /* Joshua Rapoport: AutoSwitch (left, right, middle) */
+
+        // addAutoMode(AutoSwitch.fromSide(Side.LEFT));
+        // addAutoMode(AutoSwitch.fromSide(Side.RIGHT));
+        // addAutoMode(AutoSwitch.fromMiddle());
+        addAutoMode(new AutoMode("Switch Using Intake", new SwitchAuto(mainLift,correction, intake)));
         addAutoMode(mainLiftUp);
         addAutoMode(turnQuarter);
         addAutoMode(new AutoMode("Switch Using Lift", new TopCubeAuto(mainLift, intake, correction)));
+        addAutoMode(new AutoMode("Drive 120 Inches",new DriveEncoderGyro(120,.5,Angle.ZERO,true,correction)));
         //addAutoMode(new AutoMode("Switch Auto", new SwitchAuto(correction, intake)));
         sendAutoModes();
 
-        StateMachine shootCube = new StateMachine(false, new SetIntakeRotation(intake, intake.middlePos), new CubeOuttake(intake, 1), new SetIntakeRotation(intake, intake.downPos));
+        //StateMachine shootCube = new StateMachine(false, new SetIntakeRotation(intake, intake.middlePos), new CubeOuttake(intake, 1), new SetIntakeRotation(intake, intake.downPos));
 
         /*Control.intakeSubroutine.setHeldAction(new ButtonAction() {
             @Override
@@ -290,10 +369,13 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
             public void onAction() {
                 shootCube.stop();
                 intake.disable();
-                intake.roationalMotor.set(intake.downPos);
+                intake.rotationalMotor.set(intake.downPos);
             }
         });
 */
+
+
+
 
         Control.autoClimb.setPressAction(new ButtonAction() {
             @Override
@@ -330,7 +412,7 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
             }
         });
         visionThread.start();*/
-        intakeLift.setPower(0);
+
     }
 
     @Override
@@ -349,17 +431,22 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
 
         SmartDashboard.putNumber("turn", turn);
 */
+
+        double cubeCenterX=SmartDashboard.getNumber("cubeCenterX",0.0);
+        SmartDashboard.putNumber("x rebroadcasted",cubeCenterX);
         SmartDashboard.putNumber("Distance", driveTrain.getDistance().getY());
         SmartDashboard.putNumber("Left Encoder", Hardware.leftDriveEncoder.getInches().get());
         SmartDashboard.putNumber("Right Encoder", Hardware.rightDriveEncoder.getInches().get());
+        Debug.msg("Intake Rotation", Hardware.intakeRotationEncoder.get());
         SmartDashboard.putBoolean("Lift Limit Switch", Hardware.liftLimitSwitch.get());
+        SmartDashboard.putNumber("POV",Control.auxStick.getPOV());
         debugCurrent("Main Lift Front",Hardware.motorLiftMainFront);
         debugCurrent("Main Lift Back",Hardware.motorLiftMainBack);
         debugCurrent("Intake Lift",Hardware.motorLiftIntake);
         SmartDashboard.putNumber("Main Lift Encoder Value",Hardware.liftEncoder.getInches().get());
-        //SmartDashboard.putNumber("Intake Lift Encoder",in.getInches().get());
+        SmartDashboard.putNumber("Intake Lift Encoder",Hardware.motorLiftIntake.getSensorCollection().getQuadraturePosition());
         gyroLocking();
-        SwitchAuto.loop();
+        //startSide = startSideChooser.getSelected();
     }
 
     private void debugCurrent(String name,WPI_TalonSRX motor) {
@@ -387,6 +474,8 @@ new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);
 
     @Override
     public void userDisabledPeriodic(){
+        //SmartDashboard.putData(startSideChooser);
+        //startSide = startSideChooser.getSelected();
         SwitchAuto.disabled();
     }
 }

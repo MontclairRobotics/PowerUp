@@ -3,6 +3,7 @@ package frc.team555.robot.auto;
 import frc.team555.robot.components.CubeIntake;
 import org.montclairrobotics.sprocket.states.State;
 
+@Deprecated
 public class SetIntakeRotation implements State {
     int position;
     CubeIntake intake;
@@ -14,7 +15,7 @@ public class SetIntakeRotation implements State {
 
     @Override
     public void start() {
-        intake.roationalMotor.setTarget(position);
+        // intake.roationalMotor.setTarget(position);
     }
 
     @Override

@@ -5,8 +5,10 @@ import frc.team555.robot.core.Hardware;
 import frc.team555.robot.utils.BangBang;
 import frc.team555.robot.utils.TargetMotor;
 import org.montclairrobotics.sprocket.control.ButtonAction;
+import org.montclairrobotics.sprocket.motors.CurrentMonitor;
 import org.montclairrobotics.sprocket.motors.Motor;
 import org.montclairrobotics.sprocket.motors.SEncoder;
+import org.montclairrobotics.sprocket.utils.Input;
 import org.montclairrobotics.sprocket.utils.PID;
 import org.montclairrobotics.sprocket.utils.Utils;
 
@@ -21,7 +23,8 @@ public class IntakeLift implements Lift{
     private boolean auto=false;
 
 
-    public double MANUAL_POWER=.5;
+    public double MANUAL_POWER_UP=1;
+    public double MANUAL_POWER_DOWN=-.4;
     public final double[] positions = {0D, 49-15}; // Todo: test values
     private int pos;
     private TargetMotor motors;
@@ -30,7 +33,9 @@ public class IntakeLift implements Lift{
      * Constructor for IntakeLift Class with default position of 0
      */
     public IntakeLift() {
+
         motors = new TargetMotor(Hardware.intakeLiftEncoder, new BangBang(1,1),new Motor(Hardware.motorLiftIntake)); // Todo: Needs Tuninng
+
         encoder=Hardware.intakeLiftEncoder;
 
         //=================
@@ -75,7 +80,7 @@ public class IntakeLift implements Lift{
         Control.intakeLiftManualUp.setPressAction(new ButtonAction() {
             @Override
             public void onAction() {
-                motors.setPower(MANUAL_POWER);
+                motors.setPower(MANUAL_POWER_UP);
             }
         });
 
@@ -83,7 +88,7 @@ public class IntakeLift implements Lift{
         Control.intakeLiftManualDown.setPressAction(new ButtonAction() {
             @Override
             public void onAction() {
-                motors.setPower(-MANUAL_POWER);
+                motors.setPower(MANUAL_POWER_DOWN);
 
             }
         });
@@ -95,6 +100,7 @@ public class IntakeLift implements Lift{
                 motors.setPower(0);
             }
         };
+
         Control.intakeLiftManualUp.setReleaseAction(stop);
         Control.intakeLiftManualDown.setReleaseAction(stop);
         motors.setPower(0);

@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team555.robot.components.CubeIntake;
 import frc.team555.robot.components.IntakeLift;
 import frc.team555.robot.components.MainLift;
+import frc.team555.robot.core.PowerUpRobot;
 import frc.team555.robot.utils.Side;
 import org.montclairrobotics.sprocket.auto.states.Delay;
 import org.montclairrobotics.sprocket.auto.states.DriveEncoderGyro;
@@ -15,23 +16,28 @@ import org.montclairrobotics.sprocket.geometry.Angle;
 import org.montclairrobotics.sprocket.states.StateMachine;
 import org.montclairrobotics.sprocket.utils.Input;
 
+
 public class SwitchAuto extends StateMachine{
 
     static Input<Boolean> startSide;
-    public static SendableChooser<Side> startSidesChooser;
+    public static SendableChooser<Side>startSidesChooser;
 
     public static void init(){
-        startSidesChooser = new SendableChooser<>();
+        startSidesChooser = new SendableChooser<Side>();
         for(Side side :  Side.values()){
             startSidesChooser.addObject(side.toString(), side);
         }
-        SmartDashboard.putData(startSidesChooser);
+        //SmartDashboard.putData(startSidesChooser);
         startSide = new Input<Boolean>() {
             @Override
             public Boolean get() {
                 return Side.fromDriverStation()[0] == startSidesChooser.getSelected();
             }
         };
+    }
+
+    public static Boolean getStartSide(){
+        return startSide.get();
     }
 
     public static void disabled(){
@@ -42,9 +48,9 @@ public class SwitchAuto extends StateMachine{
         SmartDashboard.putBoolean("Correct Side", startSide.get());
     }
 
-    public SwitchAuto(MainLift mainLift, GyroCorrection correction, CubeIntake intake, IntakeLift lift){
+    public SwitchAuto(MainLift mainLift, GyroCorrection correction, CubeIntake intake){
         super(new ResetGyro(correction),
-                new ConditionalState(new DropCube(mainLift,intake, correction, new Input<Side>(){
+                new ConditionalState(new SimpleDropCube(mainLift,intake, correction, new Input<Side>(){
                     @Override
                     public Side get() {
                         return SwitchAuto.startSidesChooser.getSelected();

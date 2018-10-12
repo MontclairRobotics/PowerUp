@@ -1,5 +1,7 @@
 package frc.team555.robot.components;
 
+
+import edu.wpi.first.wpilibj.DigitalInput;
 import frc.team555.robot.auto.MoveLift;
 import frc.team555.robot.core.Control;
 import frc.team555.robot.core.Hardware;
@@ -10,6 +12,7 @@ import org.montclairrobotics.sprocket.auto.AutoMode;
 import org.montclairrobotics.sprocket.auto.states.DriveEncoderGyro;
 import org.montclairrobotics.sprocket.auto.states.DriveTime;
 import org.montclairrobotics.sprocket.control.ButtonAction;
+
 import org.montclairrobotics.sprocket.geometry.Angle;
 import org.montclairrobotics.sprocket.motors.Motor;
 import org.montclairrobotics.sprocket.motors.SEncoder;
@@ -23,38 +26,40 @@ public class MainLift extends TargetMotor implements Lift {
 
     private final double speed = 1.0;
     public static final double TOP= 30834.0;
-
+    private final boolean LIMIT_SWITCH_DISABLED=false;
 
     private boolean auto=false;
 
     private int upPosition;
     private int downPosition;
+    private DigitalInput bottomLimitSwitch;
 
     public MainLift(){
+
         super(Hardware.liftEncoder, new BangBang(1,1), new Motor(Hardware.motorLiftMainFront), new Motor(Hardware.motorLiftMainBack));
 
         mode = Mode.POWER;
 
         // Manual Up
-        Control.mainLiftManualUp.setPressAction(new ButtonAction() {
-            @Override
-            public void onAction() {
-                 set(speed);
-            }
-        });
+//        Control.mainLiftManualUp.setPressAction(new ButtonAction() {
+//            @Override
+//            public void onAction() {
+//                 set(speed);
+//            }
+//        });
 
-        Control.mainLiftManualUp.setReleaseAction(new ButtonAction() {
-            @Override
-            public void onAction() {
-                set(0);
-            }
-        });
+//        Control.mainLiftManualUp.setReleaseAction(new ButtonAction() {
+//            @Override
+//            public void onAction() {
+//                set(0);
+//            }
+//        });
 
-        // Manual Down
-        Control.mainLiftManualDown.setHeldAction(new ButtonAction() {
+        // Auto Safe Down
+        Control.mainLiftAutoDown.setHeldAction(new ButtonAction() {
             @Override
             public void onAction() {
-                if(!Hardware.liftLimitSwitch.get()) {
+                if(LIMIT_SWITCH_DISABLED || !Hardware.liftLimitSwitch.get()) {
                     if(encoder.getInches().get()>TOP*0.2||Control.auxStick.getRawButton(7)) {
                         set(-speed);
                     }
@@ -68,7 +73,9 @@ public class MainLift extends TargetMotor implements Lift {
             }
         });
 
-        Control.mainLiftManualDown.setReleaseAction(new ButtonAction() {
+
+
+        Control.mainLiftAutoDown.setReleaseAction(new ButtonAction() {
             @Override
             public void onAction() {
                 set(0);
@@ -99,6 +106,29 @@ public class MainLift extends TargetMotor implements Lift {
                 }
             }
         });
+        Control.mainLiftManualUp.setHeldAction(new ButtonAction() {
+            @Override
+            public void onAction() {
+                if(Hardware.liftEncoder.getInches().get()<31296.0)
+                {
+                    Hardware.motorLiftMainFront.set(.5);
+                    Hardware.motorLiftMainBack.set(.5);
+                }
+                else
+                {
+                    Hardware.motorLiftMainFront.set(0);
+                    Hardware.motorLiftMainBack.set(0);
+                }
+            }
+        });
+        Control.mainLiftManualUp.setReleaseAction(new ButtonAction() {
+                                                      @Override
+                                                      public void onAction() {
+                                                          Hardware.motorLiftMainFront.set(0);
+                                                          Hardware.motorLiftMainBack.set(0);
+                                                      }
+                                                  });
+
         Control.mainLiftAutoUp.setReleaseAction(new ButtonAction() {
             @Override
             public void onAction() {
