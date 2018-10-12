@@ -14,9 +14,10 @@ package frc.team555.robot.core;
 //15.5 to 49.5
 
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
-import edu.wpi.first.wpilibj.*;
+import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Encoder;
+import edu.wpi.first.wpilibj.SPI;
 import frc.team555.robot.utils.NavXInput;
-import frc.team555.robot.utils.TalonEncoder;
 import org.montclairrobotics.sprocket.motors.SEncoder;
 
 /**
@@ -46,6 +47,7 @@ import org.montclairrobotics.sprocket.motors.SEncoder;
 public class Hardware {
 
     private static class DeviceID {
+
         // Drive Train Motor IDS
         public static final int motorDriveBR = 8;
         public static final int motorDriveBL = 3;
@@ -114,6 +116,14 @@ public class Hardware {
     public static SEncoder intakeRotationEncoder;
 
 
+    //double ticksPerInch=6544.0/143.0;`
+    //old/new=17.1859 * 1.25/(6544.0/143.0)
+    //double ticksPerInch=17.1859 * 1.25;
+    //double ticksPerInch=2*80/10.71/3/Math.PI*12;
+    //double ticksPerInch=1.0/6/Math.PI*10.71*40;
+    //double ticksPerInch=1.0;
+    public static final double ticksPerInch=(2280.0+2219.0)/2.0/4.0/12.0;
+
     // Gyroscope
     public static NavXInput navx;
 
@@ -144,17 +154,6 @@ public class Hardware {
 
         intakeClosedSwitch = new DigitalInput(6);
         intakeOpenSwitch = new DigitalInput(8);
-
-
-        //double ticksPerInch=6544.0/143.0;`
-        //old/new=17.1859 * 1.25/(6544.0/143.0)
-        //double ticksPerInch=17.1859 * 1.25;
-        //double ticksPerInch=2*80/10.71/3/Math.PI*12;
-        //double ticksPerInch=1.0/6/Math.PI*10.71*40;
-        //double ticksPerInch=1.0;
-        double ticksPerInch=(2280.0+2219.0)/2.0/4.0/12.0;
-
-
 
         rightDriveEncoder = new SEncoder(new Encoder(3,2),ticksPerInch);
         leftDriveEncoder  = new SEncoder(new Encoder(1,0),ticksPerInch);

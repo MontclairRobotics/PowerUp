@@ -1,32 +1,40 @@
 package frc.team555.robot.core;
 
+import Robot.NavRobot;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
+import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.CameraServer;
+import edu.wpi.first.wpilibj.SPI;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.team555.robot.driverAssistance.AutoClimbSequence;
-import frc.team555.robot.auto.*;
+import frc.team555.robot.auto.MoveLift;
+import frc.team555.robot.auto.SwitchAuto;
 import frc.team555.robot.components.IntakeLift;
 import frc.team555.robot.components.MainLift;
-import frc.team555.robot.driverAssistance.VaultAlignment;
-import frc.team555.robot.visionAssistance.VisionGuidedCubeIntake;
-import frc.team555.robot.visionAssistance.VisionTrackingStep;
+import frc.team555.robot.driverAssistance.AutoClimbSequence;
+import frc.team555.robot.driverAssistance.VaultAlignmentStep;
 import frc.team555.robot.utils.BangBang;
 import frc.team555.robot.utils.CoastMotor;
+import frc.team555.robot.visionAssistance.VisionGuidedCubeIntake;
+import frc.team555.robot.visionAssistance.VisionTrackingStep;
 import org.montclairrobotics.sprocket.SprocketRobot;
 import org.montclairrobotics.sprocket.auto.AutoMode;
 import org.montclairrobotics.sprocket.auto.states.*;
-import org.montclairrobotics.sprocket.control.*;
+import org.montclairrobotics.sprocket.control.ButtonAction;
+import org.montclairrobotics.sprocket.control.DashboardInput;
 import org.montclairrobotics.sprocket.drive.*;
 import org.montclairrobotics.sprocket.drive.steps.Deadzone;
 import org.montclairrobotics.sprocket.drive.steps.GyroCorrection;
 import org.montclairrobotics.sprocket.drive.steps.Sensitivity;
 import org.montclairrobotics.sprocket.drive.utils.GyroLock;
-import org.montclairrobotics.sprocket.geometry.*;
+import org.montclairrobotics.sprocket.geometry.Angle;
+import org.montclairrobotics.sprocket.geometry.Degrees;
+import org.montclairrobotics.sprocket.geometry.XY;
 import org.montclairrobotics.sprocket.motors.Module;
 import org.montclairrobotics.sprocket.pipeline.Step;
 import org.montclairrobotics.sprocket.states.StateMachine;
 import org.montclairrobotics.sprocket.utils.PID;
 
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class PowerUpRobot extends SprocketRobot {
@@ -39,6 +47,7 @@ public class PowerUpRobot extends SprocketRobot {
     MainLift mainLift;
     IntakeLift intakeLift;
     StateMachine autoClimb;
+    NavRobot navigation;
 
     private static final double oldOverNew=17.1859 * 1.25/(6544.0/143.0);
 
@@ -98,7 +107,6 @@ public class PowerUpRobot extends SprocketRobot {
 
         /* Drive Train Pipeline: GyroCorrection, Deadzone */
 
-
         new DashboardInput("auto Selection");
 
         ArrayList<Step<DTTarget>> steps = new ArrayList<>();
@@ -120,7 +128,23 @@ public class PowerUpRobot extends SprocketRobot {
 
         steps.add(new VisionTrackingStep(visionDistanceCorrection, visionAngleCorrection));
 
-        steps.add(new VaultAlignment(new XY(0,0), new Degrees(90), Control.vaultAlign));
+        // Navigation System
+        navigation = new NavRobot(new AHRS(SPI.Port.kMXP),
+                Hardware.leftDriveEncoder.getWPIEncoder(),
+                Hardware.rightDriveEncoder.getWPIEncoder(),
+                Hardware.ticksPerInch);
+
+        //TODO: make it changeable
+        navigation.resetMiddle();
+        navigation.startServer();
+
+        steps.add(new VaultAlignmentStep(
+                navigation,
+                Control.vaultAlign,
+                new PID(0,0,0), //TODO: TUNE DIST PID
+                new PID(0,0,0), //TODO: TUNE ANGLE PID
+                new XY(0,0),
+                new Degrees(90)));
 
         driveTrain.setPipeline(new DTPipeline(steps));
 
@@ -254,20 +278,6 @@ public class PowerUpRobot extends SprocketRobot {
             }
         });
 
-        // visionAssistance stuff
-//        CameraServer.getInstance().startAutomaticCapture();
-        /*UsbCamera camera = CameraServer.getInstance().startAutomaticCapture();
-        camera.setResolution(IMG_WIDTH, IMG_HEIGHT);
-
-        visionThread = new VisionThread(camera, new DrivePipeline(), pipeline -> {
-            if (!pipeline.filterContoursOutput().isEmpty()) {
-                org.opencv.core.Rect r = Imgproc.boundingRect(pipeline.filterContoursOutput().get(0));
-                synchronized (imgLock) {
-                    centerX = r.x + (r.width / 2);
-                }
-            }
-        });
-        visionThread.start();*/
         intakeLift.setPower(0);
     }
 
@@ -279,14 +289,14 @@ public class PowerUpRobot extends SprocketRobot {
 
     @Override
     public void update(){
-        /*double centerX;
-        synchronized (imgLock) {
-            centerX = this.centerX;
-        }
-        double turn = centerX - (IMG_WIDTH / 2);
 
-        SmartDashboard.putNumber("turn", turn);
-*/
+        // nav sys
+        try {
+            navigation.updatePosition();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
         SmartDashboard.putNumber("Distance", driveTrain.getDistance().getY());
         SmartDashboard.putNumber("Left Encoder", Hardware.leftDriveEncoder.getInches().get());
         SmartDashboard.putNumber("Right Encoder", Hardware.rightDriveEncoder.getInches().get());

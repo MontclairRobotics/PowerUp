@@ -1,12 +1,9 @@
 package frc.team555.robot.core;
 
 import edu.wpi.first.wpilibj.Joystick;
-import frc.team555.robot.driverAssistance.VaultAlignment;
 import frc.team555.robot.utils.JoystickButton2;
 import org.montclairrobotics.sprocket.control.ArcadeDriveInput;
 import org.montclairrobotics.sprocket.control.Button;
-import org.montclairrobotics.sprocket.control.JoystickButton;
-import org.montclairrobotics.sprocket.control.SquaredDriveInput;
 import org.montclairrobotics.sprocket.drive.DTInput;
 
 
