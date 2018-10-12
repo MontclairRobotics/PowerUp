@@ -49,7 +49,7 @@ public class Control {
         // Button Creation
         // ==================
 
-        lock = new JoystickButton2(driveStick,1);
+        lock = new JoystickButton2(driveStick,3);
 
         // Main Lift Controls
         mainLiftAutoUp = new JoystickButton2(auxStick, 2);
@@ -60,9 +60,9 @@ public class Control {
         intakeLiftManualDown = new JoystickButton2(auxStick,5);
 
         //Driver Assisted Controls
-        visionOn = new JoystickButton2(driveStick,2);
+        visionOn = new JoystickButton2(driveStick,3);
         autoClimb = new JoystickButton2(auxStick, 9);
-        autoOuttake = new JoystickButton2(driveStick,3);
+        autoOuttake = new JoystickButton2(driveStick,1);
     }
 }
 

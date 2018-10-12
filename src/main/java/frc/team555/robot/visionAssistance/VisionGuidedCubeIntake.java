@@ -1,7 +1,6 @@
 package frc.team555.robot.visionAssistance;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.team555.robot.components.IntakeLift;
 import frc.team555.robot.core.Control;
 import frc.team555.robot.core.Hardware;
 import org.montclairrobotics.sprocket.geometry.Vector;
@@ -57,13 +56,17 @@ public class VisionGuidedCubeIntake implements Updatable{
 
         if(cubeDetected){
             if(Control.autoOuttake.get()){
+                Debug.msg("Intake Vector", "Outtake");
                 return outtakeVector;
             }else if(inIntake){
+                Debug.msg("Intake Vector", "Idle");
                 return idleVector;
             }else{
+                Debug.msg("Intake Vector", "Intake");
                 return intakeVector;
             }
         }else{
+            Debug.msg("Intake Vector", "Disable");
             return disableVector;
         }
 
