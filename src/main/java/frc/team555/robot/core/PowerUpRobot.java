@@ -3,24 +3,27 @@ package frc.team555.robot.core;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import edu.wpi.first.wpilibj.CameraServer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.team555.robot.driverAssistance.AutoClimbSequence;
-import frc.team555.robot.auto.*;
+import frc.team555.robot.auto.MoveLift;
+import frc.team555.robot.auto.SwitchAuto;
 import frc.team555.robot.components.IntakeLift;
 import frc.team555.robot.components.MainLift;
+import frc.team555.robot.driverAssistance.AutoClimbSequence;
+import frc.team555.robot.utils.CoastMotor;
 import frc.team555.robot.visionAssistance.VisionGuidedCubeIntake;
 import frc.team555.robot.visionAssistance.VisionTrackingStep;
-import frc.team555.robot.utils.BangBang;
-import frc.team555.robot.utils.CoastMotor;
 import org.montclairrobotics.sprocket.SprocketRobot;
 import org.montclairrobotics.sprocket.auto.AutoMode;
 import org.montclairrobotics.sprocket.auto.states.*;
-import org.montclairrobotics.sprocket.control.*;
+import org.montclairrobotics.sprocket.control.ButtonAction;
+import org.montclairrobotics.sprocket.control.DashboardInput;
 import org.montclairrobotics.sprocket.drive.*;
 import org.montclairrobotics.sprocket.drive.steps.Deadzone;
 import org.montclairrobotics.sprocket.drive.steps.GyroCorrection;
 import org.montclairrobotics.sprocket.drive.steps.Sensitivity;
 import org.montclairrobotics.sprocket.drive.utils.GyroLock;
-import org.montclairrobotics.sprocket.geometry.*;
+import org.montclairrobotics.sprocket.geometry.Angle;
+import org.montclairrobotics.sprocket.geometry.Degrees;
+import org.montclairrobotics.sprocket.geometry.XY;
 import org.montclairrobotics.sprocket.motors.Module;
 import org.montclairrobotics.sprocket.pipeline.Step;
 import org.montclairrobotics.sprocket.states.StateMachine;
@@ -101,25 +104,12 @@ public class PowerUpRobot extends SprocketRobot {
         new DashboardInput("auto Selection");
 
         ArrayList<Step<DTTarget>> steps = new ArrayList<>();
-        sensitivity=new Sensitivity(1,0.6);
+        sensitivity = new Sensitivity(1,0.6);
         lock = new GyroLock(correction);
         steps.add(new Deadzone());
         steps.add(sensitivity);
         steps.add(correction);
-
-        // Vision Angle Correction
-        PID visionAngleCorrection = new PID(7,0,0);
-        visionAngleCorrection.setInput(new DashboardInput("Cube X"));
-        visionAngleCorrection.setTarget(170);
-
-        // Vision Dist Correction
-        PID visionDistanceCorrection = new PID(0.8, 0, 0);
-        visionDistanceCorrection.setInput(new DashboardInput("Cube Y"));
-        visionDistanceCorrection.setTarget(225);
-
-        steps.add(new VisionTrackingStep(visionDistanceCorrection,
-                visionAngleCorrection,
-                Control.visionOn));
+        steps.add(new VisionTrackingStep(Control.visionOn));
 
         driveTrain.setPipeline(new DTPipeline(steps));
 
