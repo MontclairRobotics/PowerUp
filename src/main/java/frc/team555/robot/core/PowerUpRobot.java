@@ -53,6 +53,7 @@ public class PowerUpRobot extends SprocketRobot {
 
     @Override
     public void robotInit(){
+        // Camera Live stream
         CameraServer.getInstance().startAutomaticCapture();
 
         DriveEncoders.TOLLERANCE = 6; /*45.5363/17.1859*/
@@ -127,24 +128,7 @@ public class PowerUpRobot extends SprocketRobot {
         visionDistanceCorrection.setTarget(225);
 
         steps.add(new VisionTrackingStep(visionDistanceCorrection, visionAngleCorrection));
-
-        // Navigation System
-        navigation = new NavRobot(new AHRS(SPI.Port.kMXP),
-                Hardware.leftDriveEncoder.getWPIEncoder(),
-                Hardware.rightDriveEncoder.getWPIEncoder(),
-                Hardware.ticksPerInch);
-
-        //TODO: make it changeable
-        navigation.resetMiddle();
-        navigation.startServer();
-
-        steps.add(new VaultAlignmentStep(
-                navigation,
-                Control.vaultAlign,
-                new PID(0,0,0), //TODO: TUNE DIST PID
-                new PID(0,0,0), //TODO: TUNE ANGLE PID
-                new XY(0,0),
-                new Degrees(90)));
+        steps.add(new VaultAlignmentStep(navigation, Control.vaultAlign));
 
         driveTrain.setPipeline(new DTPipeline(steps));
 
@@ -164,6 +148,16 @@ public class PowerUpRobot extends SprocketRobot {
             }
         });
 
+        // Navigation System
+        navigation = new NavRobot(new AHRS(SPI.Port.kMXP),
+                Hardware.leftDriveEncoder.getWPIEncoder(),
+                Hardware.rightDriveEncoder.getWPIEncoder(),
+                Hardware.ticksPerInch);
+
+        //TODO: make it changeable
+        navigation.resetMiddle();
+        navigation.startServer();
+        
         //auto
         final double driveSpeed = 0.4;
         final int maxEncAccel = 10;
