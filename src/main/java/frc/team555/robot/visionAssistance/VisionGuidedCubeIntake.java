@@ -1,4 +1,4 @@
-package frc.team555.robot.components;
+package frc.team555.robot.visionAssistance;
 
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.team555.robot.core.Control;
@@ -12,17 +12,6 @@ import org.montclairrobotics.sprocket.motors.Motor;
 import org.montclairrobotics.sprocket.utils.Debug;
 
 public class VisionGuidedCubeIntake implements Updatable{
-
-    public enum IntakeControlSystem{
-        MANUAL, AUTOMATIC
-    }
-
-    public enum IntakeAutomaticStates{
-        OUTTAKE, INTAKE, IDLE, DISABLE
-    }
-
-    private IntakeControlSystem controlSystem;
-    private IntakeAutomaticStates intakeAutomaticStates;
 
     private final Motor left;
     private final Motor right;
@@ -43,8 +32,7 @@ public class VisionGuidedCubeIntake implements Updatable{
     Vector idleVector    = new XY(0.3,0);
     Vector disableVector = new XY(0,0);
 
-    public VisionGuidedCubeIntake(IntakeControlSystem controlSystem) {
-        this.controlSystem = controlSystem;
+    public VisionGuidedCubeIntake() {
         this.left = new Motor(Hardware.motorIntakeL);
         this.right = new Motor(Hardware.motorIntakeR);
 
@@ -58,7 +46,6 @@ public class VisionGuidedCubeIntake implements Updatable{
         right.set(p.getY() + p.getX());
     }
 
-    // Calculate for manual controls
     private Vector calcVector(){
         double cubeX = SmartDashboard.getNumber("Cube X",defaultX);
         double cubeY = SmartDashboard.getNumber("Cube Y", defaultY);
@@ -68,46 +55,20 @@ public class VisionGuidedCubeIntake implements Updatable{
         boolean cubeDetected = SmartDashboard.getBoolean("Cube Detected", false);
 
         if(cubeDetected){
-            if(controlSystem == IntakeControlSystem.MANUAL) {
-                if (Control.autoOuttake.get()) {
-                    Debug.msg("Intake Vector", "Outtake");
-                    return outtakeVector;
-                } else if (inIntake) {
-                    Debug.msg("Intake Vector", "Idle");
-                    return idleVector;
-                } else {
-                    Debug.msg("Intake Vector", "Intake");
-                    return intakeVector;
-                }
+            if(Control.autoOuttake.get()){
+                Debug.msg("Intake Vector", "Outtake");
+                return outtakeVector;
+            }else if(inIntake){
+                Debug.msg("Intake Vector", "Idle");
+                return idleVector;
             }else{
-                //TODO: fix automatic
-                if(intakeAutomaticStates == IntakeAutomaticStates.INTAKE){
-                    Debug.msg("Intake Vector", "Intake");
-                    return intakeVector;
-                }else if(intakeAutomaticStates == IntakeAutomaticStates.OUTTAKE){
-                    Debug.msg("Intake Vector", "Outtake");
-                    return outtakeVector;
-                }else if(intakeAutomaticStates == IntakeAutomaticStates.IDLE){
-                    Debug.msg("Intake Vector", "Idle");
-                    return idleVector;
-                }else if(intakeAutomaticStates == IntakeAutomaticStates.DISABLE){
-                    Debug.msg("Intake Vector", "Disable");
-                    return disableVector;
-                }
-                return null;
+                Debug.msg("Intake Vector", "Intake");
+                return intakeVector;
             }
         }else{
             Debug.msg("Intake Vector", "Disable");
             return disableVector;
         }
 
-    }
-
-    public void setControlSystem(IntakeControlSystem controlSystem) {
-        this.controlSystem = controlSystem;
-    }
-
-    public void setIntakeAutomaticStates(IntakeAutomaticStates intakeAutomaticStates) {
-        this.intakeAutomaticStates = intakeAutomaticStates;
     }
 }
