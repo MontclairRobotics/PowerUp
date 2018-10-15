@@ -11,10 +11,9 @@ import frc.team555.robot.auto.SwitchAuto;
 import frc.team555.robot.components.IntakeLift;
 import frc.team555.robot.components.MainLift;
 import frc.team555.robot.driverAssistance.AutoClimbSequence;
-import frc.team555.robot.driverAssistance.VaultAlignmentStep;
+import frc.team555.robot.driverAssistance.AutoVaultStep;
 import frc.team555.robot.utils.CoastMotor;
-import frc.team555.robot.visionAssistance.VisionGuidedCubeIntake;
-import frc.team555.robot.visionAssistance.VisionTrackingStep;
+import frc.team555.robot.components.VisionGuidedCubeIntake;
 import org.montclairrobotics.sprocket.SprocketRobot;
 import org.montclairrobotics.sprocket.auto.AutoMode;
 import org.montclairrobotics.sprocket.auto.states.*;
@@ -63,7 +62,7 @@ public class PowerUpRobot extends SprocketRobot {
         Control.init();
         SwitchAuto.init();
         DriveModule[] modules = new DriveModule[2];
-        intake = new VisionGuidedCubeIntake();
+        intake = new VisionGuidedCubeIntake(VisionGuidedCubeIntake.IntakeControlSystem.MANUAL);
         mainLift=new MainLift();
         intakeLift=new IntakeLift();
         correction = new GyroCorrection(Hardware.navx, new PID(1.5, 0, 0.0015), 90, 1);
@@ -115,8 +114,7 @@ public class PowerUpRobot extends SprocketRobot {
         steps.add(new Deadzone());
         steps.add(sensitivity);
         steps.add(correction);
-        steps.add(new VisionTrackingStep(Control.visionOn));
-        steps.add(new VaultAlignmentStep(navigation, Control.vaultAlign));
+        steps.add(new AutoVaultStep(navigation, intake, Control.vaultAlign));
 
         driveTrain.setPipeline(new DTPipeline(steps));
 
