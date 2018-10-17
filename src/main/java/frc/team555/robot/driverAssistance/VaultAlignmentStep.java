@@ -1,6 +1,6 @@
 package frc.team555.robot.driverAssistance;
 
-import Robot.NavRobot;
+import nav.NavigationSystem;
 import org.montclairrobotics.sprocket.control.Button;
 import org.montclairrobotics.sprocket.drive.DTTarget;
 import org.montclairrobotics.sprocket.geometry.Angle;
@@ -12,7 +12,7 @@ import org.montclairrobotics.sprocket.utils.PID;
 
 public class VaultAlignmentStep implements Step<DTTarget> {
 
-    private final NavRobot navigationSys;
+    private final NavigationSystem navigationSys;
     private final PID distPID = new PID(0,0,0); //TODO: TUNE PID
     private final PID anglePID = new PID(0,0,0); //TODO: TUNE PID
     private final PID aimVaultPID = new PID(0,0,0); //TODO: TUNE PID
@@ -21,7 +21,7 @@ public class VaultAlignmentStep implements Step<DTTarget> {
     private final double threshold = 3; // Inches
     private Button button;
 
-    public VaultAlignmentStep(NavRobot navigationSys, Button button){
+    public VaultAlignmentStep(NavigationSystem navigationSys, Button button){
         this.navigationSys = navigationSys;
         this.button = button;
     }

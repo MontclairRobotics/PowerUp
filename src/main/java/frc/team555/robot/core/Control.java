@@ -61,7 +61,7 @@ public class Control {
         visionOn = new JoystickButton2(driveStick,3);
         autoClimb = new JoystickButton2(auxStick, 9);
         autoOuttake = new JoystickButton2(driveStick,1);
-        vaultAlign = new JoystickButton2(driveStick,4);
+        vaultAlign = new JoystickButton2(driveStick,2);
     }
 }
 

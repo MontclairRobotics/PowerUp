@@ -1,6 +1,5 @@
 package frc.team555.robot.core;
 
-import Robot.NavRobot;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 import com.kauailabs.navx.frc.AHRS;
 import edu.wpi.first.wpilibj.CameraServer;
@@ -11,10 +10,9 @@ import frc.team555.robot.auto.SwitchAuto;
 import frc.team555.robot.components.IntakeLift;
 import frc.team555.robot.components.MainLift;
 import frc.team555.robot.driverAssistance.AutoClimbSequence;
-import frc.team555.robot.driverAssistance.VaultAlignmentStep;
 import frc.team555.robot.utils.CoastMotor;
 import frc.team555.robot.visionAssistance.VisionGuidedCubeIntake;
-import frc.team555.robot.visionAssistance.VisionTrackingStep;
+import nav.NavigationSystem;
 import org.montclairrobotics.sprocket.SprocketRobot;
 import org.montclairrobotics.sprocket.auto.AutoMode;
 import org.montclairrobotics.sprocket.auto.states.*;
@@ -46,7 +44,7 @@ public class PowerUpRobot extends SprocketRobot {
     MainLift mainLift;
     IntakeLift intakeLift;
     StateMachine autoClimb;
-    NavRobot navigation;
+    NavigationSystem navigation;
 
     private static final double oldOverNew=17.1859 * 1.25/(6544.0/143.0);
 
@@ -115,8 +113,6 @@ public class PowerUpRobot extends SprocketRobot {
         steps.add(new Deadzone());
         steps.add(sensitivity);
         steps.add(correction);
-        steps.add(new VisionTrackingStep(Control.visionOn));
-        steps.add(new VaultAlignmentStep(navigation, Control.vaultAlign));
 
         driveTrain.setPipeline(new DTPipeline(steps));
 
@@ -137,14 +133,13 @@ public class PowerUpRobot extends SprocketRobot {
         });
 
         // Navigation System
-        navigation = new NavRobot(new AHRS(SPI.Port.kMXP),
+        navigation = new NavigationSystem(new AHRS(SPI.Port.kMXP),
                 Hardware.leftDriveEncoder.getWPIEncoder(),
                 Hardware.rightDriveEncoder.getWPIEncoder(),
                 Hardware.ticksPerInch);
 
         //TODO: make it changeable
         navigation.resetMiddle();
-        navigation.startServer();
         
         //auto
         final double driveSpeed = 0.4;
