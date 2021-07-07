@@ -127,16 +127,16 @@ public class PowerUpRobotWithLift extends SprocketRobot {
         /*super.addAutoMode(new AutoMode("Dynamic auto", new DynamicAutoState()));
 new DriveEncoderGyro(12*30,.5,new Degrees(0),false,correction);*/
 
-        Togglable fieldInput = new FieldCentricDriveInput(Control.driveStick,correction);
-        new ToggleButton(Control.driveStick,Control.FieldCentricID,fieldInput);
+        //Togglable fieldInput = new FieldCentricDriveInput(Control.driveStick,correction);
+        //new ToggleButton(Control.driveStick,Control.FieldCentricID,fieldInput);
 
-        Button resetButton=new JoystickButton(Control.driveStick,Control.ResetID);
-        resetButton.setPressAction(new ButtonAction() {
+        //Button resetButton=new JoystickButton(Control.driveStick,Control.ResetID);
+        /*resetButton.setPressAction(new ButtonAction() {
             @Override
             public void onAction() {
                 correction.reset();
             }
-        });
+        });*/
 
         //Lift
 

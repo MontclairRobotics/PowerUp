@@ -4,6 +4,7 @@ import frc.team555.robot.components.CubeIntake;
 import frc.team555.robot.components.IntakeLift;
 import frc.team555.robot.core.Control;
 import frc.team555.robot.core.Hardware;
+import frc.team555.robot.utils.JoystickXAxis;
 import org.montclairrobotics.sprocket.SprocketRobot;
 import org.montclairrobotics.sprocket.auto.AutoMode;
 import org.montclairrobotics.sprocket.control.JoystickYAxis;
@@ -49,6 +50,7 @@ public class TestRobot extends SprocketRobot{
         Input<Double> input=new JoystickYAxis(Control.auxStick);
         ControlledMotor testMotor1 = new ControlledMotor(Hardware.motorLiftMainFront, input);
         ControlledMotor testMotor2 = new ControlledMotor(Hardware.motorLiftMainBack, input);
+        testMotor2.setInverted(true);
 
         super.addAutoMode(new AutoMode("name"));
         super.sendAutoModes();

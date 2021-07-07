@@ -2,6 +2,7 @@ package frc.team555.robot.components;
 
 import frc.team555.robot.core.Control;
 import frc.team555.robot.core.Hardware;
+import frc.team555.robot.utils.BangBang;
 import frc.team555.robot.utils.TargetMotor;
 import org.montclairrobotics.sprocket.control.ButtonAction;
 import org.montclairrobotics.sprocket.motors.CurrentMonitor;
@@ -15,20 +16,26 @@ import org.montclairrobotics.sprocket.utils.Utils;
 /**
  * The IntakeLift class manages the motors, positions, and PID for the intakeLift on the PowerUp robot.
  */
-public class IntakeLift {
+public class IntakeLift implements Lift{
 /*  public final int liftUpPosition = 1000;
     public final int liftDownPosition = 0;*/
 
-    public double MANUAL_POWER=.5;
-    public final double[] positions = {0D, 333D, 667D, 1000D}; // Todo: test values
+    private boolean auto=false;
+
+
+    public double MANUAL_POWER_UP=1;
+    public double MANUAL_POWER_DOWN=-.4;
+    public final double[] positions = {0D, 49-15}; // Todo: test values
     private int pos;
     private TargetMotor motors;
-    SEncoder encoder;
+    public SEncoder encoder;
     /**
      * Constructor for IntakeLift Class with default position of 0
      */
     public IntakeLift() {
-        motors = new TargetMotor(Hardware.liftEncoder, new PID(0, 0, 0),new Motor(Hardware.motorLiftIntake)); // Todo: Needs Tuninng
+
+        motors = new TargetMotor(Hardware.intakeLiftEncoder, new BangBang(1,1),new Motor(Hardware.motorLiftIntake)); // Todo: Needs Tuninng
+
         encoder=Hardware.intakeLiftEncoder;
 
         //=================
@@ -36,7 +43,7 @@ public class IntakeLift {
         //=================
 
         //IntakeLift up one step
-        Control.intakeLiftIncrement.setPressAction(new ButtonAction() {
+        /*Control.intakeLiftIncrement.setPressAction(new ButtonAction() {
             @Override
             public void onAction() {
                 liftUp();
@@ -67,21 +74,23 @@ public class IntakeLift {
                 setPosition(positions.length-1);
             }
         });
-
+*/
         //Start the motors in manual mode
         //IntakeLift up (manual backup control)
-        Control.intakeLiftManualUp.setHeldAction(new ButtonAction() {
+
+        //COMMENT OUT FOR PETTING ZOO
+        Control.intakeLiftManualUp.setPressAction(new ButtonAction() {
             @Override
             public void onAction() {
-                setPower(MANUAL_POWER);
+                motors.setPower(MANUAL_POWER_UP);
             }
         });
 
         //IntakeLift down (manual backup control)
-        Control.intakeLiftManualDown.setHeldAction(new ButtonAction() {
+        Control.intakeLiftManualDown.setPressAction(new ButtonAction() {
             @Override
             public void onAction() {
-                setPower(-MANUAL_POWER);
+                motors.setPower(MANUAL_POWER_DOWN);
 
             }
         });
@@ -90,33 +99,38 @@ public class IntakeLift {
         ButtonAction stop=new ButtonAction() {
             @Override
             public void onAction() {
-                setPower(0);
+                motors.setPower(0);
             }
         };
-        Control.intakeLiftManualUp.setOffAction(stop);
-        Control.intakeLiftManualDown.setOffAction(stop);
 
-        new CurrentMonitor("Intake Lift Encoder", Hardware.motorLiftIntake, new Input<Boolean>() {
-            @Override
-            public Boolean get() {
-                return Control.intakeLiftManualUp.get() || Control.intakeLiftManualUp.get() || Math.abs(motors.getTarget() - motors.getDistance().get()) > 20;
-            }
-        }).setEncoder(Hardware.intakeLiftEncoder);
-
+        Control.intakeLiftManualUp.setReleaseAction(stop);
+        Control.intakeLiftManualDown.setReleaseAction(stop);
+        motors.setPower(0);
     }
 
 
     public void setPosition(int p) {
         p = (int)Utils.constrain(p, 0, positions.length - 1);
-        motors.setTarget(positions[p]);
+        //motors.setTarget(positions[p]);
         pos = p;
     }
 
     public void setPositionRaw(double p)
     {
-        motors.setTarget(p);
+        //motors.setTarget(p);
     }
 
+
+    @Override
+    public SEncoder getEncoder() {
+        return encoder;
+    }
+
+    @Override
+    public void setAuto(double power) {
+        auto=true;
+        setPower(power);
+    }
 
     public void setPower(double power){
         motors.set(power);

@@ -8,6 +8,8 @@ import org.montclairrobotics.sprocket.loop.Updater;
 import org.montclairrobotics.sprocket.motors.Module;
 import org.montclairrobotics.sprocket.motors.Motor;
 import org.montclairrobotics.sprocket.motors.SEncoder;
+import org.montclairrobotics.sprocket.utils.Debug;
+import org.montclairrobotics.sprocket.utils.Input;
 import org.montclairrobotics.sprocket.utils.PID;
 
 
@@ -18,7 +20,8 @@ import org.montclairrobotics.sprocket.utils.PID;
  */
 public class TargetMotor extends Module implements Updatable{
     public enum Mode {POSITION,POWER};
-
+    private double power=0;
+    public Input<Boolean> upperBound,lowerBound;
     /**
      * The encoder attached to the motor
      */
@@ -60,9 +63,10 @@ public class TargetMotor extends Module implements Updatable{
         pid.setTarget(target);
     }
 
-    public void setPower(double power){
+    public void setPower(double pow){
         mode = Mode.POWER;
-        super.set(power);
+        this.power=pow;
+        safeSet(pow);
     }
 
     /**
@@ -73,6 +77,11 @@ public class TargetMotor extends Module implements Updatable{
         pid.setTarget(0);
         encoder.reset();
     }
+    
+    public void stop()
+    {
+        setPower(0);
+    }
 
     /**
      * Update the PID and set the according motor power
@@ -80,8 +89,22 @@ public class TargetMotor extends Module implements Updatable{
     @Override
     public void update() {
         if(mode==Mode.POSITION) {
-            super.set(pid.get());
+            safeSet(pid.get());
         }
+        else
+        {
+            //safeSet(power);
+        }
+    }
+    
+    public void safeSet(double pow)
+    {
+        /*if(pow>0 &&(upperBound!=null && upperBound.get()) || pow<0 && (lowerBound!=null && lowerBound.get()))
+        {
+            pow=0;
+        }*/
+        Debug.msg("Setting a power",pow);
+        super.set(pow);
     }
 
     public double getTarget(){
